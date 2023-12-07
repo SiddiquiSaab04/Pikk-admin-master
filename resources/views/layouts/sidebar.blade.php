@@ -5,7 +5,7 @@
     </div>
     <div class="profile_info">
         <span>Welcome,</span>
-        <h2>John Doe</h2>
+        <h2>{{ Auth::check() ? Auth::user()->name : 'XXXX' }}</h2>
     </div>
 </div>
 <!-- /menu profile quick info -->

@@ -26,15 +26,15 @@
             <div class="col-md-3 left_col">
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
-                        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+                        <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>PiKK</span></a>
                     </div>
                     <div class="clearfix"></div>
-                    @include('admin.layouts.sidebar')
+                    @include('layouts.sidebar')
                 </div>
             </div>
-            @include('admin.layouts.top_navigation')
+            @include('layouts.top_navigation')
             @yield('content')
-            @include('admin.layouts.footer')
+            @include('layouts.footer')
         </div>
     </div>
 
