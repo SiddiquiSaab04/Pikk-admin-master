@@ -33,7 +33,9 @@
                 </div>
             </div>
             @include('layouts.top_navigation')
-            @yield('content')
+            <div class="right_col" role="main" style="min-height: 1326px;">
+                @yield('content')
+            </div>
             @include('layouts.footer')
         </div>
     </div>
@@ -62,6 +64,7 @@
     <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
 
     <script src="{{ asset('build/js/custom.min.js') }}"></script>
+    @stack('scripts')
 </body>
 
 </html>

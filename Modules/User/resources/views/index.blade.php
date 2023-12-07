@@ -1,7 +1,62 @@
-@extends('user::layouts.master')
-
+@extends('layouts.master')
 @section('content')
-    <h1>Hello World</h1>
-
-    <p>Module: {!! config('user.name') !!}</p>
+@include('layouts.descriptions')
+<div class="row">
+    <div class="col-sm-12 my-2">
+        <div class="row">
+            <div class="px-3">
+                <a href="{{ route('user.create') }}">
+                    <button class="rounded-full btn-success font-large padding-2">
+                        <i class="fa fa-plus text-white"></i>
+                    </button>
+                </a>
+            </div>
+            <div class="col-sm-5">
+                <div class="form-group top_search">
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search for...">
+                    <span class="input-group-btn">
+                      <button class="btn btn-primary text-white" type="button">Go!</button>
+                    </span>
+                  </div>
+                </div>    
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12">
+        <div class="x_panel">
+            <div class="x_title">
+            <h2>Manage Users </h2>
+            <ul class="nav navbar-right panel_toolbox justify-content-end">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Created At</th>
+                </tr>
+                </thead>
+                <tbody>
+                    @foreach($users as $user)
+                        <tr>
+                            <th scope="">{{ $loop->iteration }}</th>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td>{{ $user->created_at }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            {{ $users->links() }}
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

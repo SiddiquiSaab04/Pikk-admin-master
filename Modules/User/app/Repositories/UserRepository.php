@@ -1,15 +1,15 @@
 <?php
 
-namespace User\app\Repositories;
+namespace Modules\User\app\Repositories;
 
-use User\app\Interfaces\UserRepositoryInterface;
-use User\app\Models\User;
+use Modules\User\app\Interfaces\UserRepositoryInterface;
+use Modules\User\app\Models\User;
 
 class UserRepository implements UserRepositoryInterface
 {
     public function getAllUsers()
     {
-        return User::get();
+        return User::paginate(1);
     }
 
     public function getUserbyId($id)

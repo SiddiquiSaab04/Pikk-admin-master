@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('content')
 <!-- page content -->
-<div class="right_col" role="main">
+<div>
     <div class="row" style="display: inline-block;">
         <div class=" top_tiles" style="margin: 10px 0;">
             <div class="col-md-3 col-sm-3  tile">

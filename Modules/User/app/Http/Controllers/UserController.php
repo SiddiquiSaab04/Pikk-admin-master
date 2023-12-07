@@ -6,25 +6,37 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use User\app\Services\UserService;
+use Modules\User\app\Services\UserService;
 
 class UserController extends Controller
 {
-    private UserService $userService;
+    private $userService;
 
     public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $users = $this->userService->getusers();
-        return view('user::index', [
-            "users" => $users
-        ]);
+        $users = $this->userService->getUsers();
+
+        if(request()->wantsjson()) {
+            return sendResponse('user::index', [
+                "users" => $users,
+                "title" => "User List",
+                "description" => "System users list"
+            ]);
+        } else {
+            return sendResponse(false, 'user::index', [
+                "users" => $users,
+                "title" => "User List",
+                "description" => "System users list"
+            ]);
+        }
     }
 
     /**
@@ -32,7 +44,11 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('user::create');
+        return sendResponse(false, 'user::create', [
+            "title" => "Create User",
+            "description" => "Create system user"
+        ]);
+ 
     }
 
     /**
