@@ -1,5 +1,7 @@
 <?php
 
+use App\Services\CoreService;
+
 function sendResponse($is_api_request = true, $view = null, $data = null, $message = null, $http_status_code = 200)
 {
     if ($is_api_request == false && isset($view)) {
@@ -37,7 +39,15 @@ function sendError($is_api_request = true, $view = null, $error = null, $message
             'data' => null,
             'error' => isset($message) ? $message : 'An error occurred!',
         ];
- 
+
         return response()->json($response, $http_status_code);
     }
+}
+
+/**
+ * returns an instance of core service
+ */
+function core() : CoreService
+{
+    return app()->make( CoreService::class );
 }

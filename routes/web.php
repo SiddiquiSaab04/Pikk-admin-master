@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SetupController;
+use App\Http\Middleware\InstalledStateMiddleware;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -17,9 +19,13 @@ use Illuminate\Support\Facades\Hash;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-})->name('home')->middleware('auth');
+Route::get('do-setup', [SetupController::class, 'welcome'])->name('do-setup');
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/', function () {
+        return view('index');
+    })->name('home');
+});
 
 Auth::routes();
 
