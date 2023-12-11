@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SetupController;
+use App\Http\Middleware\InstalledStateMiddleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,9 +14,14 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/', function () {
-    return view('index');
-})->name('home')->middleware('auth');
+
+Route::get('do-setup', [SetupController::class, 'welcome'])->name('do-setup');
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/', function () {
+        return view('index');
+    })->name('home');
+});
 
 Auth::routes();
 
