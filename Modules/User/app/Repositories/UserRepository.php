@@ -3,13 +3,14 @@
 namespace Modules\User\app\Repositories;
 
 use Modules\User\app\Interfaces\UserRepositoryInterface;
-use Modules\User\app\Models\User;
+// use Modules\User\app\Models\User;
+use App\Models\User;
 
 class UserRepository implements UserRepositoryInterface
 {
     public function getAllUsers()
     {
-        return User::paginate(1);
+        return User::paginate(20);
     }
 
     public function getUserbyId($id)
@@ -24,11 +25,10 @@ class UserRepository implements UserRepositoryInterface
 
     public function searchUser($slug)
     {
-        return User::where(function($query) use ($slug) {
-            $query->where('name', "%".$slug."%");
-            $query->orWhere('email', "%".$slug."%");
+        return User::where(function ($query) use ($slug) {
+            $query->where('name', "%" . $slug . "%");
+            $query->orWhere('email', "%" . $slug . "%");
         });
-
     }
 
     public function createUser(array $data)
@@ -38,7 +38,7 @@ class UserRepository implements UserRepositoryInterface
 
     public function updateUser(string $id, array $data)
     {
-        return User::where('_id', $id)->update($data);
+        return User::where('id', $id)->update($data);
     }
 
     public function getUsersWith(string $relation)

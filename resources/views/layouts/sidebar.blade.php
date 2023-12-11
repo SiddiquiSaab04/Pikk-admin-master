@@ -17,6 +17,7 @@
     <div class="menu_section">
         <h3>General</h3>
         <ul class="nav side-menu">
+            <li><a href="{{ route('user.index') }}"><i class="fa fa-users"></i> System users</a></li>
             <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="index.html">Dashboard</a></li>

@@ -3,10 +3,12 @@
 namespace Modules\User\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Validator;
 use Modules\User\app\Services\UserService;
+use Exception;
 
 class UserController extends Controller
 {
@@ -24,7 +26,7 @@ class UserController extends Controller
     {
         $users = $this->userService->getUsers();
 
-        if(request()->wantsjson()) {
+        if (request()->wantsjson()) {
             return sendResponse('user::index', [
                 "users" => $users,
                 "title" => "User List",
@@ -48,7 +50,6 @@ class UserController extends Controller
             "title" => "Create User",
             "description" => "Create system user"
         ]);
- 
     }
 
     /**
@@ -56,9 +57,32 @@ class UserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
-    }
+        try {
+            $validator = Validator::make($request->all(), [
+                "name" => "required",
+                "email"  => "required|email",
+                "password" => "required",
+                "role" => "required",
+                "status" => "required"
+            ]);
 
+            if ($validator->fails()) {
+                return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            }
+
+            $user = $this->userService->createUser($request->all());
+            if ($user["status"] == 1) {
+                return redirect('user')->withToastSuccess($user["success_message"]);
+            } else {
+                throw new Exception($user["error_message"]);
+            }
+
+            return redirect('user');
+        } catch (Exception $e) {
+            session()->flash("alert-error", $e->getMessage());
+            return redirect()->back();
+        }
+    }
     /**
      * Show the specified resource.
      */
@@ -72,7 +96,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('user::edit');
+        $user = User::find($id);
+        $user['role'] = $user->getRoleNames();
+
+        return sendResponse(false, 'user::edit', [
+            "user" => $user,
+            "title" => "Edit user",
+            "description" => "Edit system user"
+        ]);
     }
 
     /**
@@ -80,7 +111,30 @@ class UserController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        //
+        try {
+            $validator = Validator::make($request->all(), [
+                "name" => "required",
+                "email"  => "required|email",
+                "role" => "required",
+                "status" => "required"
+            ]);
+
+            if ($validator->fails()) {
+                return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
+            }
+
+            $user = $this->userService->updateUser($request->all(), $id);
+            if ($user["status"] == 1) {
+                return redirect('user')->withToastSuccess($user["success_message"]);
+            } else {
+                throw new Exception($user["error_message"]);
+            }
+
+            return redirect('user');
+        } catch (Exception $e) {
+            session()->flash("alert-error", $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     /**

@@ -18,35 +18,30 @@
             </div>
             <div class="x_content">
                 <br />
-                <form class="form-horizontal form-label-left" action="{{ route('user.store') }}" method="post">
+                <form class="form-horizontal form-label-left" method="post" action="{{ route('user.update', $user->id) }}">
                     @csrf
+                    @method('PUT')
                     <div class="form-group row ">
                         <label class="control-label col-md-3 col-sm-3 ">Name</label>
                         <div class="col-md-9 col-sm-9 ">
-                            <input type="text" name="name" class="form-control" placeholder="Name" required>
+                            <input type="text" name="name" class="form-control" placeholder="Name" value="{{ $user->name }}" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-3 ">Email</label>
                         <div class="col-md-9 col-sm-9 ">
-                            <input type="email" name="email" class="form-control" placeholder="abc@xyz.com" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="control-label col-md-3 col-sm-3 ">Password</label>
-                        <div class="col-md-9 col-sm-9 ">
-                            <input type="password" name="password" class="form-control" required>
+                            <input type="email" name="email" class="form-control" placeholder="abc@xyz.com" value="{{ $user->email }}" required>
                         </div>
                     </div>
                     <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-3 ">Role</label>
                         <div class="col-md-9 col-sm-9 ">
                             <select class="form-control" name="role" required>
-                                <option selected disabled>Choose Role</option>
-                                <option value="admin">Admin</option>
-                                <option value="manager">Manager</option>
-                                <option value="staff">Staff</option>
-                                <option value="chef">Chef</option>
+                                <option disabled>Choose Role</option>
+                                <option value="admin" {{ $user->getRoleNames()->first() == 'admin' ? 'selected' : ''}}>Admin</option>
+                                <option value="manager" {{ $user->getRoleNames()->first() == 'manager' ? 'selected' : ''}}>Manager</option>
+                                <option value="staff" {{ $user->getRoleNames()->first() == 'staff' ? 'selected' : ''}}>Staff</option>
+                                <option value="chef" {{ $user->getRoleNames()->first() == 'chef' ? 'selected' : ''}}>Chef</option>
                             </select>
                         </div>
                     </div>
@@ -55,8 +50,8 @@
                         <div class="col-md-9 col-sm-9 ">
                             <select class="form-control" name="status" required>
                                 <option selected disabled>Choose status</option>
-                                <option value="1">Active</option>
-                                <option value="0">In-active</option>
+                                <option value="1" {{$user->status == 1  ? 'selected' : ''}}>Active</option>
+                                <option value="0" {{$user->status == 0  ? 'selected' : ''}}>In-active</option>
                             </select>
                         </div>
                     </div>
