@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-class InventoryController extends Controller
+
+class ProductModifiersAddonController extends Controller
 {
     /**
      * Display a listing of the resource.

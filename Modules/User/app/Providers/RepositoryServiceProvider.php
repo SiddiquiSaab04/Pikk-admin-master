@@ -6,7 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Modules\User\app\Interfaces\UserRepositoryInterface;
 use Modules\User\app\Repositories\UserRepository;
 use Modules\User\app\Http\Controllers\UserController;
-use Modules\User\app\Http\Services\UserService;
+use Modules\User\app\Services\UserService;
 
 class RepositoryServiceProvider extends ServiceProvider
 {

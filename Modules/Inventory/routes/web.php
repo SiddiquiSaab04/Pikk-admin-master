@@ -1,7 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Inventory\app\Http\Controllers\InventoryController;
+use Modules\Inventory\app\Http\Controllers\CategoryController;
+use Modules\Inventory\app\Http\Controllers\ProductController;
+use Modules\Inventory\app\Http\Controllers\AddonGroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,5 +17,7 @@ use Modules\Inventory\app\Http\Controllers\InventoryController;
 */
 
 Route::group([], function () {
-    Route::resource('inventory', InventoryController::class)->names('inventory');
+    Route::resource('category', CategoryController::class)->names('category');
+    Route::resource('product', ProductController::class)->names('product');
+    Route::resource('addon-groups', AddonGroupController::class)->names('addonGroup');
 });
