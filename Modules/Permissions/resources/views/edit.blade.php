@@ -5,7 +5,7 @@
     <div class="col-md-12 col-sm-12">
         <div class="x_panel">
             <div class="x_title">
-                <a href="{{ route('user.index') }}">
+                <a href="{{ route('permissions.index') }}">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
                     </svg>
@@ -18,24 +18,12 @@
             </div>
             <div class="x_content">
                 <br />
-                <form class="form-horizontal form-label-left" action="{{ route('user.store') }}" method="post">
+                <form class="form-horizontal form-label-left" action="{{ route('permissions.store') }}" method="post">
                     @csrf
                     <div class="form-group row ">
                         <label class="control-label col-md-3 col-sm-3 ">Name</label>
                         <div class="col-md-9 col-sm-9 ">
-                            <input type="text" name="name" class="form-control" placeholder="Name" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="control-label col-md-3 col-sm-3 ">Email</label>
-                        <div class="col-md-9 col-sm-9 ">
-                            <input type="email" name="email" class="form-control" placeholder="abc@xyz.com" required>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="control-label col-md-3 col-sm-3 ">Password</label>
-                        <div class="col-md-9 col-sm-9 ">
-                            <input type="password" name="password" class="form-control" required>
+                            <input type="text" name="name" class="form-control" placeholder="Name" value="{{ $permission->name }}" required>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -44,18 +32,8 @@
                             <select class="form-control" name="role" required>
                                 <option selected disabled>Choose Role</option>
                                 @foreach($roles as $role)
-                                <option value="{{$role->name}}">{{ ucfirst(trans($role->name)) }}</option>
+                                <option value="{{$role->name}}" {{ $permission->getRoleNames()->first() == $role->name ? 'selected' : ''}}>{{ $role->name }}</option>
                                 @endforeach
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="control-label col-md-3 col-sm-3 ">Status</label>
-                        <div class="col-md-9 col-sm-9 ">
-                            <select class="form-control" name="status" required>
-                                <option selected disabled>Choose status</option>
-                                <option value="1">Active</option>
-                                <option value="0">In-active</option>
                             </select>
                         </div>
                     </div>

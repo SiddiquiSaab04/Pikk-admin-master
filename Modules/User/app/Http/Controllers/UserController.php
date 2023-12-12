@@ -2,9 +2,7 @@
 
 namespace Modules\User\app\Http\Controllers;
 
-use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Modules\User\app\Services\UserService;
 use Modules\User\app\Http\Requests\UserRequest;
@@ -45,7 +43,9 @@ class UserController extends Controller
      */
     public function create()
     {
+        $roles = $this->userService->getAllRole();
         return sendResponse(false, 'user::create', [
+            "roles" => $roles,
             "title" => "Create User",
             "description" => "create a new system user"
         ]);
@@ -59,7 +59,7 @@ class UserController extends Controller
         $created = $this->userService->create($request->all());
         $this->userService->getRole($created, $request['role']);
 
-        return redirect()->route('user.index')->withToastSuccess("User created successfully.");;
+        return redirect()->route('user.index')->withToastSuccess("User created successfully.");
     }
     /**
      * Show the specified resource.
@@ -80,7 +80,6 @@ class UserController extends Controller
                 "description" => "show all system users list"
             ]);
         }
-        return view('user::show');
     }
 
     /**
@@ -89,8 +88,10 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = $this->userService->getById($id);
+        $roles = $this->userService->getAllRole();
         return view('user::edit', [
             "user" => $user,
+            "roles" => $roles,
             "title" => "Edit User",
             "description" => "edit a new system user"
         ]);

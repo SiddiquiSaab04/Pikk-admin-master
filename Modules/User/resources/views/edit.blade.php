@@ -38,10 +38,9 @@
                         <div class="col-md-9 col-sm-9 ">
                             <select class="form-control" name="role" required>
                                 <option disabled>Choose Role</option>
-                                <option value="admin" {{ $user->getRoleNames()->first() == 'admin' ? 'selected' : ''}}>Admin</option>
-                                <option value="manager" {{ $user->getRoleNames()->first() == 'manager' ? 'selected' : ''}}>Manager</option>
-                                <option value="staff" {{ $user->getRoleNames()->first() == 'staff' ? 'selected' : ''}}>Staff</option>
-                                <option value="chef" {{ $user->getRoleNames()->first() == 'chef' ? 'selected' : ''}}>Chef</option>
+                                @foreach($roles as $role)
+                                <option value="{{$role->name}}" {{ $user->getRoleNames()->first() == $role->name ? 'selected' : ''}}>{{ucfirst(trans($role->name))}}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>

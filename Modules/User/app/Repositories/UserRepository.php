@@ -2,6 +2,7 @@
 
 namespace Modules\User\app\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Modules\User\app\Interfaces\UserRepositoryInterface;
 
