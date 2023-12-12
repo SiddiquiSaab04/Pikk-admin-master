@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\User\app\Repositories;
+namespace Modules\Permissions\app\Repositories;
 
+use Modules\Permissions\app\Interfaces\PermissionsRepositoryInterface;
 use Spatie\Permission\Models\Role;
-use Modules\User\app\Interfaces\UserRepositoryInterface;
 
-class UserRepository implements UserRepositoryInterface
+class PermissionsRepository implements PermissionsRepositoryInterface
 {
     public function updateRole($name, $model)
     {

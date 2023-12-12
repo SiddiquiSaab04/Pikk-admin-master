@@ -47,6 +47,7 @@
                         <tr>    
                             <th>#</th>
                             <th>Name</th>
+                            <th>Role</th>
                             <th>Guard Name</th>
                             <th>Created At</th>
                             <th>Actions</th>
@@ -57,6 +58,7 @@
                         <tr>
                             <th scope="">{{ $loop->iteration }}</th>
                             <td>{{ $permission->name }}</td>
+                            <td>{{ $permission->getRoleNames()->first() }}</td>
                             <td>{{ $permission->guard_name }}</td>
                             <td>{{ $permission->created_at }}</td>
                             <td role="presentation" class="dropdown">

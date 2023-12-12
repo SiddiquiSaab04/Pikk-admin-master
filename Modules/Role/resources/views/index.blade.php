@@ -59,11 +59,17 @@
                             <th scope="">{{ $loop->iteration }}</th>
                             <td>{{ $role->name }}</td>
                             <td>
-                                @foreach($role->permissions->pluck('name') as $name)
-                                <ul>
-                                    <li>{{$name}}</li>
-                                </ul>
-                                @endforeach
+                                <div class="row">
+                                    @foreach ($role->permissions->pluck('name') as $name)
+                                    <div class="col mb-1 bg-light text-dark">
+                                        {{ $name }}
+                                    </div>
+                                    @if ($loop->iteration % 3 === 0)
+                                </div>
+                                <div class="row">
+                                    @endif
+                                    @endforeach
+                                </div>
                             </td>
                             <td>{{ $role->guard_name }}</td>
                             <td>{{ $role->created_at }}</td>

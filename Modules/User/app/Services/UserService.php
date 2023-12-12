@@ -24,19 +24,13 @@ class UserService
         $this->roleService = $roleService;
     }
 
-    public function getAllRole()
+    public function getAllRoles()
     {
-        return $this->roleService->getAll(); 
+        return $this->roleService->getAll();
     }
 
-    public function getRole($user, $name)
+    public function updateRole($name, $user)
     {
-        $role = $this->userRepository->getRole($name);
-        return $this->assignUserRole($user, $role);
-    }
-
-    public function assignUserRole($user, $role)
-    {
-        return $this->userRepository->assignUserRole($user, $role);
+        return $this->userRepository->updateRole($name, $user);
     }
 }

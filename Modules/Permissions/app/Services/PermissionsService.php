@@ -4,8 +4,8 @@ namespace Modules\Permissions\app\Services;
 
 use App\Repositories\CrudRepository;
 use App\Traits\Crud;
+use Modules\Permissions\app\Repositories\PermissionsRepository;
 use Modules\Role\app\Services\RoleService;
-use Modules\User\app\Services\UserService;
 
 class PermissionsService
 {
@@ -13,29 +13,24 @@ class PermissionsService
 
     protected $crudRepository;
     protected $roleService;
-    protected $userService;
+    protected $permissionsRepository;
     protected $model;
 
-    public function __construct(CrudRepository $crudRepository, RoleService $roleService, UserService $userService)
+    public function __construct(CrudRepository $crudRepository, PermissionsRepository $permissionsRepository, RoleService $roleService)
     {
         $this->crudRepository = $crudRepository;
         $this->roleService = $roleService;
-        $this->userService = $userService;
+        $this->permissionsRepository = $permissionsRepository;
         $this->model = "\\Modules\\Permissions\\app\\Models\\Permission";
     }
 
-    public function getAllRole()
+    public function getAllRoles()
     {
         return $this->roleService->getAll();
     }
 
-    public function getRole($user, $name)
+    public function updateRole($name, $permission)
     {
-        return $this->userService->getRole($user, $name);
-    }
-
-    public function getUserById($id)
-    {
-        return $this->userService->getById($id);
+        return $this->permissionsRepository->updateRole($name, $permission);
     }
 }

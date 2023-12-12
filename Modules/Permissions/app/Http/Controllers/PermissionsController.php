@@ -45,7 +45,7 @@ class PermissionsController extends Controller
      */
     public function create()
     {
-        $roles = $this->permissionsService->getAllRole();
+        $roles = $this->permissionsService->getAllRoles();
         return sendResponse(false, 'permissions::create', [
             "roles" => $roles,
             "title" => "Create Permission",
@@ -59,7 +59,7 @@ class PermissionsController extends Controller
     public function store(PermissionsRequest $request): RedirectResponse
     {
         $created = $this->permissionsService->create($request->all());
-        $this->permissionsService->getRole($created, $request['role']);
+        $this->permissionsService->updateRole($request['role'], $created);
 
         return redirect()->route('permissions.index')->withToastSuccess("Permission created successfully.");
     }
@@ -91,7 +91,7 @@ class PermissionsController extends Controller
     public function edit($id)
     {
         $permission = $this->permissionsService->getById($id);
-        $roles = $this->permissionsService->getAllRole();
+        $roles = $this->permissionsService->getAllRoles();
 
         return view('permissions::edit', [
             "permission" => $permission,
@@ -106,11 +106,11 @@ class PermissionsController extends Controller
      */
     public function update(PermissionsRequest $request, $id): RedirectResponse
     {
-        $updated = $this->permissionsService->getUserById($id);
+        $updated = $this->permissionsService->getById($id);
         $this->permissionsService->update($request->all(), $id);
-        $this->permissionsService->getRole($updated, $request['role']);
+        $this->permissionsService->updateRole($request['role'], $updated);
 
-        return redirect()->route('permission.index')->withToastSuccess("Permission updated successfully.");
+        return redirect()->route('permissions.index')->withToastSuccess("Permission updated successfully.");
     }
 
     /**

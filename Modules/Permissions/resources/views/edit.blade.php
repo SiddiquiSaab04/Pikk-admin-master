@@ -18,8 +18,9 @@
             </div>
             <div class="x_content">
                 <br />
-                <form class="form-horizontal form-label-left" action="{{ route('permissions.store') }}" method="post">
+                <form class="form-horizontal form-label-left" action="{{ route('permissions.update', $permission->id) }}" method="post">
                     @csrf
+                    @method('PUT')
                     <div class="form-group row ">
                         <label class="control-label col-md-3 col-sm-3 ">Name</label>
                         <div class="col-md-9 col-sm-9 ">

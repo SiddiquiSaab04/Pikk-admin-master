@@ -43,7 +43,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = $this->userService->getAllRole();
+        $roles = $this->userService->getAllRoles();
         return sendResponse(false, 'user::create', [
             "roles" => $roles,
             "title" => "Create User",
@@ -57,7 +57,7 @@ class UserController extends Controller
     public function store(UserRequest $request): RedirectResponse
     {
         $created = $this->userService->create($request->all());
-        $this->userService->getRole($created, $request['role']);
+        $this->userService->updateRole($request['role'], $created);
 
         return redirect()->route('user.index')->withToastSuccess("User created successfully.");
     }
@@ -88,7 +88,7 @@ class UserController extends Controller
     public function edit($id)
     {
         $user = $this->userService->getById($id);
-        $roles = $this->userService->getAllRole();
+        $roles = $this->userService->getAllRoles();
         return view('user::edit', [
             "user" => $user,
             "roles" => $roles,
@@ -104,7 +104,7 @@ class UserController extends Controller
     {
         $updated = $this->userService->getById($id);
         $this->userService->update($request->all(), $id);
-        $this->userService->getRole($updated, $request['role']);
+        $this->userService->updateRole($request['role'], $updated);
 
         return redirect()->route('user.index')->withToastSuccess("User updated successfully.");
     }
