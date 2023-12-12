@@ -2,13 +2,12 @@
 
 namespace Modules\User\app\Http\Controllers;
 
+use Spatie\Permission\Models\Role;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Modules\User\app\Services\UserService;
-use Exception;
+use Modules\User\app\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -24,19 +23,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->getUsers();
+        $users = $this->userService->getAll();
 
         if (request()->wantsjson()) {
             return sendResponse('user::index', [
                 "users" => $users,
                 "title" => "User List",
-                "description" => "System users list"
+                "description" => "show all system users list"
             ]);
         } else {
             return sendResponse(false, 'user::index', [
                 "users" => $users,
                 "title" => "User List",
-                "description" => "System users list"
+                "description" => "show all system users list"
             ]);
         }
     }
@@ -48,46 +47,39 @@ class UserController extends Controller
     {
         return sendResponse(false, 'user::create', [
             "title" => "Create User",
-            "description" => "Create system user"
+            "description" => "create a new system user"
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(UserRequest $request): RedirectResponse
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                "name" => "required",
-                "email"  => "required|email",
-                "password" => "required",
-                "role" => "required",
-                "status" => "required"
-            ]);
+        $created = $this->userService->create($request->all());
+        $this->userService->getRole($created, $request['role']);
 
-            if ($validator->fails()) {
-                return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
-            }
-
-            $user = $this->userService->createUser($request->all());
-            if ($user["status"] == 1) {
-                return redirect('user')->withToastSuccess($user["success_message"]);
-            } else {
-                throw new Exception($user["error_message"]);
-            }
-
-            return redirect('user');
-        } catch (Exception $e) {
-            session()->flash("alert-error", $e->getMessage());
-            return redirect()->back();
-        }
+        return redirect()->route('user.index')->withToastSuccess("User created successfully.");;
     }
     /**
      * Show the specified resource.
      */
     public function show($id)
     {
+        $user = $this->userService->search($id);
+        if (request()->wantsjson()) {
+            return sendResponse('user::index', [
+                "users" => $user,
+                "title" => "User List",
+                "description" => "show all system users list"
+            ]);
+        } else {
+            return sendResponse(false, 'user::index', [
+                "users" => $user,
+                "title" => "User List",
+                "description" => "show all system users list"
+            ]);
+        }
         return view('user::show');
     }
 
@@ -96,45 +88,24 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
-        $user['role'] = $user->getRoleNames();
-
-        return sendResponse(false, 'user::edit', [
+        $user = $this->userService->getById($id);
+        return view('user::edit', [
             "user" => $user,
-            "title" => "Edit user",
-            "description" => "Edit system user"
+            "title" => "Edit User",
+            "description" => "edit a new system user"
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(UserRequest $request, $id): RedirectResponse
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                "name" => "required",
-                "email"  => "required|email",
-                "role" => "required",
-                "status" => "required"
-            ]);
+        $updated = $this->userService->getById($id);
+        $this->userService->update($request->all(), $id);
+        $this->userService->getRole($updated, $request['role']);
 
-            if ($validator->fails()) {
-                return back()->with('toast_error', $validator->messages()->all()[0])->withInput();
-            }
-
-            $user = $this->userService->updateUser($request->all(), $id);
-            if ($user["status"] == 1) {
-                return redirect('user')->withToastSuccess($user["success_message"]);
-            } else {
-                throw new Exception($user["error_message"]);
-            }
-
-            return redirect('user');
-        } catch (Exception $e) {
-            session()->flash("alert-error", $e->getMessage());
-            return redirect()->back();
-        }
+        return redirect()->route('user.index')->withToastSuccess("User updated successfully.");
     }
 
     /**
@@ -142,6 +113,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->userService->delete($id);
+        return redirect()->route('user.index')->withToastSuccess("User deleted successfully.");
     }
 }

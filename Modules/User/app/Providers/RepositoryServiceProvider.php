@@ -2,6 +2,7 @@
 
 namespace Modules\User\app\Providers;
 
+use App\Repositories\CrudRepository;
 use Illuminate\Support\ServiceProvider;
 use Modules\User\app\Interfaces\UserRepositoryInterface;
 use Modules\User\app\Repositories\UserRepository;
@@ -17,6 +18,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(UserService::class, UserController::class);
         $this->app->bind(UserRepository::class, UserService::class);
+        $this->app->bind(CrudRepository::class, UserService::class);
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
     }
 

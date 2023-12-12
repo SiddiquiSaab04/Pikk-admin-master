@@ -2,59 +2,33 @@
 
 namespace Modules\User\app\Services;
 
-use Spatie\Permission\Models\Role;
+use App\Repositories\CrudRepository;
 use Modules\User\app\Repositories\UserRepository;
-use Exception;
+use App\Traits\Crud;
 
 class UserService
 {
-    private $userRepository;
+    use Crud;
 
-    public function __construct(UserRepository $userRepository)
+    protected $crudRepository;
+    private $userRepository;
+    protected $model;
+
+    public function __construct(CrudRepository $crudRepository, UserRepository $userRepository)
     {
+        $this->model = "\\App\\Models\\User";
+        $this->crudRepository = $crudRepository;
         $this->userRepository = $userRepository;
     }
 
-    public function getUsers()
+    public function getRole($user, $name)
     {
-        return $this->userRepository->getAllusers();
+        $role = $this->userRepository->getRole($name);
+        return $this->assignUserRole($user, $role);
     }
 
-    public function createUser($request)
+    public function assignUserRole($user, $role)
     {
-        try {
-            $user = $this->userRepository->createUser($request);
-            $role = Role::where('name', $request['role'])->first();
-            $user->assignRole($role);
-
-            return [
-                "status" => 1,
-                "success_message" => "User created successfully"
-            ];
-        } catch (Exception $e) {
-            return [
-                "status" => 0,
-                "error_message" => $e->getMessage()
-            ];
-        }
-    }
-
-    public function updateUser($request, $id)
-    {
-        try {
-            $user = $this->userRepository->updateUser($id, $request);
-            $role = Role::where('name', $request['role'])->first();
-            $user->assignRole($role);
-
-            return [
-                "status" => 1,
-                "success_message" => "User updated successfully"
-            ];
-        } catch (Exception $e) {
-            return [
-                "status" => 0,
-                "error_message" => $e->getMessage()
-            ];
-        }
+        return $this->userRepository->assignUserRole($user, $role);
     }
 }
