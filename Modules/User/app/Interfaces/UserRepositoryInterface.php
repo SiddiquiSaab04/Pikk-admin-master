@@ -2,13 +2,9 @@
 
 namespace Modules\User\app\Interfaces;
 
+use App\Models\User;
+
 interface UserRepositoryInterface
 {
-    public function getAllUsers();
-    public function getUserbyId($id);
-    public function deleteUser($id);
-    public function searchUser($slug);
-    public function createUser(array $data);
-    public function updateUser(string $id, array $data);
-    public function getUsersWith(string $relation);
+    public function updateRole(string $name, User $model);
 }

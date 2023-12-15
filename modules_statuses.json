@@ -1,4 +1,6 @@
 {
     "User": true,
-    "Inventory": true
+    "Inventory": true,
+    "Role": true,
+    "Permissions": true
 }

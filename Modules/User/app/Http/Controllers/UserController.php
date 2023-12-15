@@ -4,9 +4,8 @@ namespace Modules\User\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Modules\User\app\Services\UserService;
+use Modules\User\app\Http\Requests\UserRequest;
 
 class UserController extends Controller
 {
@@ -22,19 +21,19 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->getUsers();
+        $users = $this->userService->getAll();
 
-        if(request()->wantsjson()) {
+        if (request()->wantsjson()) {
             return sendResponse('user::index', [
                 "users" => $users,
                 "title" => "User List",
-                "description" => "System users list"
+                "description" => "show all system users list"
             ]);
         } else {
             return sendResponse(false, 'user::index', [
                 "users" => $users,
                 "title" => "User List",
-                "description" => "System users list"
+                "description" => "show all system users list"
             ]);
         }
     }
@@ -44,27 +43,43 @@ class UserController extends Controller
      */
     public function create()
     {
+        $roles = $this->userService->getAllRoles();
         return sendResponse(false, 'user::create', [
+            "roles" => $roles,
             "title" => "Create User",
-            "description" => "Create system user"
+            "description" => "create a new system user"
         ]);
- 
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(UserRequest $request): RedirectResponse
     {
-        //
-    }
+        $created = $this->userService->create($request->all());
+        $this->userService->updateRole($request['role'], $created);
 
+        return redirect()->route('user.index')->withToastSuccess("User created successfully.");
+    }
     /**
      * Show the specified resource.
      */
     public function show($id)
     {
-        return view('user::show');
+        $user = $this->userService->search($id);
+        if (request()->wantsjson()) {
+            return sendResponse('user::index', [
+                "users" => $user,
+                "title" => "User List",
+                "description" => "show all system users list"
+            ]);
+        } else {
+            return sendResponse(false, 'user::index', [
+                "users" => $user,
+                "title" => "User List",
+                "description" => "show all system users list"
+            ]);
+        }
     }
 
     /**
@@ -72,15 +87,26 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('user::edit');
+        $user = $this->userService->getById($id);
+        $roles = $this->userService->getAllRoles();
+        return view('user::edit', [
+            "user" => $user,
+            "roles" => $roles,
+            "title" => "Edit User",
+            "description" => "edit a new system user"
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(UserRequest $request, $id): RedirectResponse
     {
-        //
+        $updated = $this->userService->getById($id);
+        $this->userService->update($request->all(), $id);
+        $this->userService->updateRole($request['role'], $updated);
+
+        return redirect()->route('user.index')->withToastSuccess("User updated successfully.");
     }
 
     /**
@@ -88,6 +114,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->userService->delete($id);
+        return redirect()->route('user.index')->withToastSuccess("User deleted successfully.");
     }
 }
