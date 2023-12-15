@@ -3,6 +3,7 @@
 namespace Modules\Inventory\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -54,9 +55,13 @@ class AddonGroupController extends Controller
      */
     public function store(AddonGroupRequest $request): RedirectResponse
     {
-        $data = $request->all();
-        $created = $this->addonGroupService->create($data);
-        return redirect()->route('addonGroup.index');
+        try {
+            $data = $request->all();
+            $created = $this->addonGroupService->create($data);
+            return redirect()->route('addonGroup.index')->withToastSuccess("Addon group created successfully.");;
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -98,9 +103,13 @@ class AddonGroupController extends Controller
      */
     public function update(AddonGroupRequest $request, $id): RedirectResponse
     {
-        $data = $request->all();
-        $updated = $this->addonGroupService->update($data, $id);
-        return redirect()->route('addonGroup.index');
+        try {
+            $data = $request->all();
+            $updated = $this->addonGroupService->update($data, $id);
+            return redirect()->route('addonGroup.index')->withToastSuccess("Addon group updated successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -108,7 +117,11 @@ class AddonGroupController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->addonGroupService->delete($id);
-        return redirect()->route('addonGroup.index');
+        try {
+            $deleted = $this->addonGroupService->delete($id);
+            return redirect()->route('addonGroup.index')->withToastSuccess("Addon group deleted successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 }

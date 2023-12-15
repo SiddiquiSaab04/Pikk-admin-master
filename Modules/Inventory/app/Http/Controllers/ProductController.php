@@ -3,6 +3,7 @@
 namespace Modules\Inventory\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -65,9 +66,13 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request): RedirectResponse
     {
-        $data = $request->all();
-        $created = $this->productService->createProduct($data);
-        return redirect()->route('product.index');
+        try {
+            $data = $request->all();
+            $created = $this->productService->createProduct($data);
+            return redirect()->route('product.index')->withToastSuccess("Product created successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -115,9 +120,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        $data = $request->all();
-        $updated = $this->productService->updateProduct($data, $id);
-        return redirect()->route('product.index');
+        try {
+            $data = $request->all();
+            $updated = $this->productService->updateProduct($data, $id);
+            return redirect()->route('product.index')->withToastSuccess("Product updated successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -125,7 +134,11 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->productService->delete($id);
-        return redirect()->route('product.index');
+        try {
+            $deleted = $this->productService->delete($id);
+            return redirect()->route('product.index')->withToastSuccess("Product deleted successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 }

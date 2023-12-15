@@ -3,6 +3,7 @@
 namespace Modules\Permissions\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Modules\Permissions\app\Http\Requests\PermissionsRequest;
 use Modules\Permissions\app\Services\PermissionsService;
@@ -58,10 +59,14 @@ class PermissionsController extends Controller
      */
     public function store(PermissionsRequest $request): RedirectResponse
     {
-        $created = $this->permissionsService->create($request->all());
-        $this->permissionsService->updateRole($request['role'], $created);
+        try {
+            $created = $this->permissionsService->create($request->all());
+            $this->permissionsService->updateRole($request['role'], $created);
 
-        return redirect()->route('permissions.index')->withToastSuccess("Permission created successfully.");
+            return redirect()->route('permissions.index')->withToastSuccess("Permission created successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -106,11 +111,15 @@ class PermissionsController extends Controller
      */
     public function update(PermissionsRequest $request, $id): RedirectResponse
     {
-        $updated = $this->permissionsService->getById($id);
-        $this->permissionsService->update($request->all(), $id);
-        $this->permissionsService->updateRole($request['role'], $updated);
+        try {
+            $updated = $this->permissionsService->getById($id);
+            $this->permissionsService->update($request->all(), $id);
+            $this->permissionsService->updateRole($request['role'], $updated);
 
-        return redirect()->route('permissions.index')->withToastSuccess("Permission updated successfully.");
+            return redirect()->route('permissions.index')->withToastSuccess("Permission updated successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -118,7 +127,11 @@ class PermissionsController extends Controller
      */
     public function destroy($id)
     {
-        $this->permissionsService->delete($id);
-        return redirect()->route('permissions.index')->withToastSuccess("Permission deleted successfully.");
+        try {
+            $this->permissionsService->delete($id);
+            return redirect()->route('permissions.index')->withToastSuccess("Permission deleted successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 }

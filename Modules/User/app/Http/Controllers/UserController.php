@@ -3,6 +3,7 @@
 namespace Modules\User\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Modules\User\app\Services\UserService;
 use Modules\User\app\Http\Requests\UserRequest;
@@ -56,10 +57,14 @@ class UserController extends Controller
      */
     public function store(UserRequest $request): RedirectResponse
     {
-        $created = $this->userService->create($request->all());
-        $this->userService->updateRole($request['role'], $created);
+        try {
+            $created = $this->userService->create($request->all());
+            $this->userService->updateRole($request['role'], $created);
 
-        return redirect()->route('user.index')->withToastSuccess("User created successfully.");
+            return redirect()->route('user.index')->withToastSuccess("User created successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
     /**
      * Show the specified resource.
@@ -102,11 +107,15 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id): RedirectResponse
     {
-        $updated = $this->userService->getById($id);
-        $this->userService->update($request->all(), $id);
-        $this->userService->updateRole($request['role'], $updated);
+        try {
+            $updated = $this->userService->getById($id);
+            $this->userService->update($request->all(), $id);
+            $this->userService->updateRole($request['role'], $updated);
 
-        return redirect()->route('user.index')->withToastSuccess("User updated successfully.");
+            return redirect()->route('user.index')->withToastSuccess("User updated successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -114,7 +123,11 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $this->userService->delete($id);
-        return redirect()->route('user.index')->withToastSuccess("User deleted successfully.");
+        try {
+            $this->userService->delete($id);
+            return redirect()->route('user.index')->withToastSuccess("User deleted successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 }

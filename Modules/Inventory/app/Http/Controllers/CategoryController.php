@@ -3,6 +3,7 @@
 namespace Modules\Inventory\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -23,6 +24,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->categoryService->getAll();
+
         if(request()->wantsjson()) {
             return sendResponse('inventory::category.index', [
                 "categories" => $categories,
@@ -55,8 +57,12 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request): RedirectResponse
     {
         $data = $request->all();
-        $created = $this->categoryService->create($data);
-        return redirect()->route('category.index');
+        try {
+            $created = $this->categoryService->create($data);
+            return redirect()->route('category.index')->withToastSuccess("Category created successfully.");
+        } catch(Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -98,9 +104,13 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, $id): RedirectResponse
     {
-        $data = $request->all();
-        $updated = $this->categoryService->update($data, $id);
-        return redirect()->route('category.index');
+        try {
+            $data = $request->all();
+            $updated = $this->categoryService->update($data, $id);
+            return redirect()->route('category.index')->withToastSuccess("Category updated successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -108,7 +118,11 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $deleted = $this->categoryService->delete($id);
-        return redirect()->route('category.index');
+        try {
+            $deleted = $this->categoryService->delete($id);
+            return redirect()->route('category.index')->withToastSuccess("category deleted successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 }

@@ -3,6 +3,7 @@
 namespace Modules\Role\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Modules\Role\app\Http\Requests\RoleRequest;
 use Modules\Role\app\Services\RoleService;
@@ -54,8 +55,12 @@ class RoleController extends Controller
      */
     public function store(RoleRequest $request): RedirectResponse
     {
-        $this->roleService->create($request->all());
-        return redirect()->route('role.index')->withToastSuccess("Role created successfully.");
+        try {
+            $this->roleService->create($request->all());
+            return redirect()->route('role.index')->withToastSuccess("Role created successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -97,8 +102,12 @@ class RoleController extends Controller
      */
     public function update(RoleRequest $request, $id): RedirectResponse
     {
-        $this->roleService->update($request->all(), $id);
-        return redirect()->route('role.index')->withToastSuccess("Role updated successfully.");
+        try {
+            $this->roleService->update($request->all(), $id);
+            return redirect()->route('role.index')->withToastSuccess("Role updated successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -106,7 +115,11 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        $this->roleService->delete($id);
-        return redirect()->route('role.index')->withToastSuccess("Role deleted successfully.");
+        try {
+            $this->roleService->delete($id);
+            return redirect()->route('role.index')->withToastSuccess("Role deleted successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 }
