@@ -3,5 +3,6 @@
     "Inventory": true,
     "Role": true,
     "Permissions": true,
-    "Branch": true
+    "Branch": true,
+    "Order": true
 }
