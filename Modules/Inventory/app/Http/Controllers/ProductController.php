@@ -77,13 +77,13 @@ class ProductController extends Controller
     {
         $product = $this->productService->search($id);
         if(request()->wantsjson()) {
-            return sendResponse('inventory::product.index', [
+            return sendResponse('inventory::products.index', [
                 "product" => $product,
                 "title" => "Products List",
                 "description" => "show all products listing"
             ]);
         } else {
-            return sendResponse(false, 'inventory::product.index', [
+            return sendResponse(false, 'inventory::products.index', [
                 "product" => $product,
                 "title" => "Products List",
                 "description" => "show all products listing"
@@ -96,9 +96,15 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $addonGroup = $this->productService->getById($id);
-        return view('inventory::product.edit', [
-            "addonGroup" => $addonGroup,
+        $product = $this->productService->getById($id);
+        $product->load('category', 'addons.modifier', 'addons.addonProducts.product');
+        $categories = $this->productService->getCategories();
+        $addons = $this->productService->getAddons();
+
+        return view('inventory::products.edit', [
+            "product" => $product,
+            'categories' => $categories,
+            'addons' => $addons,
             "title" => "Edit product",
             "description" => "edit a product"
         ]);
@@ -110,7 +116,7 @@ class ProductController extends Controller
     public function update(Request $request, $id): RedirectResponse
     {
         $data = $request->all();
-        $updated = $this->productService->update($data, $id);
+        $updated = $this->productService->updateProduct($data, $id);
         return redirect()->route('product.index');
     }
 

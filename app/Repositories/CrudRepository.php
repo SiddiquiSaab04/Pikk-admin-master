@@ -61,4 +61,9 @@ class CrudRepository implements CrudInterface
     {
         return (new $model)->getFillable();
     }
+
+    public function refresh($model)
+    {
+        return $model->refresh();
+    }
 }

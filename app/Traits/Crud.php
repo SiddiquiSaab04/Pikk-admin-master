@@ -42,4 +42,9 @@ trait Crud
     {
         return $this->crudRepository->load($collection,$relationships);
     }
+
+    public function refresh($model)
+    {
+        return $this->crudRepository->refresh($model);
+    }
 }

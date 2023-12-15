@@ -130,7 +130,7 @@
 
 <script>
 export default {
-  props: ["addons"],
+  props: ["addons", "product"],
   data() {
     return {
       selectedAddons: [],
@@ -140,6 +140,19 @@ export default {
     };
   },
   mounted() {
+    if(Object.keys(this.product).length > 0) {
+        this.product.addons = this.product.addons.map((addon) => {
+            addon.products = addon.addon_products.map((product) => {
+                product.is_selected = 1;
+                product.name = product.product.name
+                return product;
+            })
+            addon.name = addon.modifier.name
+            return addon
+        })
+        this.selectedAddons = this.product.addons
+    }
+
     this.allAddons = this.addons;
     this.allAddons.map((addon) => {
       addon.products.map((product) => {
