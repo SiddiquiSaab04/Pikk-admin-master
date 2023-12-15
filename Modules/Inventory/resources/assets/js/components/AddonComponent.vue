@@ -148,6 +148,7 @@ export default {
                 return product;
             })
             addon.name = addon.modifier.name
+            addon.id = addon.modifier_id
             return addon
         })
         this.selectedAddons = this.product.addons
