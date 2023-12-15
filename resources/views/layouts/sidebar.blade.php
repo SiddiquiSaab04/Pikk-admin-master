@@ -28,7 +28,7 @@
                 <ul class="nav child_menu">
                     <li><a href="{{ route('category.index') }}">Categories</a></li>
                     <li><a href="{{ route('product.index') }}">Products</a></li>
-                    <li><a href="{{ route('addonGroup.index') }}">Modifier Groups</a></li>
+                    <li><a href="{{ route('addonGroup.index') }}">Addon Groups</a></li>
                 </ul>
             </li>
             <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>

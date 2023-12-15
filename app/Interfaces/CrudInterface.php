@@ -1,11 +1,11 @@
 <?php
 
 namespace App\Interfaces;
-use Illuminate\Database\Eloquent\Model;
-
 interface CrudInterface
 {
     public function getAll(string $model);
+    public function getAllWithoutPagination(string $model);
+    public function load($collection, $relationships);
     public function getById(string $model, string $id);
     public function delete(string $model, $id);
     public function search(string $model, string $slug);

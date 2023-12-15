@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Inventory\app\Http\Controllers\ProductController;
 
 /*
     |--------------------------------------------------------------------------
@@ -14,6 +15,6 @@ use Illuminate\Support\Facades\Route;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('inventory', fn (Request $request) => $request->user())->name('inventory');
+Route::prefix('v1')->name('api.')->group(function () {
+    Route::get('/product/index', [ProductController::class, 'index']);
 });

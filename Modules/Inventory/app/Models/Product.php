@@ -24,11 +24,22 @@ class Product extends Model
         "stock_checking",
         "sort_order",
         "status",
-        "category_id"
+        "category_id",
+        "addon_group_id"
     ];
 
     public function category()
     {
-        return $this->hasOne(Category::class);
+        return $this->belongsTo(Category::class);
+    }
+
+    public function addons()
+    {
+        return $this->hasMany(ProductModifier::class);
+    }
+
+    public function addonProducts()
+    {
+        return $this->hasManyThrough(ProductModifiersAddon::class, ProductModifier::class);
     }
 }

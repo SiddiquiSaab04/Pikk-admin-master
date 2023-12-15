@@ -2,14 +2,20 @@
 
 namespace Modules\Inventory\app\Services;
 
+use App\Repositories\CrudRepository;
+use App\Traits\Crud;
 use Modules\Inventory\app\Repositories\AddonGroupRepository;
 
 class AddonGroupService
 {
-    private $addonGroupRepository;
+    use Crud;
 
-    public function __construct(AddonGroupRepository $addonGroupRepository)
+    private $crudRepository;
+    private $model;
+
+    public function __construct(CrudRepository $crudRepository)
     {
-        $this->addonGroupRepository = $addonGroupRepository;
+        $this->crudRepository = $crudRepository;
+        $this->model = "\\Modules\\Inventory\\app\\Models\\AddonGroup";
     }
 }

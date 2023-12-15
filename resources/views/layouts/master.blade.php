@@ -15,7 +15,7 @@
     <link href="{{ asset('vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}" rel="stylesheet">
 
-    <link href="{{ asset('build/css/custom.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/custom.min.css') }}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 </head>
@@ -39,7 +39,7 @@
             @include('layouts.footer')
         </div>
     </div>
-
+    @stack('var_scripts')
     <script src="{{ asset('vendors/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('vendors/fastclick/lib/fastclick.js') }}"></script>
@@ -62,8 +62,10 @@
     <script src="{{ asset('vendors/DateJS/build/date.js') }}"></script>
     <script src="{{ asset('vendors/moment/min/moment.min.js') }}"></script>
     <script src="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js') }}"></script>
+    <script src="{{ asset('js/custom.min.js') }}"></script>
+    @vite('resources/js/app.js')
 
-    <script src="{{ asset('build/js/custom.min.js') }}"></script>
     @stack('scripts')
 </body>
 

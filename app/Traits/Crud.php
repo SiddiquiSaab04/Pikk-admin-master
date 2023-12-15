@@ -1,10 +1,8 @@
 <?php
 
 namespace App\Traits;
-
 trait Crud
 {
-
     public function getAll()
     {
         return $this->crudRepository->getAll($this->model);
@@ -33,5 +31,15 @@ trait Crud
     public function search($slug)
     {
         return $this->crudRepository->search($this->model, $slug);
+    }
+
+    public function getAllWithoutPagination()
+    {
+        return $this->crudRepository->getAllWithoutPagination($this->model);
+    }
+
+    public function load($collection, $relationships)
+    {
+        return $this->crudRepository->load($collection,$relationships);
     }
 }

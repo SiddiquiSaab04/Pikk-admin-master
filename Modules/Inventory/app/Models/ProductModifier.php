@@ -18,4 +18,14 @@ class ProductModifier extends Model
         "modifier_id",
         "max_selection"
     ];
+
+    public function addonProducts()
+    {
+        return $this->hasMany(ProductModifiersAddon::class);
+    }
+
+    public function modifier()
+    {
+        return $this->hasOne(AddonGroup::class, 'id', 'modifier_id');
+    }
 }

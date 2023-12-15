@@ -3,7 +3,6 @@
 namespace Modules\Inventory\app\Services;
 
 use App\Repositories\CrudRepository;
-use Modules\Inventory\app\Repositories\CategoryRepository;
 use App\Traits\Crud;
 
 class CategoryService

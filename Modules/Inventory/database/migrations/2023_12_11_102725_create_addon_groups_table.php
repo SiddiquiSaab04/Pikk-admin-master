@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string("name");
             $table->longText("description");
-            $table->tinyInteger("nultiselect")->default(1);
+            $table->tinyInteger("multiselect")->default(1);
             $table->tinyInteger("status")->default(1);
             $table->timestamps();
         });

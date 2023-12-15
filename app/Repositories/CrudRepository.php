@@ -11,6 +11,17 @@ class CrudRepository implements CrudInterface
         return $model::orderByDesc('id')->paginate(20);
     }
 
+    public function load($collection, $relationships)
+    {
+        $collection->load($relationships);
+        return $collection;
+    }
+
+    public function getAllWithoutPagination($model)
+    {
+        return $model::get();
+    }
+
     public function getById($model, $id)
     {
         return $model::find($id);
@@ -26,7 +37,7 @@ class CrudRepository implements CrudInterface
         $columns = $this->getModelFillable($model);
         return $model::where(function($query) use ($columns, $slug){
             foreach($columns as $column) {
-                $query->orWhere($column, $slug);
+                $query->orWhere($column, 'LIKE', "%$slug%");
             }
         })->paginate(20);
     }

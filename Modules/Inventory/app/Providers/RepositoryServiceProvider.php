@@ -44,35 +44,32 @@ class RepositoryServiceProvider extends ServiceProvider
          */
         $this->app->bind(AddonGroupService::class, AddonGroupController::class);
         $this->app->bind(AddonGroupRepository::class, AddonGroupService::class);
-        $this->app->bind(AddonGroupRepositoryInterface::class, AddonGroupRepository::class);
+        $this->app->bind(CrudInterface::class, CrudRepository::class);
 
         /**
          * Products Injections
          */
         $this->app->bind(ProductService::class, ProductController::class);
         $this->app->bind(ProductRepository::class, ProductService::class);
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
-
-        /**
-         * Product Injections
-         */
-        $this->app->bind(ProductService::class, ProductController::class);
-        $this->app->bind(ProductRepository::class, ProductService::class);
-        $this->app->bind(ProductRepositoryInterface::class, ProductRepository::class);
+        $this->app->bind(CategoryService::class, ProductService::class);
+        $this->app->bind(AddonGroupService::class, ProductService::class);
+        $this->app->bind(ProductModifierService::class, ProductService::class);
+        $this->app->bind(ProductModifiersAddonService::class, ProductService::class);
+        $this->app->bind(CrudInterface::class, CrudRepository::class);
 
         /**
          * Product Modifiers Injections
          */
         $this->app->bind(ProductModifierService::class, ProductModifierController::class);
         $this->app->bind(ProductModifierRepository::class, ProductModifierService::class);
-        $this->app->bind(ProductModifierRepositoryInterface::class, ProductModifierRepository::class);
+        $this->app->bind(CrudInterface::class, CrudRepository::class);
 
         /**
          * Product Modifiers Addons Injections
          */
         $this->app->bind(ProductModifiersAddonService::class, ProductModifiersAddonController::class);
         $this->app->bind(ProductModifiersAddonsRepository::class, ProductModifiersAddonService::class);
-        $this->app->bind(ProductModifierRepositoryInterface::class, ProductModifiersAddonsRepository::class);
+        $this->app->bind(CrudInterface::class, CrudRepository::class);
 
 
     }

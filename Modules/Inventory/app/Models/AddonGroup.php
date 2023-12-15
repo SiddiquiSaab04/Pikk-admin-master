@@ -19,4 +19,9 @@ class AddonGroup extends Model
         "multiselect",
         "status"
     ];
+
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

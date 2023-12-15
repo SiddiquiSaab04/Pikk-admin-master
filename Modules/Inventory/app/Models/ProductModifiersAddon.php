@@ -14,8 +14,13 @@ class ProductModifiersAddon extends Model
      * The attributes that are mass assignable.
      */
     protected $fillable = [
-        "product_modifiers_id",
+        "product_modifier_id",
         "product_id",
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class);
+    }
 
 }

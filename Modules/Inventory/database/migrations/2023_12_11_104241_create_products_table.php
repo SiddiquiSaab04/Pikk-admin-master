@@ -25,6 +25,8 @@ return new class extends Migration
             $table->tinyInteger("status")->default(1);
             $table->unsignedBigInteger('category_id');
             $table->foreign("category_id")->references("id")->on("categories");
+            $table->unsignedBigInteger('addon_group_id');
+            $table->foreign("addon_group_id")->references("id")->on("addon_groups");
             $table->timestamps();
         });
     }
