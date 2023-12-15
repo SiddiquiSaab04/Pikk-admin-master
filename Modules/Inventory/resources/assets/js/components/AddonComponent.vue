@@ -1,9 +1,5 @@
 <template >
   <div class="row">
-    <div class="col-sm-12 mb-4">
-      <h4 class="p-4 text-center border-1">Addons</h4>
-    </div>
-
     <div class="col-sm-4">
       <p class="mb-0">
         <label for="addon_group_id">Addon Groups</label>
@@ -16,7 +12,7 @@
       </select>
       <span class="mt-1">
         <p class="mt-1">
-          Enter addon group for the product. Product will be saved as an addon
+          Enter addon group for the product.
         </p>
       </span>
     </div>
@@ -41,7 +37,7 @@
       <span class="mt-1">
         <p class="mt-1">Select products which you want to add as modifiers</p>
       </span>
-      <div class="checkboxes" >
+      <div class="checkboxes">
         <div class="form-inline row">
           <label class="reverse selectAll">
             Select All
@@ -75,7 +71,9 @@
         class="pull-right col-sm-2 d-flex justify-center align-items-center"
         id="addon_button"
       >
-        <button class="btn btn-info w-100" type="button" @click="addToForm">Add</button>
+        <button class="btn btn-info w-100" type="button" @click="addToForm">
+          Add
+        </button>
       </div>
     </div>
 
@@ -102,26 +100,34 @@
               </tr>
             </thead>
             <tbody id="addonBody">
-                <tr v-for="(addon, key) in selectedAddons" :key="key">
-                    <td>{{ key + 1 }}</td>
-                    <td>{{ addon.name }}</td>
-                    <td>{{ addon.max_selection }}</td>
-                    <td>
-                        <ul>
-                            <li v-for="(product, index) in addon.products" :key="index" v-show="product.is_selected == 1">
-                                {{ product.name }}
-                            </li>
-                        </ul>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="deleteEntry(addon.id)">
-                            <i class="fa fa-trash-o text-danger text-lg"></i>
-                        </a>
-                    </td>
-                </tr>
+              <tr v-for="(addon, key) in selectedAddons" :key="key">
+                <td>{{ key + 1 }}</td>
+                <td>{{ addon.name }}</td>
+                <td>{{ addon.max_selection }}</td>
+                <td>
+                  <ul>
+                    <li
+                      v-for="(product, index) in addon.products"
+                      :key="index"
+                      v-show="product.is_selected == 1"
+                    >
+                      {{ product.name }}
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <a href="javascript:void(0)" @click="deleteEntry(addon.id)">
+                    <i class="fa fa-trash-o text-danger text-lg"></i>
+                  </a>
+                </td>
+              </tr>
             </tbody>
           </table>
-          <input type="hidden" name="addons" :value="JSON.stringify(selectedAddons)">
+          <input
+            type="hidden"
+            name="addons"
+            :value="JSON.stringify(selectedAddons)"
+          />
         </div>
       </div>
     </div>
@@ -140,18 +146,18 @@ export default {
     };
   },
   mounted() {
-    if(Object.keys(this.product).length > 0) {
-        this.product.addons = this.product.addons.map((addon) => {
-            addon.products = addon.addon_products.map((product) => {
-                product.is_selected = 1;
-                product.name = product.product.name
-                return product;
-            })
-            addon.name = addon.modifier.name
-            addon.id = addon.modifier_id
-            return addon
-        })
-        this.selectedAddons = this.product.addons
+    if (Object.keys(this.product).length > 0) {
+      this.product.addons = this.product.addons.map((addon) => {
+        addon.products = addon.addon_products.map((product) => {
+          product.is_selected = 1;
+          product.name = product.product.name;
+          return product;
+        });
+        addon.name = addon.modifier.name;
+        addon.id = addon.modifier_id;
+        return addon;
+      });
+      this.selectedAddons = this.product.addons;
     }
 
     this.allAddons = this.addons;
@@ -165,37 +171,45 @@ export default {
   },
   methods: {
     checkAll() {
-        this.selectedAddon.products = this.selectedAddon.products.map((product) => {
-            product.is_selected = product.is_selected == 1 ? 0 : 1;
-            return product
-        })
+      this.selectedAddon.products = this.selectedAddon.products.map(
+        (product) => {
+          product.is_selected = product.is_selected == 1 ? 0 : 1;
+          return product;
+        }
+      );
     },
     check(id) {
-        this.selectedAddon.products = this.selectedAddon.products.map((product) => {
-            if(product.id == id) {
-                product.is_selected = product.is_selected == 1 ? 0 : 1;
-            }
+      this.selectedAddon.products = this.selectedAddon.products.map(
+        (product) => {
+          if (product.id == id) {
+            product.is_selected = product.is_selected == 1 ? 0 : 1;
+          }
 
-            return product;
-        })
+          return product;
+        }
+      );
     },
     addToForm() {
-        this.selectedAddon.max_selection = this.max_selection;
-        if (this.selectedAddons.find((addon) => addon.id == this.selectedAddon.id)) {
-            this.selectedAddons.map((add) => {
-                if (this.selectedAddon.id == add.id) {
-                    add.products = this.selectedAddon.products;
-                    add.max_selection = this.selectedAddon.max_selection
-                }
-                return add
-            })
-        } else {
-            this.selectedAddons.push(this.selectedAddon)
-        }
+      this.selectedAddon.max_selection = this.max_selection;
+      if (
+        this.selectedAddons.find((addon) => addon.id == this.selectedAddon.id)
+      ) {
+        this.selectedAddons.map((add) => {
+          if (this.selectedAddon.id == add.id) {
+            add.products = this.selectedAddon.products;
+            add.max_selection = this.selectedAddon.max_selection;
+          }
+          return add;
+        });
+      } else {
+        this.selectedAddons.push(this.selectedAddon);
+      }
     },
     deleteEntry(id) {
-        this.selectedAddons = this.selectedAddons.filter((addon) => addon.id != id)
-    }
+      this.selectedAddons = this.selectedAddons.filter(
+        (addon) => addon.id != id
+      );
+    },
   },
 };
 </script>
