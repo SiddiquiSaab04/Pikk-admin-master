@@ -2,5 +2,6 @@
     "User": true,
     "Inventory": true,
     "Role": true,
-    "Permissions": true
+    "Permissions": true,
+    "Branch": true
 }
