@@ -20,6 +20,7 @@
                 <br />
                 <form class="form-horizontal form-label-left" action="{{ route('media.store') }}" method="post" enctype="multipart/form-data">
                     @csrf
+                    <input type="hidden" name="cloud" id="cloud">
                     <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-3 ">Name</label>
                         <div class="col-md-9 col-sm-9 ">
@@ -29,16 +30,17 @@
                     <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-3">Cloud</label>
                         <div class="col-md-9 col-sm-9">
-                            <div class="">
-                                <label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="cloud" name="cloud">
-                                        <label class="custom-control-label" for="cloud"></label>
-                                    </div>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-success">
+                                    <input type="radio" name="cloud" value="1"> Yes
+                                </label>
+                                <label class="btn btn-danger active">
+                                    <input type="radio" name="cloud" value="0" checked> No
                                 </label>
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-3 ">Upload medias</label>
                         <div class="col-md-9 col-sm-9">

@@ -41,49 +41,28 @@
                 </ul>
                 <div class="clearfix"></div>
             </div>
-            <div class="x_content">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>#</th>
-                            <th>Name</th>
-                            <th>URL</th>
-                            <th>Cloud Path</th>
-                            <th>Created At</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($medias as $media)
-                        <tr>
-                            <th scope="">{{ $loop->iteration }}</th>
-                            <td>{{ $media->name }}</td>
-                            <td>
-                                @foreach(json_decode($media->url) as $url)
-                                <img src="{{ $url }}" class="m-1" width="200" height="300">
-                                @endforeach
-                            </td>
-                            <td>{{ $media->cloud ? 'True' : 'False' }}</td>
-                            <td>{{ $media->created_at }}</td>
-                            <td role="presentation" class="dropdown">
-                                <a id="drop5" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
-                                    Options
-                                    <span class="caret"></span>
+            <div class="row">
+                @foreach($medias as $media)
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card">
+                        <img src="{{ $media->url }}" class="card-img-top p-1" alt="Image">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ $media->name }}</h5>
+                            <div class="tools tools-bottom float-right">
+                                <a href="{{ $media->url }}"><i class="fa fa-link"></i></a>
+                                <a href="{{ route('media.edit', $media->id) }}"><i class="fa fa-pencil"></i></a>
+                                <a onclick="event.preventDefault(); document.getElementById('delete-{{ $media->id }}').submit()">
+                                    <i class="fa fa-times"></i>
                                 </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                    <a class="dropdown-item" href="{{ route('media.edit', $media->id) }}">Edit</a>
-                                    <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete').submit()">Delete</a>
-                                    <form id="delete" action="{{ route('media.destroy', $media->id) }}" method="post">
-                                        @csrf
-                                        @method("DELETE")
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                {{ $medias->links() }}
+                                <form id="delete-{{ $media->id }}" action="{{ route('media.destroy', $media->id) }}" method="post">
+                                    @csrf
+                                    @method("DELETE")
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
             </div>
         </div>
     </div>

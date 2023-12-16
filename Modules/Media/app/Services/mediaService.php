@@ -6,7 +6,7 @@ use App\Repositories\CrudRepository;
 use App\Traits\Crud;
 use Modules\Media\app\Repositories\MediaRepository;
 
-class mediaService
+class MediaService
 {
     use Crud;
 
@@ -20,18 +20,30 @@ class mediaService
         $this->crudRepository = $crudRepository;
         $this->mediaRepository = $mediaRepository;
     }
+    public function create($created)
+    {
+        foreach (json_decode($created['url'], true) as $create) {
+            $this->crudRepository->create($this->model, [
+                'name' => $created['name'],
+                'cloud' => $created['cloud'],
+                'url' => $create,
+            ]);
+        }
+    }
 
     public function createLocalMedia($request)
     {
         return $this->mediaRepository->createLocalMedia($request);
     }
+
     public function updateLocalMedia($media, $request)
     {
         return $this->mediaRepository->updateLocalMedia($media, $request);
     }
-    public function deleteLocalMedia($urls)
+
+    public function deleteLocalMedia($url)
     {
-        return $this->mediaRepository->deleteLocalMedia($urls);
+        return $this->mediaRepository->deleteLocalMedia($url);
     }
 
     public function createCloudMedia()

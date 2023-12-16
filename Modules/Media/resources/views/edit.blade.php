@@ -27,19 +27,19 @@
                             <input type="text" name="name" class="form-control" value="{{$media->name}}" required>
                         </div>
                     </div>
-                    <div class="form-group row">
+                    <!-- <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-3">Cloud</label>
                         <div class="col-md-9 col-sm-9">
-                            <div class="">
-                                <label>
-                                    <div class="custom-control custom-switch">
-                                        <input type="checkbox" class="custom-control-input" id="cloud" name="cloud" disabled {{ $media->cloud ? 'checked' : '' }}>
-                                        <label class="custom-control-label" for="cloud"></label>
-                                    </div>
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn btn-success {{ $media->cloud == 1 ? 'active' : '' }}">
+                                    <input type="radio" name="cloud" value="1" {{ $media->cloud == 1 ? 'checked' : '' }}> Yes
+                                </label>
+                                <label class="btn btn-danger {{ $media->cloud == 0 ? 'active' : '' }}">
+                                    <input type="radio" name="cloud" value="0" {{ $media->cloud == 0 ? 'checked' : '' }}> No
                                 </label>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-3">Upload medias</label>
                         <div class="col-md-9 col-sm-9">
@@ -50,7 +50,7 @@
                                         <div class="col-md-12 col-sm-12">
                                             <p>Drag multiple files to the box below for multi-upload or click to select files.</p>
                                             <div class="images @error('images') is-invalid @enderror" style="cursor: pointer;">
-                                                <input type="hidden" name="images[]" id="images" multiple/>
+                                                <input type="hidden" name="images[]" id="images"/>
                                             </div>
                                             @error('images')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -76,30 +76,14 @@
 
 @push('scripts')
 <script>
-    let preloaded = [];
-
-    @if(is_string($media->url))
-    @php
-        $images = json_decode($media->url);
-    @endphp
-    @elseif(is_array($media->url))
-    @php 
-        $images = $media->url;
-    @endphp
-    @endif
-
-    @foreach($images as $image)
-        preloaded.push({
-            id: '{{ $image }}',
-            src: '{{ $image }}'
-        });
-    @endforeach
-
     $('.images').imageUploader({
-        extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.PNG'],
-        preloaded: preloaded,
+        extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg', 'PNG'],
+        maxFiles: 1, 
+        preloaded: [{
+            id: '{{ $media->url }}',
+            src: '{{ $media->url }}'
+        }],
         preloadedInputName: 'oldImages'
     });
 </script>
-
 @endpush

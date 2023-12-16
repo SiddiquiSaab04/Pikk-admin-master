@@ -5,13 +5,13 @@ namespace Modules\Media\app\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Modules\Media\app\Http\Requests\MediaRequest;
-use Modules\Media\app\Services\mediaService;
+use Modules\Media\app\Services\MediaService;
 
 class MediaController extends Controller
 {
     private $mediaService;
 
-    public function __construct(mediaService $mediaService)
+    public function __construct(MediaService $mediaService)
     {
         $this->mediaService = $mediaService;
     }
@@ -55,14 +55,11 @@ class MediaController extends Controller
     public function store(MediaRequest $request): RedirectResponse
     {
         $isCloud = boolval($request->input('cloud'));
-        if (!$isCloud) {
-            $created = $this->mediaService->createLocalMedia($request->all());
-            $this->mediaService->create($created);
-        } else {
-            dd('AWS credentials required');
-            $this->mediaService->createCloudMedia();
-        }
+        $created = !$isCloud
+            ? $this->mediaService->createLocalMedia($request->all())
+            : $this->mediaService->createCloudMedia();
 
+        $this->mediaService->create($created);
         return redirect()->route('media.index')->withToastSuccess("Media created successfully.");
     }
 
@@ -106,7 +103,10 @@ class MediaController extends Controller
     public function update(MediaRequest $request, $id): RedirectResponse
     {
         $media = $this->mediaService->getById($id);
-        !$media->cloud ? $this->mediaService->updateLocalMedia($media, $request) : $this->mediaService->updateCloudMedia();
+        !$media->cloud
+            ? $this->mediaService->updateLocalMedia($media, $request)
+            : $this->mediaService->updateCloudMedia();
+
         $this->mediaService->update($request->all(), $id);
         return redirect()->route('media.index')->withToastSuccess("Media updated successfully.");
     }

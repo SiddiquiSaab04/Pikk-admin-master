@@ -14,7 +14,7 @@ class MediaRequest extends FormRequest
     {
         return [
             "name" => "required",
-            'cloud' => 'in:on,null',
+            'cloud' => $request->input('cloud') ? 'required' : 'nullable',
             'images' => $request->input('oldImages') ? 'nullable|array' : 'required|array',
             'images.*' => $request->input('oldImages') ? '' : 'image',
         ];

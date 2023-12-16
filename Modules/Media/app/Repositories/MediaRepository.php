@@ -30,7 +30,7 @@ class MediaRepository implements MediaRepositoryInterface
             $imagePaths[] = asset('storage/images/' . $imageName);
         }
 
-        $request['cloud'] = false;
+        $request['cloud'] = 0;
         $request['url'] = json_encode($imagePaths);
 
         return $request;
@@ -38,53 +38,28 @@ class MediaRepository implements MediaRepositoryInterface
 
     public function updateLocalMedia($media, $request)
     {
-        $oldImages = json_decode($media->url);
-        $newImages = $request->images;
+        $oldImages = $media->url;
         $oldImagesPath = $request->input('oldImages');
 
-        if (!is_null($oldImagesPath) && !is_null($newImages[0]) && count($oldImagesPath) === count($oldImages)) {
-            $created = $this->createLocalMedia($request);
-            $mergeUrls = array_merge($oldImages, json_decode($created->url));
-            $request['url'] = $mergeUrls;
-        }
-
-        if (!is_null($oldImagesPath) && count($oldImagesPath) !== count($oldImages)) {
-
-            $removedImages = array_diff($oldImages, $oldImagesPath);
-            $this->deleteLocalMedia(json_encode($removedImages));
-
-            if (!is_null($newImages[0])) {
-                $created = $this->createLocalMedia($request);
-                $presentImages = array_intersect($oldImages, $oldImagesPath);
-                $mergeUrls = array_merge($presentImages, json_decode($created->url));
-                $request['url'] = $mergeUrls;
-            } else {
-                $request['url'] = array_intersect($oldImages, $oldImagesPath);
-            }
-        }
-
         if (is_null($oldImagesPath)) {
-            $this->deleteLocalMedia(json_encode($oldImages));
-            
+            $this->deleteLocalMedia($oldImages);
             $created = $this->createLocalMedia($request);
-            $request['url'] = json_decode($created->url);
+            $request['url'] = json_decode($created->url)[0];
         }
 
         $request['cloud'] = false;
         return $request;
     }
 
-    public function deleteLocalMedia($urls)
+    public function deleteLocalMedia($url)
     {
         $folderPath = 'public/images';
 
-        foreach (json_decode($urls) as $url) {
-            $filename = pathinfo($url, PATHINFO_BASENAME);
-            $filePath = $folderPath . '/' . $filename;
+        $filename = pathinfo($url, PATHINFO_BASENAME);
+        $filePath = $folderPath . '/' . $filename;
 
-            if (Storage::exists($filePath)) {
-                Storage::delete($filePath);
-            }
+        if (Storage::exists($filePath)) {
+            Storage::delete($filePath);
         }
     }
 
