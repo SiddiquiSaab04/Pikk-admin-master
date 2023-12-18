@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('branches', function (Blueprint $table) {
             $table->id();
-            
+            $table->string("name");
+            $table->string("address");
+            $table->string("postcode");
+            $table->string("phone");
+            $table->string("multi_kitchen")->default(1);
+            $table->string("timings");
+            $table->string("status")->default(1);
+            $table->string("closing_reason")->default(null);
             $table->timestamps();
         });
     }

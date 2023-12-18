@@ -13,10 +13,15 @@ class Branch extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
-    
-    protected static function newFactory(): BranchFactory
-    {
-        //return BranchFactory::new();
-    }
+    protected $fillable = [
+        "name",
+        "address",
+        "postcode",
+        "phone",
+        "multi_kitchen",
+        "timings",
+        "status",
+        "closing_reason",
+        "description"
+    ];
 }

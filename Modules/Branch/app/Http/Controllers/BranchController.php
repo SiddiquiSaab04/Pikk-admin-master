@@ -3,18 +3,39 @@
 namespace Modules\Branch\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Branch\app\Services\BranchService;
 
 class BranchController extends Controller
 {
+    private $branchService;
+
+    public function __construct(BranchService $branchService)
+    {
+        $this->branchService = $branchService;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('branch::index');
+        $branches = $this->branchService->getAll();
+        if(request()->wantsjson()) {
+            return sendResponse(true, null,
+                $branches,
+                null,
+                200
+            );
+        } else {
+            return sendResponse(false, 'branch::index', [
+                "branches" => $branches,
+                "title" => "Branches List",
+                "description" => "show all branches listing"
+            ]);
+        }
     }
 
     /**
@@ -22,7 +43,10 @@ class BranchController extends Controller
      */
     public function create()
     {
-        return view('branch::create');
+        return view('branch::create', [
+            "title" => "Create Branch",
+            "description" => "create a new branch"
+        ]);
     }
 
     /**
@@ -30,7 +54,13 @@ class BranchController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        //
+        try {
+            $data = $request->all();
+            $created = $this->branchService->create($data);
+            return redirect()->route('branch.index')->withToastSuccess("Branch created successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -38,7 +68,20 @@ class BranchController extends Controller
      */
     public function show($id)
     {
-        return view('branch::show');
+        $branches = $this->branchService->search($id);
+        if(request()->wantsjson()) {
+            return sendResponse('branch::index', [
+                "branches" => $branches,
+                "title" => "Branches List",
+                "description" => "show all branches listing"
+            ]);
+        } else {
+            return sendResponse(false, 'branch::index', [
+                "branches" => $branches,
+                "title" => "Branches List",
+                "description" => "show all branches listing"
+            ]);
+        }
     }
 
     /**
@@ -46,7 +89,12 @@ class BranchController extends Controller
      */
     public function edit($id)
     {
-        return view('branch::edit');
+        $branch = $this->branchService->getById($id);
+        return view('branch::edit', [
+            "branch" => $branch,
+            "title" => "Edit Branch",
+            "description" => "edit a branch"
+        ]);
     }
 
     /**
@@ -54,7 +102,13 @@ class BranchController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        //
+        try {
+            $data = $request->all();
+            $updated = $this->branchService->update($data, $id);
+            return redirect()->route('branch.index')->withToastSuccess("Branch updated successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 
     /**
@@ -62,6 +116,11 @@ class BranchController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $deleted = $this->branchService->delete($id);
+            return redirect()->route('branch.index')->withToastSuccess("Branch deleted successfully.");
+        } catch (Exception $e) {
+            return back()->withToastError($e->getMessage());
+        }
     }
 }
