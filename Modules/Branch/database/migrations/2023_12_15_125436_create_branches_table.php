@@ -18,9 +18,10 @@ return new class extends Migration
             $table->string("postcode");
             $table->string("phone");
             $table->string("multi_kitchen")->default(1);
-            $table->string("timings");
+            $table->json("timings");
             $table->string("status")->default(1);
-            $table->string("closing_reason")->default(null);
+            $table->text("closing_reason")->default(null);
+            $table->text("description")->default(null);
             $table->timestamps();
         });
     }
