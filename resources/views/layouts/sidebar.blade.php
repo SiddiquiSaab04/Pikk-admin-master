@@ -31,11 +31,9 @@
                     <li><a  href="{{ route('permissions.create') }}">Create Permissions</a></li>
                 </ul>
             </li>
-            <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
+            <li><a><i class="fa fa-home"></i> Branches <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="index.html">Dashboard</a></li>
-                    <li><a href="index2.html">Dashboard2</a></li>
-                    <li><a href="index3.html">Dashboard3</a></li>
+                    <li><a href="{{ route('branch.index') }}">Manage Branches</a></li>
                 </ul>
             </li>
             <li><a><i class="fa fa-edit"></i> Inventory <span class="fa fa-chevron-down"></span></a>
@@ -45,20 +43,12 @@
                     <li><a href="{{ route('addonGroup.index') }}">Addon Groups</a></li>
                 </ul>
             </li>
-            <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
+            <li><a><i class="fa fa-table"></i> Orders <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="general_elements.html">General Elements</a></li>
-                    <li><a href="media_gallery.html">Media Gallery</a></li>
-                    <li><a href="typography.html">Typography</a></li>
-                    <li><a href="icons.html">Icons</a></li>
-                    <li><a href="glyphicons.html">Glyphicons</a></li>
-                    <li><a href="widgets.html">Widgets</a></li>
-                    <li><a href="invoice.html">Invoice</a></li>
-                    <li><a href="inbox.html">Inbox</a></li>
-                    <li><a href="calendar.html">Calendar</a></li>
+                    <li><a href="{{ route('order.index') }}">Order Listing</a></li>
                 </ul>
             </li>
-            <li><a><i class="fa fa-table"></i> Tables <span class="fa fa-chevron-down"></span></a>
+            <li><a><i class="fa fa-desktop"></i> Tables <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="tables.html">Tables</a></li>
                     <li><a href="tables_dynamic.html">Table Dynamic</a></li>

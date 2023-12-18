@@ -16,7 +16,7 @@
                     </button>
                 </a>
             </div>
-            <div class="col-sm-5">
+            <div class="col-5">
                 <div class="form-group top_search">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Search for..." id="search">
@@ -44,7 +44,7 @@
             <div class="x_content">
                 <table class="table table-hover">
                     <thead>
-                        <tr>    
+                        <tr>
                             <th>#</th>
                             <th>Name</th>
                             <th>Role</th>

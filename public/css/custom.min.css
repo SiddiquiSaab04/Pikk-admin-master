@@ -30,3 +30,9 @@
 .checkboxes{
     margin-left: 20px;
 }
+.x_panel{
+    overflow-x: scroll;
+}
+th, td{
+    text-wrap: nowrap;
+}
