@@ -20,15 +20,15 @@
             <li><a><i class="fa fa-users"></i> System Users <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('user.index') }}">Listing</a></li>
-                    <li><a  href="{{ route('user.create') }}">Create User</a></li>
+                    <li><a href="{{ route('user.create') }}">Create User</a></li>
                 </ul>
             </li>
             <li><a><i class="fa fa-users"></i> Role & Permissions <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('role.index') }}">Role</a></li>
                     <li><a href="{{ route('role.create') }}">Create Role</a></li>
-                    <li><a  href="{{ route('permissions.index') }}">Permissions</a></li>
-                    <li><a  href="{{ route('permissions.create') }}">Create Permissions</a></li>
+                    <li><a href="{{ route('permissions.index') }}">Permissions</a></li>
+                    <li><a href="{{ route('permissions.create') }}">Create Permissions</a></li>
                 </ul>
             </li>
             <li><a><i class="fa fa-home"></i> Branches <span class="fa fa-chevron-down"></span></a>
@@ -46,6 +46,11 @@
             <li><a><i class="fa fa-table"></i> Orders <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('order.index') }}">Order Listing</a></li>
+                </ul>
+            <li><a><i class="fa fa-desktop"></i> Media Gallery <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{{ route('media.index') }}">Listing</a></li>
+                    <li><a href="{{ route('media.create') }}">Create Media</a></li>
                 </ul>
             </li>
             <li><a><i class="fa fa-desktop"></i> Tables <span class="fa fa-chevron-down"></span></a>

@@ -4,5 +4,6 @@
     "Role": true,
     "Permissions": true,
     "Branch": true,
-    "Order": true
+    "Order": true,
+    "Media": true
 }

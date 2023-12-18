@@ -70,8 +70,8 @@
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
                                     <a class="dropdown-item" href="{{ route('user.edit', $user->id) }}">Edit</a>
-                                    <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete').submit()">Delete</a>
-                                    <form id="delete" action="{{ route('user.destroy', $user->id) }}" method="post">
+                                    <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete-{{ $user->id }}').submit()">Delete</a>
+                                    <form id="delete-{{ $user->id }}" action="{{ route('user.destroy', $user->id) }}" method="post">
                                         @csrf
                                         @method("DELETE")
                                     </form>
