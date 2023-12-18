@@ -4,6 +4,8 @@ namespace Modules\Branch\app\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Modules\Branch\app\Models\Branch;
+use Modules\Branch\app\Observers\BranchObserver;
 
 class BranchServiceProvider extends ServiceProvider
 {
@@ -30,6 +32,7 @@ class BranchServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->register(RouteServiceProvider::class);
+        Branch::observe(BranchObserver::class);
     }
 
     /**
