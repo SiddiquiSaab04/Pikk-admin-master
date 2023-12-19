@@ -45,6 +45,17 @@
                         </div>
                     </div>
                     <div class="form-group row">
+                        <label class="control-label col-md-3 col-sm-3 ">Role</label>
+                        <div class="col-md-9 col-sm-9 ">
+                            <select class="form-control" name="branch_id" required>
+                                <option disabled>Choose Role</option>
+                                @foreach($branches as $branch)
+                                <option value="{{$branch->id}}" {{$branch->id == $user->branch_id  ? 'selected' : ''}}>{{ucfirst(trans($branch->name))}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-3 ">Status</label>
                         <div class="col-md-9 col-sm-9 ">
                             <select class="form-control" name="status" required>

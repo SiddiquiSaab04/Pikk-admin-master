@@ -47,4 +47,9 @@ trait Crud
     {
         return $this->crudRepository->refresh($model);
     }
+
+    public function getWhere($clause)
+    {
+        return $this->crudRepository->getWhere($this->model, $clause);
+    }
 }

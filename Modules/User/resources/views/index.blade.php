@@ -49,6 +49,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
+                            <th>Branch</th>
                             <th>Status</th>
                             <th>Created At</th>
                             <th>Actions</th>
@@ -56,28 +57,29 @@
                     </thead>
                     <tbody>
                         @foreach($users as $user)
-                        <tr>
-                            <th scope="">{{ $loop->iteration }}</th>
-                            <td>{{ $user->name }}</td>
-                            <td>{{ $user->email }}</td>
-                            <td>{{ $user->getRoleNames()->first() }}</td>
-                            <td>{{ $user->status ? 'Active' : 'In-active' }}</td>
-                            <td>{{ $user->created_at }}</td>
-                            <td role="presentation" class="dropdown">
-                                <a id="drop5" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
-                                    Options
-                                    <span class="caret"></span>
-                                </a>
-                                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                    <a class="dropdown-item" href="{{ route('user.edit', $user->id) }}">Edit</a>
-                                    <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete-{{ $user->id }}').submit()">Delete</a>
-                                    <form id="delete-{{ $user->id }}" action="{{ route('user.destroy', $user->id) }}" method="post">
-                                        @csrf
-                                        @method("DELETE")
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
+                            <tr>
+                                <th scope="">{{ $loop->iteration }}</th>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td>{{ $user->getRoleNames()->first() }}</td>
+                                <td>{{ $user->branch?->name }}</td>
+                                <td>{{ $user->status ? 'Active' : 'In-active' }}</td>
+                                <td>{{ $user->created_at }}</td>
+                                <td role="presentation" class="dropdown">
+                                    <a id="drop5" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
+                                        Options
+                                        <span class="caret"></span>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        <a class="dropdown-item" href="{{ route('user.edit', $user->id) }}">Edit</a>
+                                        <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete-{{ $user->id }}').submit()">Delete</a>
+                                        <form id="delete-{{ $user->id }}" action="{{ route('user.destroy', $user->id) }}" method="post">
+                                            @csrf
+                                            @method("DELETE")
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

@@ -66,4 +66,9 @@ class CrudRepository implements CrudInterface
     {
         return $model->refresh();
     }
+
+    public function getWhere($model, array $clause)
+    {
+        return $model::where($clause)->paginate(20);
+    }
 }

@@ -13,4 +13,5 @@ interface CrudInterface
     public function update(string $model, string $id, array $data);
     public function getWith(string $model, array $relation);
     public function refresh($model);
+    public function getWhere($model, array $clause);
 }

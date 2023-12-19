@@ -10,11 +10,13 @@
                         <i class="fa fa-refresh text-white"></i>
                     </button>
                 </a>
+                @can('create_medias')
                 <a href="{{ route('media.create') }}">
                     <button class="rounded-full btn-success font-large padding-2">
                         <i class="fa fa-plus text-white"></i>
                     </button>
                 </a>
+                @endcan
             </div>
             <div class="col-sm-5">
                 <div class="form-group top_search">
@@ -50,6 +52,7 @@
                             <h5 class="card-title">{{ $media->name }}</h5>
                             <div class="tools tools-bottom float-right">
                                 <a href="{{ $media->url }}"><i class="fa fa-link"></i></a>
+                                @can('update_medias')
                                 <a href="{{ route('media.edit', $media->id) }}"><i class="fa fa-pencil"></i></a>
                                 <a onclick="event.preventDefault(); document.getElementById('delete-{{ $media->id }}').submit()">
                                     <i class="fa fa-times"></i>
@@ -58,6 +61,7 @@
                                     @csrf
                                     @method("DELETE")
                                 </form>
+                                @endcan
                             </div>
                         </div>
                     </div>
