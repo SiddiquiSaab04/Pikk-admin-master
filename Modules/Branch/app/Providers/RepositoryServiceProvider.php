@@ -5,6 +5,8 @@ namespace Modules\Branch\app\Providers;
 use App\Repositories\CrudRepository;
 use Illuminate\Support\ServiceProvider;
 use Modules\Branch\app\Http\Controllers\BranchController;
+use Modules\Branch\app\Observers\BranchObserver;
+use Modules\Branch\app\Repositories\BranchRepository;
 use Modules\Branch\app\Services\BranchService;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -16,6 +18,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(BranchService::class, BranchController::class);
         $this->app->bind(CrudRepository::class, BranchService::class);
+        $this->app->bind(BranchRepository::class, BranchObserver::class);
     }
 
     /**
