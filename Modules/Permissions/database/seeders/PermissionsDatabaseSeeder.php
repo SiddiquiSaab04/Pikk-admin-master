@@ -153,9 +153,15 @@ class PermissionsDatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => "see_reports"
+                ],
+                [
+                    'name' => "pos"
+                ],
+                [
+                    'name' => "kds"
                 ]
             ];
-            
+
             try {
 
                 collect($permissions)->each(function ($permission) {
@@ -165,13 +171,24 @@ class PermissionsDatabaseSeeder extends Seeder
                 });
 
                 $superAdminRole = Role::where('name', 'super_admin')->first();
-                $allPermissions = Permission::all();
+                $allPermissions = Permission::all()->except(['pos', 'kds']);
                 $superAdminRole->syncPermissions($allPermissions);
 
                 $adminRole = Role::where('name', 'admin')->first();
-                $readingPermissions = Permission::whereIn('name', ['create_users','read_users', 'update_users','delete_users','read_roles','read_permissions','read_products','read_medias','read_categories','read_addons','read_addon_groups','read_units','read_unit_groups','see_reports'])->get();
-                $adminRole->syncPermissions($readingPermissions);
+                $manageRole = Role::where('name', 'manager')->first();
 
+                $readingPermissions = Permission::whereIn('name', ['create_users', 'read_users', 'update_users', 'delete_users', 'read_roles', 'read_permissions', 'read_products', 'read_medias', 'read_categories', 'read_addons', 'read_addon_groups', 'read_units', 'read_unit_groups', 'see_reports', 'pos', 'kds'])->get();
+
+                $adminRole->syncPermissions($readingPermissions);
+                $manageRole->syncPermissions($readingPermissions);
+
+                $staffRole = Role::where('name', 'staff')->first();
+                $posPermission = Permission::whereIn('name', ['pos'])->get();
+                $staffRole->syncPermissions($posPermission);
+
+                $chefRole = Role::where('name', 'chef')->first();
+                $kdsPermissions = Permission::whereIn('name', ['kds'])->get();
+                $chefRole->syncPermissions($kdsPermissions);
             } catch (Exception $e) {
                 Log::info($e->getMessage());
             }

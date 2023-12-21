@@ -76,16 +76,16 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->userService->search($id);
+        $users = $this->userService->search($id);
         if (request()->wantsjson()) {
             return sendResponse('user::index', [
-                "users" => $user,
+                "users" => $users,
                 "title" => "User List",
                 "description" => "show all system users list"
             ]);
         } else {
             return sendResponse(false, 'user::index', [
-                "users" => $user,
+                "users" => $users,
                 "title" => "User List",
                 "description" => "show all system users list"
             ]);
