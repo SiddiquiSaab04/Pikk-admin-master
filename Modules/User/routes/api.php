@@ -21,6 +21,6 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
 
 Route::prefix('auth')->group(function () {
     Route::middleware(['auth:sanctum'])->group(function () {
-        Route::get('user/{user}', [UserController::class, 'show']);
+        Route::get('getUserById/{userId}', [UserController::class, 'getUserById']);
     });
 });

@@ -4,7 +4,6 @@ namespace App\Repositories;
 
 use App\Interfaces\AuthInterface;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 
 class AuthRepository implements AuthInterface
 {
@@ -29,8 +28,7 @@ class AuthRepository implements AuthInterface
 
     public function logout($request)
     {
-        $request->user()->tokens()->delete();
-
+        Auth::user()->tokens()->delete();
         return [
             "status" => 1,
             'message' => 'Successfully logged out'

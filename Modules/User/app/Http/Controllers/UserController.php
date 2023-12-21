@@ -137,4 +137,11 @@ class UserController extends Controller
             return back()->withToastError($e->getMessage());
         }
     }
+
+    public function getUserById($id)
+    {
+        $user = $this->userService->getById($id);
+        $user->getRoleNames()->first();
+        return sendResponse(true, null, $user, null, 200);
+    }
 }
