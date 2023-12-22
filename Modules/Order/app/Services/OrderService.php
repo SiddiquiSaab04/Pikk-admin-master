@@ -30,11 +30,20 @@ class OrderService
         $this->branch = request()->branch;
     }
 
+    /**
+     * get all orders from orders table
+     */
     public function getAll()
     {
         return $this->orderRepository->paginate(20);
     }
 
+    /**
+     * create a new order
+     *
+     * @param array $data
+     * @return Modules\Order\app\Models\Order collection
+     */
     public function create($data)
     {
 
@@ -46,6 +55,16 @@ class OrderService
         $data['sub_total'] = 0;
         $data['cancelled_reason'] = 0;
 
+        /**
+         * we are setting payload for all relevant models including:
+         *
+         * 1- \Modules\Order|app\Models\Order
+         * 2- \Modules\Order\app\Models\OrderProduct
+         * 3- \Modules\Order\app\Models\OrderProductAddon
+         *
+         * All of the listed models will be created using the arrays
+         * below.
+         */
         $orderProducts = $this->getOrderProducts($data);
         $orderProductAddons = $this->getOrderProductAddons($orderProducts);
         $payload = $this->checkDiscount($orderProductAddons);
@@ -69,6 +88,11 @@ class OrderService
         return $order;
     }
 
+    /**
+     * Generates dynamic order code
+     *
+     * @return string
+     */
     protected function getCode()
     {
         $order = $this->orderRepository
@@ -78,6 +102,13 @@ class OrderService
         return sprintf("%u-%03d", $this->branch, !empty($order->id) ? $order->id + 1 : 1);
     }
 
+    /**
+     * Gets order products from the payload provided by
+     * the client.
+     *
+     * @param array data
+     * @return Illuminate\Support\Collection
+     */
     protected function getOrderProducts($data)
     {
         $data['products'] = collect($data['products']);
@@ -98,6 +129,13 @@ class OrderService
         return $data;
     }
 
+    /**
+     * Gets order product addons annd order pricings
+     * from the payload provided by the client
+     *
+     * @param array data
+     * @return Illuminate\Support\Collection
+     */
     protected function getOrderProductAddons($data)
     {
         foreach ($data['orderProducts'] as $key => $orderProduct) {
@@ -125,6 +163,14 @@ class OrderService
         return $data;
     }
 
+    /**
+     * Set dynamic payload according the fillable
+     * array provided in the models
+     *
+     * @param object $data
+     * @param array $payload
+     * @return array $arr
+     */
     protected function setPayload($data, $payload)
     {
         $arr = [];
@@ -138,6 +184,13 @@ class OrderService
         return $arr;
     }
 
+    /**
+     * calculate discount for the current order being
+     * inserted into the database (WIP)
+     *
+     * @param array $data
+     * @return Illuminate\Support\Collection
+     */
     protected function checkDiscount($data)
     {
         if ($data['discount_type']) {
@@ -147,11 +200,25 @@ class OrderService
         }
     }
 
+    /**
+     * Check whether all the requested product
+     * are in stock or not
+     *
+     * @param array $data
+     * @return array
+     */
     protected function checkStocks()
     {
         //
     }
 
+    /**
+     * Get all relevant information about the
+     * required order.
+     *
+     * @param int id
+     * @return \Modules\Order\app\Models\Order
+     */
     public function orderData($id)
     {
         $order = $this->orderRepository->getById($id);
