@@ -26,9 +26,13 @@
             <li><a><i class="fa fa-users"></i> Role & Permissions <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('role.index') }}">Role</a></li>
+                    @can('create_roles')
                     <li><a href="{{ route('role.create') }}">Create Role</a></li>
+                    @endcan
                     <li><a href="{{ route('permissions.index') }}">Permissions</a></li>
+                    @can('create_permissions')
                     <li><a href="{{ route('permissions.create') }}">Create Permissions</a></li>
+                    @endcan
                 </ul>
             </li>
             <li><a><i class="fa fa-home"></i> Branches <span class="fa fa-chevron-down"></span></a>
@@ -50,7 +54,9 @@
             <li><a><i class="fa fa-desktop"></i> Media Gallery <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('media.index') }}">Listing</a></li>
+                    @can('create_medias')
                     <li><a href="{{ route('media.create') }}">Create Media</a></li>
+                    @endcan
                 </ul>
             </li>
             <li><a><i class="fa fa-desktop"></i> Tables <span class="fa fa-chevron-down"></span></a>

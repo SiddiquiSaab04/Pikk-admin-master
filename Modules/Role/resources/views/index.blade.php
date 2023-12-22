@@ -10,11 +10,13 @@
                         <i class="fa fa-refresh text-white"></i>
                     </button>
                 </a>
+                @can('create_medias')
                 <a href="{{ route('role.create') }}">
                     <button class="rounded-full btn-success font-large padding-2">
                         <i class="fa fa-plus text-white"></i>
                     </button>
                 </a>
+                @endcan
             </div>
             <div class="col-5">
                 <div class="form-group top_search">
@@ -50,7 +52,9 @@
                             <th>Permissions</th>
                             <th>Guard Name</th>
                             <th>Created At</th>
+                            @can('update_medias')
                             <th>Actions</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -73,6 +77,7 @@
                             </td>
                             <td>{{ $role->guard_name }}</td>
                             <td>{{ $role->created_at }}</td>
+                            @can('update_medias')
                             <td role="presentation" class="dropdown">
                                 <a id="drop5" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
                                     Options
@@ -87,6 +92,7 @@
                                     </form>
                                 </div>
                             </td>
+                            @endcan
                         </tr>
                         @endforeach
                     </tbody>

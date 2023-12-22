@@ -44,7 +44,30 @@
                             <select class="form-control" name="role" required>
                                 <option selected disabled>Choose Role</option>
                                 @foreach($roles as $role)
-                                <option value="{{$role->name}}">{{ ucfirst(trans($role->name)) }}</option>
+                                    @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('super_admin'))
+                                        @if($role->name != 'super_admin')
+                                            <option value="{{ $role->name }}">{{ ucfirst(trans($role->name)) }}</option>
+                                        @endif
+                                     @else
+                                            <option value="{{ $role->name }}">{{ ucfirst(trans($role->name)) }}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="control-label col-md-3 col-sm-3 ">Branch</label>
+                        <div class="col-md-9 col-sm-9 ">
+                            <select class="form-control" name="branch_id" required>
+                                <option selected disabled>Choose Branch</option>
+                                @foreach($branches as $branch)
+                                @if(auth()->user()->hasRole('admin'))
+                                    @if($branch->id == auth()->user()->branch_id)
+                                        <option value="{{$branch->id}}" selected>{{ ucfirst(trans($branch->name)) }}</option>
+                                    @endif
+                                @else
+                                    <option value="{{ $branch->id }}">{{ ucfirst(trans($branch->name)) }}</option>
+                                @endif
                                 @endforeach
                             </select>
                         </div>

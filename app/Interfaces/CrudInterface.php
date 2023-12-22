@@ -14,4 +14,5 @@ interface CrudInterface
     public function getWith(string $model, array $relation);
     public function refresh($model);
     public function whereIn(string $model, array $clauses);
+    public function getWhere($model, array $clause);
 }

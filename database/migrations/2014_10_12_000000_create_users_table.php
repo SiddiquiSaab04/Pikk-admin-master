@@ -18,6 +18,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->tinyInteger('status')->default(1);
+            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreign("branch_id")->references("id")->on("branches");
             $table->rememberToken();
             $table->timestamps();
         });

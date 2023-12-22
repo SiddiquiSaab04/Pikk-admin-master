@@ -10,11 +10,13 @@
                         <i class="fa fa-refresh text-white"></i>
                     </button>
                 </a>
+                @can('create_permissions')
                 <a href="{{ route('permissions.create') }}">
                     <button class="rounded-full btn-success font-large padding-2">
                         <i class="fa fa-plus text-white"></i>
                     </button>
                 </a>
+                @endcan
             </div>
             <div class="col-5">
                 <div class="form-group top_search">
@@ -50,7 +52,9 @@
                             <th>Role</th>
                             <th>Guard Name</th>
                             <th>Created At</th>
+                            @can('update_permissions')
                             <th>Actions</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
@@ -58,9 +62,22 @@
                         <tr>
                             <th scope="">{{ $loop->iteration }}</th>
                             <td>{{ $permission->name }}</td>
-                            <td>{{ $permission->getRoleNames()->first() }}</td>
+                            <td>
+                                <div class="row">
+                                    @foreach ($permission->getRoleNames() as $name)
+                                    <div class="col mb-1 bg-light text-dark">
+                                        {{ $name }}
+                                    </div>
+                                    @if ($loop->iteration % 3 === 0)
+                                </div>
+                                <div class="row">
+                                    @endif
+                                    @endforeach
+                                </div>
+                            </td>
                             <td>{{ $permission->guard_name }}</td>
                             <td>{{ $permission->created_at }}</td>
+                            @can('update_permissions')
                             <td role="presentation" class="dropdown">
                                 <a id="drop5" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
                                     Options
@@ -75,6 +92,7 @@
                                     </form>
                                 </div>
                             </td>
+                            @endcan
                         </tr>
                         @endforeach
                     </tbody>

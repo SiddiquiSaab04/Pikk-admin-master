@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Modules\Branch\app\Models\Branch;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
@@ -23,6 +24,7 @@ class User extends Authenticatable
         'email',
         'password',
         'status',
+        'branch_id',
     ];
 
     /**
@@ -44,4 +46,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function branch()
+    {
+        return $this->belongsTo(Branch::class);
+    }
 }

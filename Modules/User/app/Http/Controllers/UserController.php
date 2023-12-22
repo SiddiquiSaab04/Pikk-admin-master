@@ -5,6 +5,7 @@ namespace Modules\User\app\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Modules\User\app\Services\UserService;
 use Modules\User\app\Http\Requests\UserRequest;
 
@@ -22,7 +23,8 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->userService->getAll();
+        $users = $this->userService->getUsers();
+        $users->load('branch');
 
         if (request()->wantsjson()) {
             return sendResponse('user::index', [
@@ -45,8 +47,11 @@ class UserController extends Controller
     public function create()
     {
         $roles = $this->userService->getAllRoles();
+        $branches = $this->userService->getAllBranches();
+
         return sendResponse(false, 'user::create', [
             "roles" => $roles,
+            "branches" => $branches,
             "title" => "Create User",
             "description" => "create a new system user"
         ]);
@@ -71,16 +76,16 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->userService->search($id);
+        $users = $this->userService->search($id);
         if (request()->wantsjson()) {
             return sendResponse('user::index', [
-                "users" => $user,
+                "users" => $users,
                 "title" => "User List",
                 "description" => "show all system users list"
             ]);
         } else {
             return sendResponse(false, 'user::index', [
-                "users" => $user,
+                "users" => $users,
                 "title" => "User List",
                 "description" => "show all system users list"
             ]);
@@ -94,9 +99,11 @@ class UserController extends Controller
     {
         $user = $this->userService->getById($id);
         $roles = $this->userService->getAllRoles();
+        $branches = $this->userService->getAllBranches();
         return view('user::edit', [
             "user" => $user,
             "roles" => $roles,
+            "branches" => $branches,
             "title" => "Edit User",
             "description" => "edit a new system user"
         ]);
@@ -129,5 +136,12 @@ class UserController extends Controller
         } catch (Exception $e) {
             return back()->withToastError($e->getMessage());
         }
+    }
+
+    public function getUserById($id)
+    {
+        $user = $this->userService->getById($id);
+        $user->getRoleNames()->first();
+        return sendResponse(true, null, $user, null, 200);
     }
 }
