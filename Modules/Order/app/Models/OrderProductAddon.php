@@ -10,6 +10,19 @@ class OrderProductAddon extends Model
 {
     use HasFactory;
 
+    protected $table = 'order_product_addons';
+    protected $branch = null;
+
+    public function setTableName(string $table)
+    {
+        if($table) {
+            $this->table .= '_' . $table;
+            $this->branch = $table;
+        }
+
+        return $this->$table;
+    }
+
     protected $fillable = [
         "order_id",
         "order_product_id",

@@ -6,15 +6,35 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Order\app\Services\OrderService;
 
 class OrderController extends Controller
 {
+    protected $orderService;
+
+    public function __construct(OrderService $orderService)
+    {
+        $this->orderService = $orderService;
+    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('order::index');
+        $orders = $this->orderService->getAll();
+        if(request()->wantsjson()) {
+            return sendResponse(true, null,
+                $orders,
+                null,
+                200
+            );
+        } else {
+            return sendResponse(false, 'order::index', [
+                "orders" => $orders,
+                "title" => "Orders List",
+                "description" => "show all orders listing"
+            ]);
+        }
     }
 
     /**
@@ -28,9 +48,16 @@ class OrderController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        //
+        $order = $this->orderService->create($request->all());
+        return sendResponse(
+            true,
+            null,
+            $order,
+            null,
+            200
+        );
     }
 
     /**
@@ -52,7 +79,7 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)
     {
         //
     }
@@ -63,5 +90,41 @@ class OrderController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function receipt($branch, $id)
+    {
+        $receipt = $this->orderService->orderData($id);
+        if(request()->wantsJson()) {
+            return sendResponse(true, null,
+                $receipt,
+                null,
+                200
+            );
+        } else {
+            return sendResponse(false, 'order::receipt', [
+                "receipt" => $receipt,
+                "title" => "Order Receipt",
+                "description" => "show receipt for order"
+            ]);
+        }
+    }
+
+    public function invoice($branch, $id)
+    {
+        $invoice = $this->orderService->orderData($id);
+        if(request()->wantsJson()) {
+            return sendResponse(true, null,
+                $invoice,
+                null,
+                200
+            );
+        } else {
+            return sendResponse(false, 'order::invoice', [
+                "invoice" => $invoice,
+                "title" => "Order Invoice",
+                "description" => "show invoice for order"
+            ]);
+        }
     }
 }

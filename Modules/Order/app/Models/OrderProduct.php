@@ -11,6 +11,19 @@ class OrderProduct extends Model
 {
     use HasFactory;
 
+    protected $table = 'order_products';
+    protected $branch = null;
+
+    public function setTableName(string $table)
+    {
+        if($table) {
+            $this->table .= '_' . $table;
+            $this->branch = $table;
+        }
+
+        return $this;
+    }
+
     /**
      * The attributes that are mass assignable.
      */
@@ -36,6 +49,8 @@ class OrderProduct extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        $order = new Order();
+        $order->setTable($this->branch);
+        return $this->belongsTo($order);
     }
 }
