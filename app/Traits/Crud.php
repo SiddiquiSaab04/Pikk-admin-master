@@ -48,6 +48,11 @@ trait Crud
         return $this->crudRepository->refresh($model);
     }
 
+    public function whereIn($clause)
+    {
+        return $this->crudRepository->whereIn($this->model, $clause);
+    }
+
     public function getWhere($clause)
     {
         return $this->crudRepository->getWhere($this->model, $clause);

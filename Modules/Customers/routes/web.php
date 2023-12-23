@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Order\app\Http\Controllers\OrderController;
+use Modules\Customers\app\Http\Controllers\CustomersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +14,6 @@ use Modules\Order\app\Http\Controllers\OrderController;
 |
 */
 
-Route::group(['prefix'=>'/{branch?}'], function () {
-    Route::get('/order/invoice/{id}', [OrderController::class, 'invoice'])->name('order.invoice');
-    Route::get('/order/receipt/{id}', [OrderController::class, 'receipt'])->name('order.receipt');
-    Route::resource('order', OrderController::class)->names('order');
+Route::group([], function () {
+    Route::resource('customers', CustomersController::class)->names('customers');
 });

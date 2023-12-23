@@ -67,6 +67,15 @@ class CrudRepository implements CrudInterface
         return $model->refresh();
     }
 
+    public function whereIn($model, $clauses)
+    {
+        return $model::where(function($query) use ($clauses) {
+            foreach($clauses as $clause) {
+                $query->whereIn($clause['key'], $clause['values']);
+            }
+        })->get();
+    }
+
     public function getWhere($model, array $clause)
     {
         return $model::where($clause)->paginate(20);

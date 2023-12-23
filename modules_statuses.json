@@ -5,5 +5,6 @@
     "Permissions": true,
     "Branch": true,
     "Order": true,
-    "Media": true
+    "Media": true,
+    "Customers": true
 }

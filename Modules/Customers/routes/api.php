@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use Modules\Order\app\Http\Controllers\OrderController;
 
 /*
     |--------------------------------------------------------------------------
@@ -15,9 +14,6 @@ use Modules\Order\app\Http\Controllers\OrderController;
     |
 */
 
-// Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-//     Route::get('order', fn (Request $request) => $request->user())->name('order');
-// });
-Route::prefix("/{branch?}")->group(function() {
-    Route::get('/order/place-order', [OrderController::class, 'store']);
+Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
+    Route::get('customers', fn (Request $request) => $request->user())->name('customers');
 });
