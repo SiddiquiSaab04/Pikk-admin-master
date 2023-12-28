@@ -24,12 +24,14 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->categoryService->getAll();
+        $categories->load('products', 'products.addons.modifier', 'products.addons.addonProducts.product');
 
         if(request()->wantsjson()) {
-            return sendResponse('inventory::category.index', [
-                "categories" => $categories,
-                "title" => "Categories List",
-                "description" => "show all categories list"
+            return sendResponse(true, null, [
+                $categories,
+                ["title" => "Categories List",
+                "description" => "show all categories list"],
+                200
             ]);
         } else {
             return sendResponse(false, 'inventory::category.index', [

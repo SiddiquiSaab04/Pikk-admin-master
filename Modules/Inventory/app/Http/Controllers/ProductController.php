@@ -31,7 +31,7 @@ class ProductController extends Controller
 
         if(request()->wantsjson()) {
             return sendResponse(true, null,
-                ProductResource::make($products),
+                $products->groupBy("category.name"),
                 null,
                 200
             );
