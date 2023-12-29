@@ -157,18 +157,66 @@ class OrderController extends Controller
     public function readyOrder(Request $request)
     {
         $order = $this->orderService->readyOrder($request->id);
-        return $order;
+        if($order) {
+            return sendResponse(
+                true,
+                null,
+                null,
+                "Order Is Ready",
+                200
+            );
+        } else {
+            return sendError(
+                true,
+                null,
+                null,
+                "Some error occurred",
+                500
+            );
+        }
     }
 
     public function cancelOrder(Request $request)
     {
         $order = $this->orderService->cancelOrder($request->all());
-        return $order;
+        if($order) {
+            return sendResponse(
+                true,
+                null,
+                null,
+                "Order Cancelled",
+                200
+            );
+        } else {
+            return sendError(
+                true,
+                null,
+                null,
+                "Some error occurred",
+                500
+            );
+        }
     }
 
     public function serveOrder(Request $request)
     {
         $order = $this->orderService->serveOrder($request->all());
-        return $order;
+        if($order) {
+            return sendResponse(
+                true,
+                null,
+                null,
+                "Order Served",
+                200
+            );
+        } else {
+            return sendError(
+                true,
+                null,
+                null,
+                "Some error occurred",
+                500
+            );
+        }
     }
 }
