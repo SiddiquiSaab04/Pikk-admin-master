@@ -22,8 +22,10 @@ class OrderController extends Controller
     public function index()
     {
         $orders = $this->orderService->getAll();
-        if(request()->wantsjson()) {
-            return sendResponse(true, null,
+        if (request()->wantsjson()) {
+            return sendResponse(
+                true,
+                null,
                 $orders,
                 null,
                 200
@@ -95,8 +97,10 @@ class OrderController extends Controller
     public function receipt($branch, $id)
     {
         $receipt = $this->orderService->orderData($id);
-        if(request()->wantsJson()) {
-            return sendResponse(true, null,
+        if (request()->wantsJson()) {
+            return sendResponse(
+                true,
+                null,
                 $receipt,
                 null,
                 200
@@ -113,8 +117,10 @@ class OrderController extends Controller
     public function invoice($branch, $id)
     {
         $invoice = $this->orderService->orderData($id);
-        if(request()->wantsJson()) {
-            return sendResponse(true, null,
+        if (request()->wantsJson()) {
+            return sendResponse(
+                true,
+                null,
                 $invoice,
                 null,
                 200
@@ -126,5 +132,43 @@ class OrderController extends Controller
                 "description" => "show invoice for order"
             ]);
         }
+    }
+
+    public function getPendingOrders()
+    {
+        $orders = $this->orderService->getPendingOrders();
+        if (request()->wantsJson()) {
+            return sendResponse(true, null, $orders, null, 200);
+        } else {
+            //
+        }
+    }
+
+    public function getReadyOrders()
+    {
+        $orders = $this->orderService->getReadyOrders();
+        if (request()->wantsJson()) {
+            return sendResponse(true, null, $orders, null, 200);
+        } else {
+            //
+        }
+    }
+
+    public function readyOrder(Request $request)
+    {
+        $order = $this->orderService->readyOrder($request->id);
+        return $order;
+    }
+
+    public function cancelOrder(Request $request)
+    {
+        $order = $this->orderService->cancelOrder($request->all());
+        return $order;
+    }
+
+    public function serveOrder(Request $request)
+    {
+        $order = $this->orderService->serveOrder($request->all());
+        return $order;
     }
 }

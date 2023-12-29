@@ -18,6 +18,11 @@ use Modules\Order\app\Http\Controllers\OrderController;
 // Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
 //     Route::get('order', fn (Request $request) => $request->user())->name('order');
 // });
-Route::prefix("/{branch?}")->group(function() {
-    Route::post('/order/place-order', [OrderController::class, 'store']);
+Route::prefix("/{branch?}/order")->group(function() {
+    Route::post('/place-order', [OrderController::class, 'store']);
+    Route::get('/get-pending-orders', [OrderController::class, 'getPendingOrders']);
+    Route::get('/get-ready-orders', [OrderController::class, 'getReadyOrders']);
+    Route::post('/ready-order', [OrderController::class, 'readyOrder']);
+    Route::post('/cancel-order', [OrderController::class, 'cancelOrder']);
+    Route::post('/serve-order', [OrderController::class, 'serveOrder']);
 });

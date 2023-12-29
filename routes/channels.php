@@ -16,3 +16,19 @@ use Illuminate\Support\Facades\Broadcast;
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
+
+Broadcast::channel('order-placing-channel.{branch}', function($data) {
+    return true;
+});
+
+Broadcast::channel('order-ready-channel.{branch}', function($data) {
+    return true;
+});
+
+Broadcast::channel('order-cancelled-channel.{branch}', function($data) {
+    return true;
+});
+
+Broadcast::channel('order-served-channel.{branch}', function($data) {
+    return true;
+});

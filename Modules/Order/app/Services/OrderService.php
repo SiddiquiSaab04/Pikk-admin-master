@@ -3,6 +3,10 @@
 namespace Modules\Order\app\Services;
 
 use Modules\Inventory\app\Services\ProductService;
+use Modules\Order\app\Events\OrderCancelledEvent;
+use Modules\Order\app\Events\OrderPlacedEvent;
+use Modules\Order\app\Events\OrderReadyEvent;
+use Modules\Order\app\Events\OrderServedEvent;
 use Modules\Order\app\Repositories\OrderRepository;
 use Modules\Order\app\Services\OrderProductService;
 use Modules\Order\app\Services\OrderProductAddonService;
@@ -85,6 +89,8 @@ class OrderService
             }
         }
 
+        $order = $this->orderProductService->getProductsByOrder($order);
+        broadcast(new OrderPlacedEvent($order->toJson(), $this->branch))->toOthers();
         return $order;
     }
 
@@ -223,7 +229,70 @@ class OrderService
     {
         $order = $this->orderRepository->getById($id);
         $order = $this->orderProductService->getProductsByOrder($order);
-
         return $order;
+    }
+
+    public function getPendingOrders()
+    {
+        $orders = $this->orderRepository->getWhere(['created_at', '>=', date('Y-m-d')], ['status', '=', 'ongoing'])->get();
+        if(count($orders) > 0) {
+            $orders = $this->orderProductService->getProductsByOrder($orders);
+        }
+        return $orders;
+    }
+
+    public function getReadyOrders()
+    {
+        $orders = $this->orderRepository->getWhere(['created_at', '>=', date('Y-m-d')], ['status', '=', 'ready'])->get();
+        if(count($orders) > 0) {
+            $orders = $this->orderProductService->getProductsByOrder($orders);
+        }
+        return $orders;
+    }
+
+    public function readyOrder($id)
+    {
+        $order = $this->orderRepository->getById($id);
+        $order->status = 'ready';
+        $response = $this->orderRepository->save($order);
+
+        if($response) {
+            $order = $this->orderProductService->getProductsByOrder($order);
+            broadcast(new OrderReadyEvent($order->toJson(), $this->branch))->toOthers();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function cancelOrder($data)
+    {
+        $order = $this->orderRepository->getById($data['id']);
+        $order->status = 'cancelled';
+        $order->cancelled_reason = 'Cancelled';
+        $response = $this->orderRepository->save($order);
+
+        if($response) {
+            $order = $this->orderProductService->getProductsByOrder($order);
+            broadcast(new OrderCancelledEvent($order->toJson(), $this->branch))->toOthers();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function serveOrder($data)
+    {
+        $order = $this->orderRepository->getById($data['id']);
+        $order->status = 'served';
+        $response = $this->orderRepository->save($order);
+
+        if($response) {
+            $order = $this->orderProductService->getProductsByOrder($order);
+            broadcast(new OrderServedEvent($order->toJson(), $this->branch))->toOthers();
+            return true;
+        } else {
+            return false;
+        }
     }
 }

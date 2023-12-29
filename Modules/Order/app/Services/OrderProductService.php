@@ -24,11 +24,26 @@ class OrderProductService
         return $this->orderProductRepository->create($data);
     }
 
-    public function getProductsByOrder($order)
+    public function getProductsByOrder($orders)
+    {
+        if(isset($orders[0])) {
+            foreach($orders as $index => $order) {
+                $order = $this->getOrderAdditionalData($order);
+
+                $orders[$index] = $order;
+            }
+        } else {
+            $orders = $this->getOrderAdditionalData($orders);
+        }
+
+        return $orders;
+    }
+
+    protected function getOrderAdditionalData($order)
     {
         $order->orderProducts = $this->orderProductRepository
-                    ->getWhere(['order_id', '=', 10])
-                    ->get();
+                        ->getWhere(['order_id', '=', $order->id])
+                        ->get();
 
         foreach($order->orderProducts as $key => $product) {
             $order->orderProducts[$key]->addons = $this->orderProductAddonService->getAddonsByOrderProduct($order, $product);
