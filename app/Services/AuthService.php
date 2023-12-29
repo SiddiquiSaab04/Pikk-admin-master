@@ -18,8 +18,9 @@ class AuthService
     {
         $user = $this->authRepository->getUserWithRole($request);
         $role = $user['user']->roles->first();
+        $type = isset($request['type']) ? $request['type'] : 'pos';
 
-        if ($role->hasPermissionTo('pos')) {
+        if ($role->hasPermissionTo($type)) {
             if ($user['user'] && Hash::check($user['credentials']['password'], $user['user']->getAuthPassword())) {
                 $token =  $this->authRepository->generateToken($user['user']);
                 $response = [
