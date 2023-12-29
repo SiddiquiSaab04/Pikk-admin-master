@@ -52,7 +52,7 @@ class OrderService
     {
 
         $data['code'] = $this->getCode();
-        $data['title'] = null; //wip
+        $data['title'] = "null"; //wip
         $data['status'] = 'ongoing';
         $data['payment'] = 'paid';
         $data['total'] = 0;
@@ -70,11 +70,10 @@ class OrderService
          * below.
          */
         $orderProducts = $this->getOrderProducts($data);
-        $orderProductAddons = $this->getOrderProductAddons($orderProducts);
-        $payload = $this->checkDiscount($orderProductAddons);
+        $payload = $this->getOrderProductAddons($orderProducts);
+        // $payload = $this->checkDiscount($orderProductAddons);
 
         $order = $this->orderRepository->create($payload);
-
         if (!empty($order->id)) {
 
             foreach ($payload['orderProducts'] as $product) {
