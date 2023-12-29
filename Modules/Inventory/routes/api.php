@@ -20,9 +20,7 @@ use Modules\Inventory\app\Http\Controllers\ProductController;
 //     Route::get('/product/index', [ProductController::class, 'index']);
 // });
 
-Route::prefix('')->group(function () {
-    Route::middleware(['auth:sanctum'])->group(function () {
-        Route::get('product/index', [ProductController::class, 'index']);
-        Route::get('category/index', [CategoryController::class, 'index']);
-    });
+Route::prefix('inventory')->group(function () {
+    Route::get('product/index', [ProductController::class, 'index']);
+    Route::get('category/index', [CategoryController::class, 'index']);
 });

@@ -19,5 +19,5 @@ use Modules\Order\app\Http\Controllers\OrderController;
 //     Route::get('order', fn (Request $request) => $request->user())->name('order');
 // });
 Route::prefix("/{branch?}")->group(function() {
-    Route::get('/order/place-order', [OrderController::class, 'store']);
+    Route::post('/order/place-order', [OrderController::class, 'store']);
 });

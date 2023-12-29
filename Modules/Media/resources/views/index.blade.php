@@ -45,7 +45,7 @@
             </div>
             <div class="row">
                 @foreach($medias as $media)
-                <div class="col-lg-4 col-md-6 mb-4">
+                <div class="col-lg-2 col-md-2 mb-4">
                     <div class="card">
                         <img src="{{ $media->url }}" class="card-img-top p-1" alt="Image">
                         <div class="card-body">

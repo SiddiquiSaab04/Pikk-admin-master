@@ -141,6 +141,7 @@ class UserController extends Controller
     public function getUserById($id)
     {
         $user = $this->userService->getById($id);
+        $user->load('branch');
         $user->getRoleNames()->first();
         return sendResponse(true, null, $user, null, 200);
     }
