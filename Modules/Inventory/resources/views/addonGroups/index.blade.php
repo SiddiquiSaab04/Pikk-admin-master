@@ -70,18 +70,20 @@
                                             <span class="caret"></span>
                                         </a>
                                         @endcan
-                                        @can('delete_addon_groups')
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
-                                            x-placement="bottom-start"
-                                            style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        x-placement="bottom-start"
+                                        style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
+                                        @can('update_addon_groups')
                                             <a class="dropdown-item" href="{{ route('addonGroup.edit', $addonGroup->id) }}">Edit</a>
+                                        @endcan
+                                        @can('delete_addon_groups')
                                             <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete').submit()">Delete</a>
                                             <form id="delete" action="{{ route('addonGroup.destroy', $addonGroup->id) }}" method="post">
                                                 @csrf
                                                 @method("DELETE")
                                             </form>
-                                        </div>
                                         @endcan
+                                        </div>
                                     </td>
                                 </tr>
                             @endforeach
