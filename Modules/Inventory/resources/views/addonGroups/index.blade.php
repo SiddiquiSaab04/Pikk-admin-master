@@ -63,13 +63,11 @@
                                     <td>{{ $addonGroup->description }}</td>
                                     <td>{{ $addonGroup->created_at }}</td>
                                     <td role="presentation" class="dropdown">
-                                        @can('update_addon_groups')
                                         <a id="drop5" href="#" class="dropdown-toggle" data-toggle="dropdown"
                                             aria-haspopup="true" role="button" aria-expanded="false">
                                             Options
                                             <span class="caret"></span>
                                         </a>
-                                        @endcan
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
                                         x-placement="bottom-start"
                                         style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
