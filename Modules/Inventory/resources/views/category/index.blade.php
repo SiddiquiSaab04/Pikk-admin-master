@@ -69,7 +69,7 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
                                             x-placement="bottom-start"
                                             style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                            @can('edit_categories')<a class="dropdown-item" href="{{ route('category.edit', $category->id) }}">Edit</a>@endcan
+                                            @can('update_categories')<a class="dropdown-item" href="{{ route('category.edit', $category->id) }}">Edit</a>@endcan
                                             @can('delete_categories')<a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete').submit()">Delete</a>
                                                 <form id="delete" action="{{ route('category.destroy', $category->id) }}" method="post">
                                                     @csrf
