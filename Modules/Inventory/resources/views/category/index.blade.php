@@ -10,11 +10,13 @@
                             <i class="fa fa-refresh text-white"></i>
                         </button>
                     </a>
+                    @can('create_categories')
                     <a href="{{ route('category.create') }}">
                         <button class="rounded-full btn-success font-large padding-2">
                             <i class="fa fa-plus text-white"></i>
                         </button>
                     </a>
+                    @endcan
                 </div>
                 <div class="col-5">
                     <div class="form-group top_search">
@@ -67,12 +69,13 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
                                             x-placement="bottom-start"
                                             style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                            <a class="dropdown-item" href="{{ route('category.edit', $category->id) }}">Edit</a>
-                                            <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete').submit()">Delete</a>
-                                            <form id="delete" action="{{ route('category.destroy', $category->id) }}" method="post">
-                                                @csrf
-                                                @method("DELETE")
-                                            </form>
+                                            @can('edit_categories')<a class="dropdown-item" href="{{ route('category.edit', $category->id) }}">Edit</a>@endcan
+                                            @can('delete_categories')<a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete').submit()">Delete</a>
+                                                <form id="delete" action="{{ route('category.destroy', $category->id) }}" method="post">
+                                                    @csrf
+                                                    @method("DELETE")
+                                                </form>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>

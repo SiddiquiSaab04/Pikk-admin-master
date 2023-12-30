@@ -27,6 +27,8 @@ return new class extends Migration
             $table->foreign("category_id")->references("id")->on("categories");
             $table->unsignedBigInteger('addon_group_id');
             $table->foreign("addon_group_id")->references("id")->on("addon_groups");
+            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

@@ -35,22 +35,27 @@
                     @endcan
                 </ul>
             </li>
+            @can('read_branches')
             <li><a><i class="fa fa-home"></i> Branches <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('branch.index') }}">Manage Branches</a></li>
                 </ul>
             </li>
+            @endcan
             <li><a><i class="fa fa-edit"></i> Inventory <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{ route('category.index') }}">Categories</a></li>
-                    <li><a href="{{ route('product.index') }}">Products</a></li>
-                    <li><a href="{{ route('addonGroup.index') }}">Addon Groups</a></li>
+                    @can('read_categories')<li><a href="{{ route('category.index') }}">Categories</a></li>@endcan
+                    @can('read_products')<li><a href="{{ route('product.index') }}">Products</a></li>@endcan
+                    @can('read_addon_groups')<li><a href="{{ route('addonGroup.index') }}">Addon Groups</a></li>@endcan
                 </ul>
             </li>
+            @can('read_orders')
             <li><a><i class="fa fa-table"></i> Orders <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('order.index') }}">Order Listing</a></li>
                 </ul>
+            </li>
+            @endcan
             <li><a><i class="fa fa-desktop"></i> Media Gallery <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('media.index') }}">Listing</a></li>

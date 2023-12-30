@@ -17,6 +17,8 @@ return new class extends Migration
             $table->longText("description");
             $table->tinyInteger("multiselect")->default(1);
             $table->tinyInteger("status")->default(1);
+            $table->unsignedBigInteger('branch_id')->nullable();
+            $table->foreign('branch_id')->references('id')->on('branches')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

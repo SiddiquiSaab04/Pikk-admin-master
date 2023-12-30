@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Modules\Branch\app\Services\BranchService;
 
 class BranchController extends Controller
@@ -22,7 +23,7 @@ class BranchController extends Controller
      */
     public function index()
     {
-        $branches = $this->branchService->getAll();
+        $branches = $this->branchService->getWhere(['id' => Auth::user()->branch_id]);
         if(request()->wantsjson()) {
             return sendResponse(true, null,
                 $branches,

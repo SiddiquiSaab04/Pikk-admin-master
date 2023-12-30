@@ -16,9 +16,9 @@ class BranchRepository implements BranchInterface
         try {
             Schema::create("orders_$id", function (Blueprint $table) {
                 $table->bigIncrements('id');
-                $table->unsignedBigInteger('customer_id');
-                $table->float('code');
-                $table->string('title');
+                $table->unsignedBigInteger('customer_id')->default(1);
+                $table->sting('code');
+                $table->string('title')->nullable();
                 $table->string('type');
                 $table->text('note')->nullable()->default(null);
                 $table->string('status');
