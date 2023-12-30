@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('product_modifiers_addons', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger("product_modifiers_id");
+            $table->unsignedBigInteger("product_modifier_id");
             $table->unsignedBigInteger("product_id");
             $table->foreign("product_modifier_id")->references("id")->on("product_modifiers");
             $table->foreign("product_id")->references("id")->on("products");
