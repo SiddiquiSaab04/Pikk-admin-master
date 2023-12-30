@@ -10,11 +10,13 @@
                             <i class="fa fa-refresh text-white"></i>
                         </button>
                     </a>
+                    @can('create_addon_groups')
                     <a href="{{ route('addonGroup.create') }}">
                         <button class="rounded-full btn-success font-large padding-2">
                             <i class="fa fa-plus text-white"></i>
                         </button>
                     </a>
+                    @endcan
                 </div>
                 <div class="col-5">
                     <div class="form-group top_search">
@@ -61,11 +63,14 @@
                                     <td>{{ $addonGroup->description }}</td>
                                     <td>{{ $addonGroup->created_at }}</td>
                                     <td role="presentation" class="dropdown">
+                                        @can('update_addon_groups')
                                         <a id="drop5" href="#" class="dropdown-toggle" data-toggle="dropdown"
                                             aria-haspopup="true" role="button" aria-expanded="false">
                                             Options
                                             <span class="caret"></span>
                                         </a>
+                                        @endcan
+                                        @can('delete_addon_groups')
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
                                             x-placement="bottom-start"
                                             style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
@@ -76,6 +81,7 @@
                                                 @method("DELETE")
                                             </form>
                                         </div>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach
