@@ -10,11 +10,13 @@
                             <i class="fa fa-refresh text-white"></i>
                         </button>
                     </a>
+                    @can('create_products')
                     <a href="{{ route('product.create') }}">
                         <button class="rounded-full btn-success font-large padding-2">
                             <i class="fa fa-plus text-white"></i>
                         </button>
                     </a>
+                    @endcan
                 </div>
                 <div class="col-5">
                     <div class="form-group top_search">
@@ -80,8 +82,10 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
                                             x-placement="bottom-start"
                                             style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                            <a class="dropdown-item"
+                                            @can('edit_products')<a class="dropdown-item"
                                                 href="{{ route('product.edit', $product->id) }}">Edit</a>
+                                            @endcan
+                                            @can('delete_products')
                                             <a class="dropdown-item"
                                                 onclick="event.preventDefault(); document.getElementById('delete').submit()">Delete</a>
                                             <form id="delete" action="{{ route('product.destroy', $product->id) }}"
@@ -89,6 +93,7 @@
                                                 @csrf
                                                 @method('DELETE')
                                             </form>
+                                            @endcan
                                         </div>
                                     </td>
                                 </tr>
