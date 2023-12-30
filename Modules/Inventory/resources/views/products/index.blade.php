@@ -82,7 +82,7 @@
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton"
                                             x-placement="bottom-start"
                                             style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                            @can('edit_products')<a class="dropdown-item"
+                                            @can('update_products')<a class="dropdown-item"
                                                 href="{{ route('product.edit', $product->id) }}">Edit</a>
                                             @endcan
                                             @can('delete_products')
