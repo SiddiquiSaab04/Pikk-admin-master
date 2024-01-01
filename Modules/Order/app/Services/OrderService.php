@@ -70,9 +70,9 @@ class OrderService
          * below.
          */
         $orderProducts = $this->getOrderProducts($data);
-        $orderProductAddons = $this->getOrderProductAddons($orderProducts);
-        $payload = $this->checkStocks($orderProductAddons);
-dd($payload);
+        $payload = $this->getOrderProductAddons($orderProducts);
+        // $payload = $this->checkStocks($orderProductAddons);
+
         $order = $this->orderRepository->create($payload);
         if (!empty($order->id)) {
 
