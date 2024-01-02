@@ -29,8 +29,8 @@
                     <div class="form-group row">
                         <label class="control-label col-md-3 col-sm-3 ">Role</label>
                         <div class="col-md-9 col-sm-9 ">
-                            <select class="form-control" name="role" required>
-                                <option selected disabled>Choose Role</option>
+                            <select class="select2_multiple form-control" multiple="multiple" name="role[]" required>
+                                <option disabled>Choose Role</option>
                                 @foreach($roles as $role)
                                 <option value="{{$role->name}}">{{ $role->name }}</option>
                                 @endforeach
@@ -49,3 +49,14 @@
     </div>
 </div>
 @endsection
+=]
+@push('scripts')
+<script>
+    $(document).ready(function() {
+        $(".select2_multiple").select2({
+            placeholder: "Select one or more options",
+            allowClear: true
+        });
+    });
+</script>
+@endpush

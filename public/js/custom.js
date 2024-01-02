@@ -1051,8 +1051,7 @@ if (typeof NProgress != 'undefined') {
 
 		function init_wysiwyg() {
 			
-		if( typeof ($.fn.wysiwyg) === 'undefined'){ return; }
-		console.log('init_wysiwyg');	
+		if( typeof ($.fn.wysiwyg) === 'undefined'){ return; }	
 			
         function init_ToolbarBootstrapBindings() {
           var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',

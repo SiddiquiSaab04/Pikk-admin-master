@@ -159,6 +159,9 @@ class PermissionsDatabaseSeeder extends Seeder
                 ],
                 [
                     'name' => "kds"
+                ],
+                [
+                    'name' => "login"
                 ]
             ];
 
@@ -177,7 +180,7 @@ class PermissionsDatabaseSeeder extends Seeder
                 $adminRole = Role::where('name', 'admin')->first();
                 $manageRole = Role::where('name', 'manager')->first();
 
-                $readingPermissions = Permission::whereIn('name', ['create_users', 'read_users', 'update_users', 'delete_users', 'read_roles', 'read_permissions', 'read_products', 'read_medias', 'read_categories', 'read_addons', 'read_addon_groups', 'read_units', 'read_unit_groups', 'see_reports', 'pos', 'kds'])->get();
+                $readingPermissions = Permission::whereIn('name', ['create_users', 'read_users', 'update_users', 'delete_users', 'read_roles', 'read_permissions', 'read_products', 'read_medias', 'read_categories', 'read_addons', 'read_addon_groups', 'read_units', 'read_unit_groups', 'see_reports', 'pos', 'kds', 'login'])->get();
 
                 $adminRole->syncPermissions($readingPermissions);
                 $manageRole->syncPermissions($readingPermissions);

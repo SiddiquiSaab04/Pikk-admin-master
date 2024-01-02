@@ -9,10 +9,10 @@ class PermissionsRepository implements PermissionsRepositoryInterface
 {
     public function updateRole($name, $model)
     {
-        $role = Role::where('name', $name)->first();
+        $role = Role::whereIn('name', $name)->get();
         if ($model->getRoleNames()->first()) {
             $model->syncRoles([]);
         }
-        return $model->assignRole($role);
+        return $model->syncRoles($role);
     }
 }

@@ -23,7 +23,7 @@ class AuthService
             if ($user['user'] && Hash::check($user['credentials']['password'], $user['user']->getAuthPassword())) {
                 $token =  $this->authRepository->generateToken($user['user']);
                 $response = [
-                    'auth' => $user['user']->makeHidden('roles','permissions'),
+                    'auth' => $user['user']->makeHidden('roles', 'permissions'),
                     'token' => $token
                 ];
                 return sendResponse(true, null, $response, 'Successfully logged in.', 200);
