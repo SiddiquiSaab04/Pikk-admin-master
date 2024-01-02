@@ -6,5 +6,6 @@
     "Branch": true,
     "Order": true,
     "Media": true,
-    "Customers": true
+    "Customers": true,
+    "Reports": true
 }
