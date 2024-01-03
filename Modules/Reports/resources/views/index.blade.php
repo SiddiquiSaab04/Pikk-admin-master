@@ -1,7 +1,16 @@
-@extends('reports::layouts.master')
+@extends('layouts.master')
 
 @section('content')
-    <h1>Hello World</h1>
-
-    <p>Module: {!! config('reports.name') !!}</p>
+@include('layouts.descriptions')
+  <div class="row" id="app">
+    <div class="col-4">
+        <tile-component :path="'orders-count'"></tile-component>
+    </div>
+    <div class="col-4">
+        <tile-component :path="'orders-revenue'"></tile-component>
+    </div>
+    <div class="col-4">
+        <tile-component :path="'orders-profit'"></tile-component>
+    </div>
+  </div>
 @endsection

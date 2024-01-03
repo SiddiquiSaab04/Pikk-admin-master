@@ -6,62 +6,58 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Reports\app\Services\ReportService;
 
 class ReportsController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        return view('reports::index');
+   protected $reportService;
+
+   public function __construct(ReportService $reportService)
+   {
+        $this->reportService = $reportService;
+   }
+
+   public function index()
+   {
+        return sendResponse(false, 'reports::index', [
+            "title" => "Order Reports",
+            "description" => "show order reports"
+        ]);
+   }
+
+   public function getOrdersCount()
+   {
+        $count = $this->reportService->getOrdersCount();
+        return sendResponse(
+            true,
+            null,
+            $count,
+            "Order Count",
+            200
+        );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function getTotalRevenue()
     {
-        return view('reports::create');
+        $revenue = $this->reportService->getTotalRevenue();
+        return sendResponse(
+            true,
+            null,
+            ("$".round($revenue, 2)),
+            "Total Revenue",
+            200
+        );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request): RedirectResponse
+    public function getTotalProfit()
     {
-        //
-    }
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
-    {
-        return view('reports::show');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
-    {
-        return view('reports::edit');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id)
-    {
-        //
+        $revenue = $this->reportService->getTotalProfit();
+        return sendResponse(
+            true,
+            null,
+            ("$".round($revenue, 2)),
+            "Total Profit",
+            200
+        );
     }
 }

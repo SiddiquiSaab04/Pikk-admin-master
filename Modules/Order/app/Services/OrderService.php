@@ -249,6 +249,16 @@ class OrderService
         return $orders;
     }
 
+    public function getCount()
+    {
+        return $this->orderRepository->getWhere(['payment', '=' ,'paid'], ['status', '=' ,'served'])->count();
+    }
+
+    public function getRevenue($column)
+    {
+        return $this->orderRepository->getWhere(['payment', '=' ,'paid'], ['status', '=' ,'served'])->sum($column);
+    }
+
     public function readyOrder($id)
     {
         $order = $this->orderRepository->getById($id);

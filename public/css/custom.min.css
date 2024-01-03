@@ -36,3 +36,7 @@
 th, td{
     text-wrap: nowrap;
 }
+.font-lg{
+    font-size: 4rem !important;
+    font-weight: bold;
+}
