@@ -6,6 +6,7 @@
 
 import './bootstrap';
 import { createApp } from 'vue';
+import { createVuestic } from "vuestic-ui";
 
 import enabledModules from "../../modules_statuses.json";
 /**
@@ -34,4 +35,4 @@ Object.entries(import.meta.glob('../../**/*.vue', { eager: true })).forEach(([pa
  * scaffolding. Otherwise, you will need to add an element yourself.
  */
 
-app.mount('#app');
+app.use(createVuestic()).mount('#app');

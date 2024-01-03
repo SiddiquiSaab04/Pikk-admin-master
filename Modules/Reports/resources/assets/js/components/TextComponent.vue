@@ -8,12 +8,13 @@
   <div
     class="card rounded font-lg"
     :class="loading ? 'd-orders' : ''"
-    style="min-height: 8rem"
+    style="min-height: 100%"
   >
     <div class="card-body">
-      <h5 class="card-title">{{ data.message }}</h5>
-      <h2 class="card-text font-lg">
-        {{ data.data }}
+      <h5 class="card-title">Platform Percentage</h5>
+      <h2 class="card-text font-bold" v-for="(platform, key) in data" :key="key">
+        <span class="text-capitalize font-bold"> {{ key }}</span>
+        <span class="float-right"> {{ platform }}%</span>
       </h2>
     </div>
   </div>
@@ -21,7 +22,7 @@
 <script>
 import { VueSpinner } from "vue3-spinners";
 export default {
-  props: ["path", "date"],
+  props: ["date"],
   components: {
     VueSpinner,
   },
@@ -43,13 +44,13 @@ export default {
     getData(start, end) {
       this.loading = true;
       axios
-        .post("/api/6/reports/" + this.path, {
+        .post("/api/6/reports/orders-by-platform", {
           startDate: start.format("Y-m-d"),
-          endDate: end.format("Y-m-d"),
+          endDate: end.format("Y-m-d")
         })
         .then((response) => {
-          this.data = response.data;
           this.loading = false;
+          this.data = response.data.data;
         })
         .catch((error) => {
           console.log(error);

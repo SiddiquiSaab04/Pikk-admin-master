@@ -2,6 +2,7 @@
 
 namespace Modules\Order\app\Repositories;
 
+use Illuminate\Support\Facades\DB;
 use Modules\Order\app\Interfaces\OrderInterface;
 use Modules\Order\app\Models\Order;
 
@@ -48,7 +49,11 @@ class OrderRepository implements OrderInterface
             foreach($clause as $statement) {
                 [$key, $operator, $value] = $statement;
                 if($key == 'created_at') {
-                    $query->whereDate($key, $operator, $value);
+                    if($operator == 'between') {
+                        $query->whereBetween($key, $value);
+                    } else {
+                        $query->whereDate($key, $operator, $value);
+                    }
                 } else {
                     $query->where($key, $operator, $value);
                 }

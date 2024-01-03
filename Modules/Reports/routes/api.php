@@ -20,7 +20,9 @@ use Modules\Reports\app\Http\Controllers\ReportsController;
 // });
 
 Route::prefix("/{branch}/reports")->group(function() {
-    Route::get('orders-count', [ReportsController::class, 'getOrdersCount']);
-    Route::get('orders-revenue', [ReportsController::class, 'getTotalRevenue']);
-    Route::get('orders-profit', [ReportsController::class, 'getTotalProfit']);
+    Route::post('orders-count', [ReportsController::class, 'getOrdersCount']);
+    Route::post('orders-revenue', [ReportsController::class, 'getTotalRevenue']);
+    Route::post('orders-profit', [ReportsController::class, 'getTotalProfit']);
+    Route::post('orders-by-date', [ReportsController::class, 'getOrdersByDate']);
+    Route::post('orders-by-platform', [ReportsController::class, 'getOrdersByPlatform']);
 });

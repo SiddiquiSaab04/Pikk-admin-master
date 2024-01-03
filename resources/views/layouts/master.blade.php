@@ -21,6 +21,7 @@
 
     <link href="{{ asset('css/custom.min.css') }}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link href="https://fonts.bunny.net/css?family=figtree:400,600&display=swap" rel="stylesheet" />
 </head>
 
@@ -76,7 +77,7 @@
     <script src="{{ asset('vendors/switchery/dist/switchery.min.js') }}"></script>
     <script src="{{ asset('vendors/select2/dist/js/select2.full.min.js') }}"></script>
     <script src="{{ asset('vendors/img-uploader/image-uploader.min.js') }}"></script>
-    
+
     @vite('resources/js/app.js')
     @stack('scripts')
     @include('sweetalert::alert')

@@ -2,6 +2,7 @@
 
 namespace Modules\Order\app\Models;
 
+use Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Modules\Order\app\Models\OrderProduct;
@@ -12,6 +13,7 @@ class Order extends Model
 
     protected $table = 'orders';
     protected $branch = null;
+    protected $appends = ['order_date'];
 
     public function setTableName(string $table)
     {
@@ -41,6 +43,11 @@ class Order extends Model
         "sub_total",
         "cancelled_reason",
     ];
+
+    public function getOrderDateAttribute()
+    {
+        return date('Y-m-d', strtotime($this->created_at));
+    }
 
     public function orderProducts()
     {

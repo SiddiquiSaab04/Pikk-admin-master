@@ -10,52 +10,76 @@ use Modules\Reports\app\Services\ReportService;
 
 class ReportsController extends Controller
 {
-   protected $reportService;
+    protected $reportService;
 
-   public function __construct(ReportService $reportService)
-   {
+    public function __construct(ReportService $reportService)
+    {
         $this->reportService = $reportService;
-   }
+    }
 
-   public function index()
-   {
+    public function index()
+    {
         return sendResponse(false, 'reports::index', [
             "title" => "Order Reports",
             "description" => "show order reports"
         ]);
-   }
+    }
 
-   public function getOrdersCount()
-   {
-        $count = $this->reportService->getOrdersCount();
+    public function getOrdersCount(Request $request)
+    {
+        $count = $this->reportService->getOrdersCount($request->startDate, $request->endDate);
         return sendResponse(
             true,
             null,
             $count,
-            "Order Count",
+            "Total Orders",
             200
         );
     }
 
-    public function getTotalRevenue()
+    public function getTotalRevenue(Request $request)
     {
-        $revenue = $this->reportService->getTotalRevenue();
+        $revenue = $this->reportService->getTotalRevenue($request->startDate, $request->endDate);
         return sendResponse(
             true,
             null,
-            ("$".round($revenue, 2)),
+            ("$" . round($revenue, 2)),
             "Total Revenue",
             200
         );
     }
 
-    public function getTotalProfit()
+    public function getTotalProfit(Request $request)
     {
-        $revenue = $this->reportService->getTotalProfit();
+        $revenue = $this->reportService->getTotalProfit($request->startDate, $request->endDate);
         return sendResponse(
             true,
             null,
-            ("$".round($revenue, 2)),
+            ("$" . round($revenue, 2)),
+            "Total Profit",
+            200
+        );
+    }
+
+    public function getOrdersByDate(Request $request)
+    {
+        $orders = $this->reportService->getOrdersByDate($request->startDate, $request->endDate);
+        return sendResponse(
+            true,
+            null,
+            $orders,
+            "Total Profit",
+            200
+        );
+    }
+
+    public function getOrdersByPlatform(Request $request)
+    {
+        $orders = $this->reportService->getOrdersByPlatform($request->startDate, $request->endDate);
+        return sendResponse(
+            true,
+            null,
+            $orders,
             "Total Profit",
             200
         );

@@ -249,14 +249,9 @@ class OrderService
         return $orders;
     }
 
-    public function getCount()
+    public function getOrdersByDate($start, $end)
     {
-        return $this->orderRepository->getWhere(['payment', '=' ,'paid'], ['status', '=' ,'served'])->count();
-    }
-
-    public function getRevenue($column)
-    {
-        return $this->orderRepository->getWhere(['payment', '=' ,'paid'], ['status', '=' ,'served'])->sum($column);
+        return $this->orderRepository->getWhere(['payment', '=' ,'paid'], ['status', '=' ,'served'], ['created_at', 'between', [$start, $end]])->get();
     }
 
     public function readyOrder($id)
