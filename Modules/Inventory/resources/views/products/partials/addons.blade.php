@@ -11,9 +11,9 @@
             <select name="addon_group_id" class="form-control">
                 <option value="">-- select addons --</option>
                 @foreach ($addons as $addon)
-                    <option value="{{ $addon->id }}" @if (!empty($product->id) && $addon->id == $product->addon_group_id) selected @endif>
-                        {{ $addon->name }}
-                    </option>
+                <option value="{{ $addon->id }}" @if (!empty($product->id) && $addon->id == $product->addon_group_id) selected @endif>
+                    {{ $addon->name }}
+                </option>
                 @endforeach
             </select>
             <span class="mt-1">
@@ -26,8 +26,8 @@
     <div class="col-sm-12 mb-4">
         <h4 class="p-4 text-center border-1">Addons Products</h4>
     </div>
-    <div id="app">
-        <addon-component :addons="{{ $addons }}" :product="{{ $product ?? null }}">
+    <div>
+        <addon-component :addons="{{ $addons }}" :product="{{ $product }}">
 
         </addon-component>
     </div>

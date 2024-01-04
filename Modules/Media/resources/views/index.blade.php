@@ -47,10 +47,9 @@
                 @foreach($medias as $media)
                 <div class="col-lg-2 col-md-2 mb-4">
                     <div class="card">
-                        <img src="{{ $media->url }}" class="card-img-top p-1" alt="Image">
+                        <img src="{{ $media->url }}" class="p-1" alt="Image" height="250px">
                         <div class="card-body">
-                            <h5 class="card-title">{{ $media->name }}</h5>
-                            <div class="tools tools-bottom float-right">
+                            <div class="tools tools-bottom text-center">
                                 <a href="{{ $media->url }}"><i class="fa fa-link"></i></a>
                                 @can('update_medias')
                                 <a href="{{ route('media.edit', $media->id) }}"><i class="fa fa-pencil"></i></a>

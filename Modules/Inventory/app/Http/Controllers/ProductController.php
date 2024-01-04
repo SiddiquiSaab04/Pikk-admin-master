@@ -10,14 +10,18 @@ use Illuminate\Http\Response;
 use Modules\Inventory\app\Http\Requests\ProductRequest;
 use Modules\Inventory\app\Resources\ProductResource;
 use Modules\Inventory\app\Services\ProductService;
+use Modules\Media\app\Services\MediaService;
+use stdClass;
 
 class ProductController extends Controller
 {
     private $productService;
+    private $mediaService;
 
-    public function __construct(ProductService $productService)
+    public function __construct(ProductService $productService, MediaService $mediaService)
     {
         $this->productService = $productService;
+        $this->mediaService = $mediaService;
     }
     /**
      * Display a listing of the resource.
@@ -29,8 +33,10 @@ class ProductController extends Controller
 
         $colors = $this->productService->colorAssociation();
 
-        if(request()->wantsjson()) {
-            return sendResponse(true, null,
+        if (request()->wantsjson()) {
+            return sendResponse(
+                true,
+                null,
                 $products->groupBy("category.name"),
                 null,
                 200
@@ -52,10 +58,13 @@ class ProductController extends Controller
     {
         $categories = $this->productService->getCategories();
         $addons = $this->productService->getAddons();
+        $images = $this->mediaService->getAll();
 
         return view('inventory::products.create', [
+            "product" => $this->productService->getById(0),
             'categories' => $categories,
             'addons' => $addons,
+            'images' => $images->toJson(),
             'title' => 'Create Product',
             'description' => 'create a new product'
         ]);
@@ -81,7 +90,7 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = $this->productService->search($id);
-        if(request()->wantsjson()) {
+        if (request()->wantsjson()) {
             return sendResponse('inventory::products.index', [
                 "product" => $product,
                 "title" => "Products List",

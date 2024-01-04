@@ -64,4 +64,16 @@ class CustomersController extends Controller
     {
         //
     }
+
+    public function register()
+    {
+    }
+
+    public function login()
+    {
+    }
+
+    public function logout()
+    {
+    }
 }
