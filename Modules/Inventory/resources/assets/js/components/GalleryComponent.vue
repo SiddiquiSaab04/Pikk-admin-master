@@ -4,8 +4,8 @@
     <VaModal
         title="Select Image(s)"
         fixed-layout
-        max-height="750px"
-        max-width="1700px"
+        max-height="650px"
+        max-width="1300px"
         v-model="showModal"
         ok-text="Select"
         close-button
@@ -16,7 +16,7 @@
         <div class="col-md-12 col-sm-12">
             <div class="row">
                 <div
-                    v-for="(image, key) in images.data"
+                    v-for="(image, key) in images"
                     :key="key"
                     class="col-lg-2 col-md-3 col-4 mb-4 mt-4"
                     style="cursor: pointer"
@@ -69,11 +69,11 @@
                         height="250px"
                     />
                     <VaButton
-                        color="info"
+                        :color="image.primary ? '#1abb9c' : 'info'"
                         :class="'m-0'"
                         @click="makePrimary(image)"
                     >
-                        Make Primary
+                        {{ image.primary ? "Primary" : "Make Primary" }}
                     </VaButton>
                 </div>
             </div>
@@ -83,22 +83,43 @@
 
 <script>
 export default {
-    props: ["images"],
+    props: ["images", "product"],
     data() {
         return {
             showModal: false,
             selectedImages: [],
         };
     },
+    mounted() {
+        this.initializeSelectedImages();
+    },
+    watch: {
+        selectedImages: {
+            deep: true,
+            handler(newVal) {
+                const hasPrimaryTrue = newVal.some(
+                    (obj) => obj.primary === true
+                );
+
+                if (!hasPrimaryTrue && newVal.length > 0) {
+                    newVal[0].primary = true;
+                }
+            },
+        },
+    },
     methods: {
+        initializeSelectedImages() {
+            if (this.product) {
+                this.selectedImages = this.product.media.map((selected) => ({
+                    ...selected,
+                    edited: true,
+                    primary: selected.pivot.primary,
+                }));
+            }
+        },
         toggleSelection(image) {
             const isAlreadySelected = this.isSelect(image);
-
-            if (isAlreadySelected) {
-                this.unselect(image);
-            } else {
-                this.select(image);
-            }
+            isAlreadySelected ? this.unselect(image) : this.select(image);
         },
 
         isSelect(image) {
@@ -110,6 +131,10 @@ export default {
         select(image) {
             image.primary = false;
             this.selectedImages.push(image);
+
+            if (this.selectedImages.length > 0) {
+                this.selectedImages[0].primary = true;
+            }
         },
 
         unselect(image) {
@@ -119,22 +144,20 @@ export default {
                 (selected) => !(selected.id === ImageToRemove)
             );
         },
+
         beforeCancel(hide) {
             this.selectedImages = [];
+            this.initializeSelectedImages();
+
             hide();
         },
-        makePrimary(image) {
-            console.log(image);
-            // return;
-            this.selectedImages = this.selectedImages.map((images) => {
-                if (images.id == image.id) {
-                    images.primary = true;
-                } else {
-                    images.primary = false;
-                }
 
-                return images;
-            });
+        makePrimary(image) {
+            if (image) {
+                this.selectedImages.forEach((img) => {
+                    img.primary = img.id === image.id;
+                });
+            }
         },
     },
 };
@@ -148,7 +171,7 @@ export default {
     border: 1px solid #1abb9c;
     color: #1abb9c;
     border-radius: 30px;
-    width: 33%;
+    width: 47%;
     position: absolute;
     top: 10px;
     left: 10px;

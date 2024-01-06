@@ -4,9 +4,9 @@ namespace Modules\Inventory\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Inventory\Database\factories\ProductImageFactory;
+use Modules\Inventory\Database\factories\ProductMediaFactory;
 
-class ProductImage extends Model
+class ProductMedia extends Model
 {
     use HasFactory;
 
@@ -15,6 +15,7 @@ class ProductImage extends Model
      */
     protected $fillable = [
         "product_id",
-        "primary",
+        "media_id",
+        "primary"
     ];
 }

@@ -58,7 +58,7 @@ class ProductController extends Controller
     {
         $categories = $this->productService->getCategories();
         $addons = $this->productService->getAddons();
-        $images = $this->mediaService->getAll();
+        $images = $this->mediaService->getAllWithoutPagination();
 
         return view('inventory::products.create', [
             "product" => $this->productService->getById(0),
@@ -111,14 +111,16 @@ class ProductController extends Controller
     public function edit($id)
     {
         $product = $this->productService->getById($id);
-        $product->load('category', 'addons.modifier', 'addons.addonProducts.product');
+        $product->load('category', 'addons.modifier', 'addons.addonProducts.product', 'media');
         $categories = $this->productService->getCategories();
         $addons = $this->productService->getAddons();
+        $images = $this->mediaService->getAllWithoutPagination();
 
         return view('inventory::products.edit', [
             "product" => $product,
             'categories' => $categories,
             'addons' => $addons,
+            'images' => $images->toJson(),
             "title" => "Edit product",
             "description" => "edit a product"
         ]);

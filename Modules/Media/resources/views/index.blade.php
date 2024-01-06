@@ -67,6 +67,7 @@
                 </div>
                 @endforeach
             </div>
+            {{ $medias->links() }}
         </div>
     </div>
 </div>

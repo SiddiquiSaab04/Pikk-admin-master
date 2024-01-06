@@ -15,19 +15,23 @@ class ProductService
     private $modifierService;
     private $addons;
     private $productAddonService;
+    private $productMediaService;
 
     public function __construct(
         CategoryService $categoryService,
         AddonGroupService $addonGroupService,
         ProductModifierService $modifierService,
         ProductModifiersAddonService $productAddonService,
-        CrudRepository $crudRepository)
-    {
+        ProductMediaService $productMediaService,
+        CrudRepository $crudRepository
+    ) {
         $this->crudRepository = $crudRepository;
         $this->addons = $addonGroupService;
         $this->categories = $categoryService;
         $this->modifierService = $modifierService;
         $this->productAddonService = $productAddonService;
+        $this->productMediaService = $productMediaService;
+
         $this->model = "\\Modules\\Inventory\\app\\Models\\Product";
     }
 
@@ -72,11 +76,14 @@ class ProductService
     public function createProduct($data)
     {
         $data['product_addon'] = collect(json_decode($data['addons']), true);
+        $data['images'] = collect(json_decode($data['images']), true);
+
         $product = $this->create($data);
 
         $addons = collect($data['product_addon']);
+        $medias = collect($data['images']);
 
-        foreach($addons as $addonData) {
+        foreach ($addons as $addonData) {
             /**
              * creating array for product_modifiers table
              */
@@ -94,7 +101,7 @@ class ProductService
              * field is 1, which means only selected products will
              * be inserted into the database
              */
-            $products = collect($addonData->products)->filter( fn ($product) => $product->is_selected == 1 )->flatten();
+            $products = collect($addonData->products)->filter(fn ($product) => $product->is_selected == 1)->flatten();
 
             foreach ($products as $productData) {
 
@@ -108,6 +115,20 @@ class ProductService
 
                 $this->productAddonService->create($addonProduct);
             }
+        }
+
+        foreach ($medias as $media) {
+
+            /**
+             * creating product_media array for insertion
+             */
+            $productMedia = [
+                "media_id" => $media->id,
+                'product_id' => $product->id,
+                'primary' => $media->primary
+            ];
+
+            $this->productMediaService->create($productMedia);
         }
 
         return $product;
@@ -124,8 +145,9 @@ class ProductService
     public function updateProduct($data, $id)
     {
         $product = $this->getById($id);
-        $product->load('category', 'addons.modifier', 'addons.addonProducts.product');
-        $data['product_addon'] =(json_decode($data['addons']));
+        $product->load('category', 'addons.modifier', 'addons.addonProducts.product', 'media');
+        $data['product_addon'] = (json_decode($data['addons']));
+        $data['images'] = (json_decode($data['images']));
 
         $update = $this->update($data, $id);
 
@@ -140,10 +162,13 @@ class ProductService
          */
         $product->addons()->delete();
         $product->addonProducts()->delete();
+        $product->media()->detach();
 
         $addons = collect($data['product_addon']);
+        $medias = collect($data['images']);
 
-        foreach($addons as $addonData) {
+
+        foreach ($addons as $addonData) {
             /**
              * checking if new addon is added for the existing product
              * if added then process data to insert into the database.
@@ -151,7 +176,7 @@ class ProductService
              * for a specific addon
              *
              */
-            if(empty($addonData->product_id)) {
+            if (empty($addonData->product_id)) {
                 /**
                  * aligning data for eloquent update
                  */
@@ -162,7 +187,7 @@ class ProductService
                 ];
 
                 $productModifier = $this->modifierService->create($addon);
-                $products = collect($addonData->products)->filter( fn ($product) => $product->is_selected == 1 )->flatten();
+                $products = collect($addonData->products)->filter(fn ($product) => $product->is_selected == 1)->flatten();
 
                 foreach ($products as $productData) {
                     /**
@@ -183,7 +208,7 @@ class ProductService
                 ];
 
                 $productModifier = $this->modifierService->create($addon);
-                $products = collect($addonData->products)->filter( fn ($product) => $product->is_selected == 1 )->flatten();
+                $products = collect($addonData->products)->filter(fn ($product) => $product->is_selected == 1)->flatten();
 
                 foreach ($products as $productData) {
                     $addonProduct = [
@@ -194,6 +219,17 @@ class ProductService
                     $this->productAddonService->create($addonProduct);
                 }
             }
+        }
+
+        foreach ($medias as $media) {
+
+            $productMedia = [
+                "media_id" => $media->id,
+                'product_id' => $product->id,
+                'primary' => $media->primary
+            ];
+
+            $this->productMediaService->create($productMedia);
         }
 
         return $product;

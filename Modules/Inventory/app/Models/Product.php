@@ -4,7 +4,7 @@ namespace Modules\Inventory\app\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Modules\Inventory\Database\factories\ProductFactory;
+use Modules\Media\app\Models\Media;
 
 class Product extends Model
 {
@@ -41,5 +41,10 @@ class Product extends Model
     public function addonProducts()
     {
         return $this->hasManyThrough(ProductModifiersAddon::class, ProductModifier::class);
+    }
+
+    public function media()
+    {
+        return $this->belongsToMany(Media::class, 'product_media', 'product_id', 'media_id')->withPivot('primary');
     }
 }
