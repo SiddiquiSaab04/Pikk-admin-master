@@ -45,11 +45,11 @@ class OrderRepository implements OrderInterface
     public function getWhere()
     {
         $clause = func_get_args();
-        return $this->query->where(function($query) use ($clause) {
-            foreach($clause as $statement) {
+        return $this->query->where(function ($query) use ($clause) {
+            foreach ($clause as $statement) {
                 [$key, $operator, $value] = $statement;
-                if($key == 'created_at') {
-                    if($operator == 'between') {
+                if ($key == 'created_at') {
+                    if ($operator == 'between') {
                         $query->whereBetween($key, $value);
                     } else {
                         $query->whereDate($key, $operator, $value);
@@ -64,8 +64,8 @@ class OrderRepository implements OrderInterface
     public function whereIn()
     {
         $clause = func_get_args();
-        return $this->query->where(function($query) use ($clause) {
-            foreach($clause as $statement) {
+        return $this->query->where(function ($query) use ($clause) {
+            foreach ($clause as $statement) {
                 [$key, $value] = $statement;
                 $query->whereIn($key, $value);
             }

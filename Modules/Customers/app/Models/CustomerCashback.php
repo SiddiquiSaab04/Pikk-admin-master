@@ -13,5 +13,10 @@ class CustomerCashback extends Model
     /**
      * The attributes that are mass assignable.
      */
-    protected $fillable = [];
+    protected $fillable = [
+        'customer_id',
+        'branch_id',
+        'amount',
+        'status'
+    ];
 }

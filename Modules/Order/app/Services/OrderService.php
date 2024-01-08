@@ -2,6 +2,7 @@
 
 namespace Modules\Order\app\Services;
 
+use Modules\Customers\app\Services\CustomersCashbackService;
 use Modules\Inventory\app\Services\ProductService;
 use Modules\Order\app\Events\OrderCancelledEvent;
 use Modules\Order\app\Events\OrderPlacedEvent;
@@ -19,19 +20,22 @@ class OrderService
     protected $orderProductAddonService;
     protected $productService;
     protected $branch;
+    protected $customerCashbackService;
 
     public function __construct(
         ProductService $productService,
         OrderRepository $orderRepository,
         OrderProductService $orderProductService,
-        OrderProductAddonService $orderProductAddonService
+        OrderProductAddonService $orderProductAddonService,
+        CustomersCashbackService $customerCashbackService
     ) {
         $this->model = "\\Modules\\Order\\app\\Models\\Order";
         $this->productService = $productService;
         $this->orderProductService = $orderProductService;
         $this->orderProductAddonService = $orderProductAddonService;
-        $this->orderRepository = $orderRepository->initTable($this->model,request()->branch);
+        $this->orderRepository = $orderRepository->initTable($this->model, request()->branch);
         $this->branch = request()->branch;
+        $this->customerCashbackService = $customerCashbackService;
     }
 
     /**
@@ -86,6 +90,21 @@ class OrderService
                     $this->orderProductAddonService->create($addon);
                 }
             }
+        }
+
+        /**
+         * Return $x to customer if the order amount exceeds $10
+         */
+
+        if ($order->total >= 10) {
+            $cashback = [
+                "amount" => (int)($order->total / 10),
+                'customer_id' => $order->customer_id,
+                'branch_id' => $this->branch,
+                'status' => 0
+            ];
+
+            $this->customerCashbackService->create($cashback);
         }
 
         $order = $this->orderProductService->getProductsByOrder($order);
@@ -214,7 +233,6 @@ class OrderService
      */
     protected function checkStocks()
     {
-
     }
 
     /**
@@ -234,7 +252,7 @@ class OrderService
     public function getPendingOrders()
     {
         $orders = $this->orderRepository->getWhere(['created_at', '>=', date('Y-m-d')], ['status', '=', 'ongoing'])->get();
-        if(count($orders) > 0) {
+        if (count($orders) > 0) {
             $orders = $this->orderProductService->getProductsByOrder($orders);
         }
         return $orders;
@@ -243,7 +261,7 @@ class OrderService
     public function getReadyOrders()
     {
         $orders = $this->orderRepository->getWhere(['created_at', '>=', date('Y-m-d')], ['status', '=', 'ready'])->get();
-        if(count($orders) > 0) {
+        if (count($orders) > 0) {
             $orders = $this->orderProductService->getProductsByOrder($orders);
         }
         return $orders;
@@ -251,7 +269,7 @@ class OrderService
 
     public function getOrdersByDate($start, $end)
     {
-        return $this->orderRepository->getWhere(['payment', '=' ,'paid'], ['status', '=' ,'served'], ['created_at', 'between', [$start, $end]])->get();
+        return $this->orderRepository->getWhere(['payment', '=', 'paid'], ['status', '=', 'served'], ['created_at', 'between', [$start, $end]])->get();
     }
 
     public function readyOrder($id)
@@ -260,7 +278,7 @@ class OrderService
         $order->status = 'ready';
         $response = $this->orderRepository->save($order);
 
-        if($response) {
+        if ($response) {
             $order = $this->orderProductService->getProductsByOrder($order);
             broadcast(new OrderReadyEvent($order->toJson(), $this->branch))->toOthers();
             return true;
@@ -276,7 +294,7 @@ class OrderService
         $order->cancelled_reason = 'Cancelled';
         $response = $this->orderRepository->save($order);
 
-        if($response) {
+        if ($response) {
             $order = $this->orderProductService->getProductsByOrder($order);
             broadcast(new OrderCancelledEvent($order->toJson(), $this->branch))->toOthers();
             return true;
@@ -291,7 +309,7 @@ class OrderService
         $order->status = 'served';
         $response = $this->orderRepository->save($order);
 
-        if($response) {
+        if ($response) {
             $order = $this->orderProductService->getProductsByOrder($order);
             broadcast(new OrderServedEvent($order->toJson(), $this->branch))->toOthers();
             return true;
