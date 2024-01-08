@@ -11,4 +11,5 @@ interface ProductRepositoryInterface
     public function createProduct(array $data);
     public function updateProduct(string $id, array $data);
     public function getProductWith(string $relation);
+    public function createOrUpdateMedia(string $id, array $medias);
 }

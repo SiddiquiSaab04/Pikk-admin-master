@@ -40,4 +40,9 @@ class ProductRepository implements ProductRepositoryInterface
     {
         //
     }
+
+    public function createOrUpdateMedia(string $id, array $medias)
+    {
+        //
+    }
 }

@@ -117,20 +117,7 @@ class ProductService
             }
         }
 
-        foreach ($medias as $media) {
-
-            /**
-             * creating product_media array for insertion
-             */
-            $productMedia = [
-                "media_id" => $media->id,
-                'product_id' => $product->id,
-                'primary' => $media->primary
-            ];
-
-            $this->productMediaService->create($productMedia);
-        }
-
+        $this->createOrUpdateMedia($product->id, $medias);
         return $product;
     }
 
@@ -221,17 +208,23 @@ class ProductService
             }
         }
 
-        foreach ($medias as $media) {
+        $this->createOrUpdateMedia($product->id, $medias);
+        return $product;
+    }
 
+    public function createOrUpdateMedia($id, $medias)
+    {
+        foreach ($medias as $media) {
+            /**
+             * creating product_media array for insertion
+             */
             $productMedia = [
                 "media_id" => $media->id,
-                'product_id' => $product->id,
+                'product_id' => $id,
                 'primary' => $media->primary
             ];
 
             $this->productMediaService->create($productMedia);
         }
-
-        return $product;
     }
 }
