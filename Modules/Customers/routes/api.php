@@ -20,8 +20,7 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
 });
 
 Route::prefix('customers')->group(function () {
-    Route::post('register', [CustomersController::class, 'register']);
-    Route::post('login', [CustomersController::class, 'login']);
+    Route::post('loginOrRegister', [CustomersController::class, 'loginOrRegister']);
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('logout', [CustomersController::class, 'logout']);

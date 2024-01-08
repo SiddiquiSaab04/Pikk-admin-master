@@ -45,6 +45,11 @@ return [
             'driver' => 'sanctum',
             'provider' => 'api',
         ],
+
+        'customers' => [
+            'driver' => 'sanctum',
+            'provider' => 'customers',
+        ],
     ],
 
     /*
@@ -73,6 +78,11 @@ return [
         'api' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'customers' => [
+            'driver' => 'eloquent',
+            'model' => Modules\Customers\app\Models\Customer::class,
         ],
 
         // 'users' => [

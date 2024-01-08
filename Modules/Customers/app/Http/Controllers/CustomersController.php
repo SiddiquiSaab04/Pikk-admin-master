@@ -6,9 +6,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Modules\Customers\app\Services\CustomersService;
+use Modules\Customers\app\Http\Requests\CustomerRequest;
 
 class CustomersController extends Controller
 {
+    private $customersService;
+
+    public function __construct(CustomersService $customersService)
+    {
+        $this->customersService = $customersService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -65,15 +74,13 @@ class CustomersController extends Controller
         //
     }
 
-    public function register()
+    public function loginOrRegister(CustomerRequest $request)
     {
-    }
-
-    public function login()
-    {
+        return $this->customersService->loginOrRegister($request->all());
     }
 
     public function logout()
     {
+        return $this->customersService->logout();
     }
 }
