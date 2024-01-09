@@ -17,4 +17,9 @@ class CategoryService
         $this->model = "\\Modules\\Inventory\\app\\Models\\Category";
         $this->crudRepository = $crudRepository;
     }
+
+    public function modifyResponse($response)
+    {
+        return $response;
+    }
 }
