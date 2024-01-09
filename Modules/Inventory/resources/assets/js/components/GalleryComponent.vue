@@ -98,7 +98,7 @@ export default {
             deep: true,
             handler(newVal) {
                 const hasPrimaryTrue = newVal.some(
-                    (obj) => obj.primary === true
+                    (obj) => obj.primary === true || obj.edited === true
                 );
 
                 if (!hasPrimaryTrue && newVal.length > 0) {
@@ -131,10 +131,6 @@ export default {
         select(image) {
             image.primary = false;
             this.selectedImages.push(image);
-
-            if (this.selectedImages.length > 0) {
-                this.selectedImages[0].primary = true;
-            }
         },
 
         unselect(image) {
@@ -153,9 +149,14 @@ export default {
         },
 
         makePrimary(image) {
-            if (image) {
+            if (image && this.selectedImages) {
                 this.selectedImages.forEach((img) => {
-                    img.primary = img.id === image.id;
+                    const isImageMatch = img.id === image.id;
+                    img.primary = isImageMatch;
+
+                    if (img.pivot) {
+                        img.pivot.primary = isImageMatch;
+                    }
                 });
             }
         },
