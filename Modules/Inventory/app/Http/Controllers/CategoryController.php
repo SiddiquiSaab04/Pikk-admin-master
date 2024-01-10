@@ -24,8 +24,8 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = $this->categoryService->getAll();
-        $categories->load('products', 'products.addons.modifier', 'products.addons.addonProducts.product');
-
+        $categories->load('products', 'products.addons.modifier', 'products.addons.addonProducts.product.media', 'products.media');
+        $categories = $this->categoryService->modifyResponse($categories);
         if(request()->wantsjson()) {
             return sendResponse(true, null, [
                 $categories,

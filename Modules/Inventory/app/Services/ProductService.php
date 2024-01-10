@@ -64,7 +64,7 @@ class ProductService
     public function colorAssociation()
     {
         $categories = array_values($this->getCategories()->pluck('id')->toArray());
-        return array_combine($categories, ['primary', 'info', 'warning', 'success']);
+        return array_combine($categories, ['primary', 'info', 'warning', 'success', 'danger']);
     }
 
     /**

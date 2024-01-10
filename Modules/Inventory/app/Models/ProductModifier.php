@@ -16,7 +16,8 @@ class ProductModifier extends Model
     protected $fillable = [
         "product_id",
         "modifier_id",
-        "max_selection"
+        "max_selection",
+        "required"
     ];
 
     public function addonProducts()
