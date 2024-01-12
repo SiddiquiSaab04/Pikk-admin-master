@@ -41,7 +41,7 @@ return [
                 'port' => env('PUSHER_PORT', 443),
                 'scheme' => env('PUSHER_SCHEME', 'https'),
                 'encrypted' => env('PUSHER_ENCRYPTED', false),
-                'useTLS' => true //env('PUSHER_SCHEME', 'https') === 'https',
+                'useTLS' => false //env('PUSHER_SCHEME', 'https') === 'https',
             ],
             'client_options' => [
                 CURLOPT_SSL_VERIFYHOST => 0,
