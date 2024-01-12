@@ -79,7 +79,7 @@ class OrderRepository implements OrderInterface
 
     public function paginate($number)
     {
-        return $this->query->paginate(20);
+        return $this->query->orderByDesc('created_at')->paginate(20);
     }
 
     public function get()
