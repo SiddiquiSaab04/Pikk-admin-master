@@ -54,7 +54,6 @@ class OrderService
      */
     public function create($data)
     {
-
         $data['code'] = $this->getCode();
         $data['title'] = "null"; //wip
         $data['status'] = 'ongoing';
@@ -96,7 +95,7 @@ class OrderService
          * Return $x to customer if the order amount exceeds $10
          */
 
-        if ($order->total >= 10) {
+        if ($order->total >= 10 && false) {
             $cashback = [
                 "amount" => (int)($order->total / 10),
                 'customer_id' => $order->customer_id,
@@ -251,7 +250,7 @@ class OrderService
 
     public function getPendingOrders()
     {
-        $orders = $this->orderRepository->getWhere(['created_at', '>=', date('Y-m-d')], ['status', '=', 'ongoing'])->get();
+        $orders = $this->orderRepository->getWhere( ['status', '=', 'ongoing'])->get();
         if (count($orders) > 0) {
             $orders = $this->orderProductService->getProductsByOrder($orders);
         }
