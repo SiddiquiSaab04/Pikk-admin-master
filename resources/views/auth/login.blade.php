@@ -52,9 +52,9 @@
                         <button type="submit" class="form-control form-input signin submit">Sign in</button>
                     </form>
 
-                    <img src="{{ asset('/storage/images/logo.png') }}" class="img-fluid logo" alt="Logo Image">
-                    <img src="{{ asset('/storage/images/lines.png') }}" class="img-fluid lines" alt="Lines Image">
-                    <img src="{{ asset('/storage/images/waves.png') }}" class="img-fluid waves-bottom" alt="Waves Image">
+                    <img src="{{ asset('/images/logo.png') }}" class="img-fluid logo" alt="Logo Image">
+                    <img src="{{ asset('/images/lines.png') }}" class="img-fluid lines" alt="Lines Image">
+                    <img src="{{ asset('/images/waves.png') }}" class="img-fluid waves-bottom" alt="Waves Image">
                 </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 d-flex justify-content-end m-auto">

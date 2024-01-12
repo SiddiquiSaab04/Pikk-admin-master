@@ -221,7 +221,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @media (max-width: 575.98px) {
     #bg-img
     {
-        background-image: url('/storage/images/mobile.png');
+        background-image: url('/images/mobile.png');
         height: 100vh;
         width: 100vw;
         background-size: cover;
@@ -311,7 +311,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @media (min-width: 576px) and (max-width: 767.98px) {
     #bg-img
     {
-        background-image: url('/storage/images/mobile.png');
+        background-image: url('/images/mobile.png');
         height: 100vh;
         width: 100vw;
         background-size: cover;
@@ -336,7 +336,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @media (min-width: 768px) and (max-width: 991.98px) {
     #bg-img
     {
-        background-image: url('/storage/images/tablet.png');
+        background-image: url('/images/tablet.png');
         height: 100vh;
         width: 100vw;
         background-size: cover;
@@ -381,7 +381,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @media (min-width: 992px) and (max-width: 1199.98px) {
     #bg-img
     {
-        background-image: url('/storage/images/website.png');
+        background-image: url('/images/website.png');
         height: 100vh;
         width: 100vw;
         background-size: cover;
@@ -426,7 +426,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 @media (min-width: 1200px) {
     #bg-img
     {
-        background-image: url('/storage/images/website.png');
+        background-image: url('/images/website.png');
         height: 100vh;
         width: 100vw;
         background-size: cover;
