@@ -43,10 +43,9 @@ class LoginController extends Controller
 
     public function redirectTo()
     {
-        $allowedLogins = ['super_admin', 'admin', 'manager'];
-        if( !in_array(Auth::user()->getRoleNames()->first(), $allowedLogins) ) {
+        if( !Auth::user()->can('login') ) {
             Auth::logout();
-            return back()->withToastError("You do not have permission to login, Please contact branch manager/admin");
+            return redirect('/')->withToastError("You do not have permission to login, Please contact branch manager/admin");
         }
     }
 }

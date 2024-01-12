@@ -5,14 +5,9 @@
         <div class="col-sm-12 my-2">
             <div class="row">
                 <div class="px-3">
-                    <a href="{{ route('order.index') }}">
+                    <a href="{{ route('order.index', request()->branch) }}">
                         <button class="rounded-full btn-primary font-large padding-2">
                             <i class="fa fa-refresh text-white"></i>
-                        </button>
-                    </a>
-                    <a href="{{ route('order.create') }}">
-                        <button class="rounded-full btn-success font-large padding-2">
-                            <i class="fa fa-plus text-white"></i>
                         </button>
                     </a>
                 </div>

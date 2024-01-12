@@ -15,5 +15,5 @@ use Modules\Reports\app\Http\Controllers\ReportsController;
 */
 
 Route::group(['prefix'=>'/{branch}/reports'], function () {
-    Route::get('/index', [ReportsController::class, 'index']);
+    Route::get('/index', [ReportsController::class, 'index'])->name('report.index');
 });
