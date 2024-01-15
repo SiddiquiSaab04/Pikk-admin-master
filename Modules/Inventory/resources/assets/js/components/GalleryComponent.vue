@@ -109,7 +109,7 @@ export default {
     },
     methods: {
         initializeSelectedImages() {
-            if (this.product) {
+            if (this.product.length > 0 || Object.keys(this.product).length > 0) {
                 this.selectedImages = this.product.media.map((selected) => ({
                     ...selected,
                     edited: true,
