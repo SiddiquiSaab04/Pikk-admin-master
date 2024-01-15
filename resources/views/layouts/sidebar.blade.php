@@ -11,7 +11,6 @@
 <!-- /menu profile quick info -->
 
 <br />
-
 <!-- sidebar menu -->
 <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
     <div class="menu_section">
@@ -38,7 +37,7 @@
             @can('read_branches')
             <li><a><i class="fa fa-home"></i> Branches <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{ route('branch.index') }}">Manage Branches</a></li>
+                    <li><a href="{{ route('branch.index', Auth::user()->branch_id) }}">Manage Branches</a></li>
                 </ul>
             </li>
             @endcan
@@ -52,18 +51,37 @@
             @can('read_orders')
             <li><a><i class="fa fa-table"></i> Orders <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    <li><a href="{{ route('order.index') }}">Order Listing</a></li>
+                    @if(!empty(Auth::user()->branch_id))
+                        <li><a href="{{ route('order.index', Auth::user()->branch_id) }}">Order Listing</a></li>
+                    @else
+                        @foreach(app('branches') as $branch)
+                            <li><a href="{{ route('order.index', $branch->id) }}">{{ $branch->name }} Order Listing</a></li>
+                        @endforeach
+                    @endif
                 </ul>
             </li>
             @endcan
+            @can('create_medias')
             <li><a><i class="fa fa-desktop"></i> Media Gallery <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('media.index') }}">Listing</a></li>
-                    @can('create_medias')
                     <li><a href="{{ route('media.create') }}">Create Media</a></li>
-                    @endcan
                 </ul>
             </li>
+            @endcan
+            @can('see_reports')
+            <li><a><i class="fa fa-desktop"></i> Reports <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    @if(!empty(Auth::user()->branch_id))
+                        <li><a href="{{ route('report.index', Auth::user()->branch_id) }}">Reports</a></li>
+                    @else
+                        @foreach(app('branches') as $branch)
+                            <li><a href="{{ route('report.index', $branch->id) }}">{{ $branch->name }} Reports</a></li>
+                        @endforeach
+                    @endif
+                </ul>
+            </li>
+            @endcan
         </ul>
     </div>
 

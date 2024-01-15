@@ -4,6 +4,7 @@ namespace App\Providers;
 
 
 use App\Services\CoreService;
+use App\Singletons\BranchSingleton;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
 
@@ -16,6 +17,12 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(CoreService::class, function(){
             return new CoreService();
+        });
+
+        $this->app->singleton('branches', function() {
+            $branches = new BranchSingleton();
+            $branches = $branches->branches();
+            return $branches;
         });
     }
 

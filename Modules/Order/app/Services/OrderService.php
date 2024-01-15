@@ -250,7 +250,7 @@ class OrderService
 
     public function getPendingOrders()
     {
-        $orders = $this->orderRepository->getWhere( ['status', '=', 'ongoing'])->get();
+        $orders = $this->orderRepository->getWhere(['created_at', '>=', date('Y-m-d')], ['status', '=', 'ongoing'])->get();
         if (count($orders) > 0) {
             $orders = $this->orderProductService->getProductsByOrder($orders);
         }
