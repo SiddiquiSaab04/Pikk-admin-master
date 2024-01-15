@@ -27,7 +27,7 @@
         <h4 class="p-4 text-center border-1">Addons Products</h4>
     </div>
     <div>
-        <addon-component :addons="{{ $addons }}" :product="{{ $product }}">
+        <addon-component :addons="{{ $addons }}" :product="{{ $product ?? json_encode([])  }}">
 
         </addon-component>
     </div>
