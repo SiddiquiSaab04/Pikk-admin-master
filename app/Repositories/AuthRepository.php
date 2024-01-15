@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Interfaces\AuthInterface;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthRepository implements AuthInterface
 {
@@ -13,6 +14,7 @@ class AuthRepository implements AuthInterface
         $credentials['password'] = $request['password'];
 
         $auth = Auth::guard('api')->getProvider()->retrieveByCredentials($credentials);
+        Log::info(json_encode($auth));
         $auth->getAllPermissions();
 
         return [
