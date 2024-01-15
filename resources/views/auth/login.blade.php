@@ -25,14 +25,14 @@
 
 <body class="container">
     <div id="bg-img">
-        <div class="row vh-100">
+        <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                 <div class="position-relative">
-                    <form class="position-absolute translate-middle form" method="POST" action="{{ route('login') }}">
+                    <form class="position-absolute intrepid translate-middle form" method="POST" action="{{ route('login') }}">
                         @csrf
-                        <h1 class="mb-2 futura text-black login-text">Login (Admin)</h1>
-                        <div class="md-mb-3">
-                            <label for="email" class="form-label futura">Email</label>
+                        <h2 class="text-gray login-admin-text">Login (Admin)</h2>
+                        <div class="mb-2">
+                            <label for="email" class="form-label text-gray">Email</label>
                             <input type="email" class="form-control form-input" name="email" placeholder="xyz@gmail.com" required>
                             @error('email')
                             <span class="invalid-feedback" role="alert">
@@ -40,8 +40,8 @@
                             </span>
                             @enderror
                         </div>
-                        <div class="mb-3 mb-md-5">
-                            <label for="password" class="form-label futura">Password</label>
+                        <div class="bottom-space">
+                            <label for="password" class="form-label text-gray">Password</label>
                             <input type="password" class="form-control form-input" name="password" placeholder="Password" required>
                             @error('password')
                             <span class="invalid-feedback" role="alert">
@@ -49,7 +49,7 @@
                             </span>
                             @enderror
                         </div>
-                        <button type="submit" class="form-control form-input signin submit">Sign in</button>
+                        <button type="submit" class="form-control form-input sign-in submit">Sign in</button>
                     </form>
 
                     <img src="{{ asset('/images/logo.png') }}" class="img-fluid logo" alt="Logo Image">
@@ -58,17 +58,13 @@
                 </div>
             </div>
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 d-flex justify-content-end m-auto">
-                <div class="fixed-size-div">
-                    <h1 class="text-center sensa admin-text">Admin</h1>
-                    <h1 class="text-center brittany mb-4 text-black dashboard-text">Dashboard</h1>
-
-                    <ul class="list-unstyled text-center futura text-black dashbord-listing">
-                        <li>Lorem ipsum dolor sit amet, aliqua.</li>
-                        <li>Lorem ipsum dolor sit amet, aliqua.</li>
-                        <li>Lorem ipsum dolor sit amet, aliqua.</li>
-                        <li>Lorem ipsum dolor sit amet, aliqua.</li>
+                <div class="rectangular-div">
+                    <h1 class="sensa admin-text text-orange">Admin</h1>
+                    <h1 class="brittany dashboard-text text-gray ">Dashboard</h1>
+                    <ul class="rectangular-div-isting text-gray intrepid">
+                        <li>It is a long established fact that a reader will be.</li>
+                        <li>There are many variations of passages of Lorem Ipsum available.</li>
                     </ul>
-
                 </div>
             </div>
         </div>
