@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\AuthRepository;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AuthService
 {
@@ -17,6 +18,12 @@ class AuthService
     public function login($request)
     {
         $user = $this->authRepository->getUserWithRole($request);
+
+        if (!$user['user']) {
+            return sendError(true, null, 'The provided credentials are incorrect..', null, 401);
+        }
+
+        $user['user']->getAllPermissions();
         $role = $user['user']->roles->first();
         $type = isset($request['type']) ? $request['type'] : 'pos';
         if ($role->hasPermissionTo($type)) {
