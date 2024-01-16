@@ -119,7 +119,7 @@ class ProductService
             }
         }
 
-        $this->createOrUpdateMedia($product->id, $medias, 'create');
+        $this->createOrUpdateMedia($product, $medias, 'create');
         return $product;
     }
 
