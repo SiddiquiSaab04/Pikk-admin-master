@@ -132,6 +132,8 @@ class ProductService
      */
     public function updateProduct($data, $id)
     {
+        dd(collect($data['product_addon']));
+
         $product = $this->getById($id);
         $product->load('category', 'addons.modifier', 'addons.addonProducts.product', 'media');
         $data['product_addon'] = (json_decode($data['addons']));
