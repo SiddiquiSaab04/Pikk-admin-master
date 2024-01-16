@@ -5280,21 +5280,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 @media (min-width: 320px) and (max-width: 374.98px) {
     #bg-img {
-        background-image: url("/images/mobile.png");
+        background-image: url("/images/mobile.jpg");
         height: 100vh;
         width: 100vw;
         background-size: cover;
         background-position: center;
-    }
-    .rectangular-div {
-        margin-top: 20vh;
-        width: 215px;
-        height: 100px;
-        background-color: #fff5e7;
-        border-top-left-radius: 234px;
-        border-bottom-left-radius: 234px;
-        overflow: auto;
-        word-wrap: break-word;
     }
 
     .lines {
@@ -5302,7 +5292,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         height: 48vh;
         margin-left: 13vw;
         border-radius: 10px;
-        margin-top: 8vw;
+        margin-top: 6vw;
     }
 
     .waves-bottom {
@@ -5340,23 +5330,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         font-size: 8px;
     }
 
-    .admin-text {
-        margin-left: 14vw;
-        margin-top: 2vh;
-        font-size: 3vh;
-    }
-
-    .dashboard-text {
-        position: absolute;
-        left: 52vw;
-        top: 23vh;
-        font-size: 2vh;
+    .rectangular-div {
+        position: relative;
+        width: 100%;
+        height: 90%;
     }
 
     .rectangular-div-isting {
-        margin-left: 4vw;
-        margin-top: 2.5vh;
-        font-size: 1.2vh;
+        position: absolute;
+        word-wrap: break-word;
+        top: 30vh !important;
+        left: 35%;
+        font-size: 6px;
     }
 
     .login-admin-text {
@@ -5375,21 +5360,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 @media (min-width: 375px) and (max-width: 424.98px) {
     #bg-img {
-        background-image: url("/images/mobile.png");
+        background-image: url("/images/mobile.jpg");
         height: 100vh;
         width: 100vw;
         background-size: cover;
         background-position: center;
-    }
-    .rectangular-div {
-        margin-top: 24vh;
-        width: 260px;
-        height: 100px;
-        background-color: #fff5e7;
-        border-top-left-radius: 234px;
-        border-bottom-left-radius: 234px;
-        overflow: auto;
-        word-wrap: break-word;
     }
 
     .lines {
@@ -5435,23 +5410,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         font-size: 8px;
     }
 
-    .admin-text {
-        margin-left: 14vw;
-        margin-top: 2vh;
-        font-size: 3vh;
-    }
-
-    .dashboard-text {
-        position: absolute;
-        left: 52vw;
-        top: 26.5vh;
-        font-size: 2vh;
+    .rectangular-div {
+        position: relative;
+        width: 100%;
+        height: 90%;
     }
 
     .rectangular-div-isting {
-        margin-left: 4vw;
-        margin-top: 2.5vh;
-        font-size: 1.2vh;
+        position: absolute;
+        word-wrap: break-word;
+        top: 35vh !important;
+        left: 35%;
+        font-size: 6px;
     }
 
     .login-admin-text {
@@ -5470,21 +5440,11 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 @media (min-width: 425px) and (max-width: 767.98px) {
     #bg-img {
-        background-image: url("/images/mobile.png");
+        background-image: url("/images/mobile.jpg");
         height: 100vh;
         width: 100vw;
         background-size: cover;
         background-position: center;
-    }
-    .rectangular-div {
-        margin-top: 27vh;
-        width: 300px;
-        height: 80px;
-        background-color: #fff5e7;
-        border-top-left-radius: 234px;
-        border-bottom-left-radius: 234px;
-        overflow: auto;
-        word-wrap: break-word;
     }
 
     .lines {
@@ -5530,23 +5490,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         font-size: 8px;
     }
 
-    .admin-text {
-        margin-left: 14vw;
-        margin-top: 2vh;
-        font-size: 3vh;
-    }
-
-    .dashboard-text {
-        position: absolute;
-        left: 50vw;
-        top: 30vh;
-        font-size: 2vh;
+    .rectangular-div {
+        position: relative;
+        width: 100%;
+        height: 90%;
     }
 
     .rectangular-div-isting {
-        margin-left: 4vw;
-        margin-top: 2.5vh;
-        font-size: 1.2vh;
+        position: absolute;
+        word-wrap: break-word;
+        top: 38vh !important;
+        left: 35%;
+        font-size: 8px;
     }
 
     .login-admin-text {
@@ -5565,23 +5520,12 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 @media (min-width: 768px) and (max-width: 991.98px) {
     #bg-img {
-        background-image: url("/images/tablet.png");
+        background-image: url("/images/tablet.jpg");
         height: 100vh;
         width: 100vw;
         background-size: cover;
         background-position: center;
         overflow: hidden;
-    }
-
-    .rectangular-div {
-        margin-top: 20vh;
-        width: 260px;
-        height: 200px;
-        background-color: #fff5e7;
-        border-top-left-radius: 234px;
-        border-bottom-left-radius: 234px;
-        overflow: auto;
-        word-wrap: break-word;
     }
 
     .lines {
@@ -5627,24 +5571,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         font-size: 8px;
     }
 
-    .admin-text {
-        margin-left: 8vw;
-        margin-top: 2vh;
-        font-size: 7vh;
-    }
-
-    .dashboard-text {
-        position: absolute;
-        left: 29.8vw;
-        top: 27vh;
-        font-size: 4vh;
+    .rectangular-div {
+        position: relative;
+        width: 100%;
+        height: 90%;
     }
 
     .rectangular-div-isting {
-        line-height: 2;
-        margin-left: 4vw;
-        margin-top: 6vh;
-        font-size: 1.5vh;
+        position: absolute;
+        word-wrap: break-word;
+        top: 65%;
+        left: 35%;
+        font-size: 8px;
     }
 
     .sign-in {
@@ -5659,7 +5597,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 @media (min-width: 992px) and (max-width: 1199.98px) {
     #bg-img {
-        background-image: url("/images/website.png");
+        background-image: url("/images/website.jpg");
         height: 100vh;
         width: 100vw;
         background-size: cover;
@@ -5668,32 +5606,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     }
 
     .rectangular-div {
-        margin-top: 16vh;
-        width: 440px;
-        height: 250px;
-        background-color: #fff5e7;
-        border-top-left-radius: 234px;
-        border-bottom-left-radius: 234px;
-        overflow: auto;
-        word-wrap: break-word;
-    }
-
-    .admin-text {
-        margin-left: 10vw;
-        margin-top: 4vh;
-        font-size: 14vh;
-    }
-
-    .dashboard-text {
-        position: absolute;
-        left: 25vw;
-        top: 30vh;
+        position: relative;
+        width: 100%;
+        height: 90%;
     }
 
     .rectangular-div-isting {
-        line-height: 2;
-        margin-left: 8vw;
-        margin-top: 5vh;
+        position: absolute;
+        word-wrap: break-word;
+        top: 65%;
+        left: 26%;
+        font-size: 10px;
     }
 
     .sign-in {
@@ -5708,7 +5631,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 @media (min-width: 1200px) {
     #bg-img {
-        background-image: url("/images/website.png");
+        background-image: url("/images/website.jpg");
         height: 100vh;
         width: 100vw;
         background-size: cover;
@@ -5717,32 +5640,17 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     }
 
     .rectangular-div {
-        margin-top: 16vh;
-        width: 600px;
-        height: 350px;
-        background-color: #fff5e7;
-        border-top-left-radius: 234px;
-        border-bottom-left-radius: 234px;
-        overflow: auto;
-        word-wrap: break-word;
-    }
-
-    .admin-text {
-        margin-left: 10vw;
-        margin-top: 4vh;
-        font-size: 14vh;
-    }
-
-    .dashboard-text {
-        position: absolute;
-        left: 26.5vw;
-        top: 30vh;
+        position: relative;
+        width: 100%;
+        height: 90%;
     }
 
     .rectangular-div-isting {
-        line-height: 2;
-        margin-left: 8vw;
-        margin-top: 5vh;
+        position: absolute;
+        word-wrap: break-word;
+        top: 65%;
+        left: 26%;
+        font-size: 14px;
     }
 
     .sign-in {

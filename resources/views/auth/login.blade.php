@@ -57,12 +57,12 @@
                     <img src="{{ asset('/images/waves.png') }}" class="img-fluid waves-bottom" alt="Waves Image">
                 </div>
             </div>
-            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6 d-flex justify-content-end m-auto">
+            <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                 <div class="rectangular-div">
-                    <h1 class="sensa admin-text text-orange">Admin</h1>
-                    <h1 class="brittany dashboard-text text-gray ">Dashboard</h1>
                     <ul class="rectangular-div-isting text-gray intrepid">
                         <li>It is a long established fact that a reader will be.</li>
+                        <li>There are many variations of passages of Lorem Ipsum available.</li>
+                        <li>There are many variations of passages of Lorem Ipsum available.</li>
                         <li>There are many variations of passages of Lorem Ipsum available.</li>
                     </ul>
                 </div>
