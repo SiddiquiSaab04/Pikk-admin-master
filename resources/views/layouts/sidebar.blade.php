@@ -1,7 +1,7 @@
 <!-- menu profile quick info -->
 <div class="profile clearfix">
     <div class="profile_pic">
-        <img src="{{ asset('build/images/img.jpg') }}" alt="..." class="img-circle profile_img">
+        <img src="{{ asset('images/user.png') }}" alt="..." class="img-circle profile_img border border-success">
     </div>
     <div class="profile_info">
         <span>Welcome,</span>
@@ -52,11 +52,11 @@
             <li><a><i class="fa fa-table"></i> Orders <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     @if(!empty(Auth::user()->branch_id))
-                        <li><a href="{{ route('order.index', Auth::user()->branch_id) }}">Order Listing</a></li>
+                    <li><a href="{{ route('order.index', Auth::user()->branch_id) }}">Order Listing</a></li>
                     @else
-                        @foreach(app('branches') as $branch)
-                            <li><a href="{{ route('order.index', $branch->id) }}">{{ $branch->name }} Order Listing</a></li>
-                        @endforeach
+                    @foreach(app('branches') as $branch)
+                    <li><a href="{{ route('order.index', $branch->id) }}">{{ $branch->name }} Order Listing</a></li>
+                    @endforeach
                     @endif
                 </ul>
             </li>
@@ -73,11 +73,11 @@
             <li><a><i class="fa fa-desktop"></i> Reports <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     @if(!empty(Auth::user()->branch_id))
-                        <li><a href="{{ route('report.index', Auth::user()->branch_id) }}">Reports</a></li>
+                    <li><a href="{{ route('report.index', Auth::user()->branch_id) }}">Reports</a></li>
                     @else
-                        @foreach(app('branches') as $branch)
-                            <li><a href="{{ route('report.index', $branch->id) }}">{{ $branch->name }} Reports</a></li>
-                        @endforeach
+                    @foreach(app('branches') as $branch)
+                    <li><a href="{{ route('report.index', $branch->id) }}">{{ $branch->name }} Reports</a></li>
+                    @endforeach
                     @endif
                 </ul>
             </li>
