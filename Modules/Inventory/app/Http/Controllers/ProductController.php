@@ -80,7 +80,7 @@ class ProductController extends Controller
             $created = $this->productService->createProduct($data);
             return redirect()->route('product.index')->withToastSuccess("Product created successfully.");
         } catch (Exception $e) {
-            return back()->withToastError($e->getMessage());
+            return back()->withToastError($e->getMessage(). ' '. $e->getFile().' '.$e->getLine());
         }
     }
 
