@@ -4,6 +4,7 @@ namespace Modules\Inventory\app\Services;
 
 use App\Repositories\CrudRepository;
 use App\Traits\Crud;
+use Exception;
 
 class ProductService
 {
@@ -91,7 +92,8 @@ class ProductService
             $addon = [
                 "modifier_id" => $addonData->id,
                 "product_id" => $product->id,
-                "max_selection" => $addonData->max_selection
+                "max_selection" => $addonData->max_selection,
+                "required" => $addonData->required
             ];
 
             $productModifier = $this->modifierService->create($addon);
@@ -149,7 +151,6 @@ class ProductService
          */
         $product->addons()->delete();
         $product->addonProducts()->delete();
-        $product->media()->detach();
 
         $addons = collect($data['product_addon']);
         $medias = collect($data['images']);
@@ -170,7 +171,8 @@ class ProductService
                 $addon = [
                     "modifier_id" => $addonData->id,
                     "product_id" => $product->id,
-                    "max_selection" => $addonData->max_selection
+                    "max_selection" => $addonData->max_selection,
+                    "required" => $addonData->required
                 ];
 
                 $productModifier = $this->modifierService->create($addon);
@@ -191,7 +193,8 @@ class ProductService
                 $addon = [
                     "modifier_id" => $addonData->modifier_id,
                     "product_id" => $product->id,
-                    "max_selection" => $addonData->max_selection
+                    "max_selection" => $addonData->max_selection,
+                    'required' => $addonData->required
                 ];
 
                 $productModifier = $this->modifierService->create($addon);
@@ -208,21 +211,28 @@ class ProductService
             }
         }
 
-        $this->createOrUpdateMedia($product->id, $medias);
+        $this->createOrUpdateMedia($product, $medias);
         return $product;
     }
 
-    public function createOrUpdateMedia($id, $medias)
+    public function createOrUpdateMedia($product, $medias)
     {
+        $product->media()->detach();
+
         foreach ($medias as $media) {
             /**
              * creating product_media array for insertion
              */
-            $productMedia = [
-                "media_id" => $media->id,
-                'product_id' => $id,
-                'primary' => $media->primary
-            ];
+            try {
+                $productMedia = [
+                    "media_id" => $media->id,
+                    'product_id' => $product->id,
+                    'primary' => $media->primary
+                ];
+
+            } catch (Exception $e) {
+
+            }
 
             $this->productMediaService->create($productMedia);
         }
