@@ -225,16 +225,12 @@ class ProductService
             /**
              * creating product_media array for insertion
              */
-            try {
-                $productMedia = [
-                    "media_id" => $media->id,
-                    'product_id' => $product->id,
-                    'primary' => $media->primary
-                ];
 
-            } catch (Exception $e) {
-
-            }
+            $productMedia = [
+                "media_id" => $media->id,
+                'product_id' => $product->id,
+                'primary' => $media->primary
+            ];
 
             $this->productMediaService->create($productMedia);
         }
