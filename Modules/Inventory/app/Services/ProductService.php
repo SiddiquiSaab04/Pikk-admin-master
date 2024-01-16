@@ -91,7 +91,8 @@ class ProductService
             $addon = [
                 "modifier_id" => $addonData->id,
                 "product_id" => $product->id,
-                "max_selection" => $addonData->max_selection
+                "max_selection" => $addonData->max_selection,
+                "required" => $addonData->required
             ];
 
             $productModifier = $this->modifierService->create($addon);
@@ -170,7 +171,8 @@ class ProductService
                 $addon = [
                     "modifier_id" => $addonData->id,
                     "product_id" => $product->id,
-                    "max_selection" => $addonData->max_selection
+                    "max_selection" => $addonData->max_selection,
+                    "required" => $addonData->required
                 ];
 
                 $productModifier = $this->modifierService->create($addon);
