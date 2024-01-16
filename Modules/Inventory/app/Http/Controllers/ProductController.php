@@ -136,7 +136,7 @@ class ProductController extends Controller
             $updated = $this->productService->updateProduct($data, $id);
             return redirect()->route('product.index')->withToastSuccess("Product updated successfully.");
         } catch (Exception $e) {
-            return back()->withToastError($e->getMessage());
+            return back()->withToastError($e->getMessage(). ' '. $e->getFile().' '.$e->getLine());
         }
     }
 
