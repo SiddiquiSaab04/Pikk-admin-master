@@ -119,7 +119,7 @@ class ProductService
             }
         }
 
-        $this->createOrUpdateMedia($product->id, $medias);
+        $this->createOrUpdateMedia($product->id, $medias, 'create');
         return $product;
     }
 
@@ -211,13 +211,15 @@ class ProductService
             }
         }
 
-        $this->createOrUpdateMedia($product, $medias);
+        $this->createOrUpdateMedia($product, $medias, 'update');
         return $product;
     }
 
-    public function createOrUpdateMedia($product, $medias)
+    public function createOrUpdateMedia($product, $medias, $type)
     {
-        $product->media()->detach();
+        if($type == 'update') {
+            $product->media()->detach();
+        }
 
         foreach ($medias as $media) {
             /**
