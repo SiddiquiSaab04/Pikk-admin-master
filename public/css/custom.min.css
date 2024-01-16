@@ -5650,7 +5650,8 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         word-wrap: break-word;
         top: 65%;
         left: 26%;
-        font-size: 14px;
+        line-height: 1.4;
+        font-size: 18px;
     }
 
     .sign-in {
