@@ -65,7 +65,8 @@ class ProductService
     public function colorAssociation()
     {
         $categories = array_values($this->getCategories()->pluck('id')->toArray());
-        return array_combine($categories, ['primary', 'info', 'warning', 'success', 'danger']);
+        $colors = array_slice(['primary', 'info', 'warning', 'success', 'danger', 'secondary'], 0, count($categories));
+        return array_combine($categories, $colors);
     }
 
     /**
@@ -217,7 +218,7 @@ class ProductService
 
     public function createOrUpdateMedia($product, $medias, $type)
     {
-        if($type == 'update') {
+        if ($type == 'update') {
             $product->media()->detach();
         }
 
