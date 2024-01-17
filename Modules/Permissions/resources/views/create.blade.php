@@ -49,13 +49,3 @@
     </div>
 </div>
 @endsection
-@push('scripts')
-<script>
-    $(document).ready(function() {
-        $(".select2_multiple").select2({
-            placeholder: "Select one or more options",
-            allowClear: true
-        });
-    });
-</script>
-@endpush

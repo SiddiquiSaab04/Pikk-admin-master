@@ -3,6 +3,8 @@
 namespace Modules\Inventory\app\Services;
 
 use App\Repositories\CrudRepository;
+use Modules\Branch\app\Services\BranchService;
+use Modules\Media\app\Services\MediaService;
 use App\Traits\Crud;
 use Exception;
 
@@ -17,6 +19,8 @@ class ProductService
     private $addons;
     private $productAddonService;
     private $productMediaService;
+    private $mediaService;
+    private $branchService;
 
     public function __construct(
         CategoryService $categoryService,
@@ -24,7 +28,9 @@ class ProductService
         ProductModifierService $modifierService,
         ProductModifiersAddonService $productAddonService,
         ProductMediaService $productMediaService,
-        CrudRepository $crudRepository
+        CrudRepository $crudRepository,
+        MediaService $mediaService,
+        BranchService $branchService
     ) {
         $this->crudRepository = $crudRepository;
         $this->addons = $addonGroupService;
@@ -32,7 +38,8 @@ class ProductService
         $this->modifierService = $modifierService;
         $this->productAddonService = $productAddonService;
         $this->productMediaService = $productMediaService;
-
+        $this->mediaService = $mediaService;
+        $this->branchService = $branchService;
         $this->model = "\\Modules\\Inventory\\app\\Models\\Product";
     }
 
@@ -80,7 +87,17 @@ class ProductService
         $data['product_addon'] = collect(json_decode($data['addons']), true);
         $data['images'] = collect(json_decode($data['images']), true);
 
+
         $product = $this->create($data);
+
+        if (count($data['branch_id']) > 0) {
+            foreach ($data['branch_id'] as $branch) {
+                $product->branches()->createOrUpdate(
+                    ['product_id' => $product->id, "branch_id" => $branch],
+                    ['branch_id' => $branch]
+                );
+            }
+        }
 
         $addons = collect($data['product_addon']);
         $medias = collect($data['images']);
@@ -235,5 +252,29 @@ class ProductService
 
             $this->productMediaService->create($productMedia);
         }
+    }
+
+    public function getViewsData($id = 0)
+    {
+        $categories = $this->getCategories();
+        $addons = $this->getAddons();
+        $images = $this->mediaService->getAllWithoutPagination();
+        $branches = $this->branchService->getAllWithoutPagination();
+        $product = $this->getById($id);
+
+        if ($id != 0) {
+            $product->load('category', 'addons.modifier', 'addons.addonProducts.product', 'media', 'branches');
+        }
+
+        return [
+            "product" => $product,
+            'categories' => $categories,
+            'addons' => $addons,
+            'images' => $images->toJson(),
+            'branches' => $branches,
+            "selectedBranches" => $product ? $product->branches->map(fn ($branch) => $branch->branch_id)->values()->toArray() : [],
+            'title' => 'Create Product',
+            'description' => 'create a new product'
+        ];
     }
 }

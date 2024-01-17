@@ -10,18 +10,16 @@ use Illuminate\Http\Response;
 use Modules\Inventory\app\Http\Requests\ProductRequest;
 use Modules\Inventory\app\Resources\ProductResource;
 use Modules\Inventory\app\Services\ProductService;
-use Modules\Media\app\Services\MediaService;
 use stdClass;
 
 class ProductController extends Controller
 {
     private $productService;
-    private $mediaService;
 
-    public function __construct(ProductService $productService, MediaService $mediaService)
+
+    public function __construct(ProductService $productService)
     {
         $this->productService = $productService;
-        $this->mediaService = $mediaService;
     }
     /**
      * Display a listing of the resource.
@@ -56,18 +54,9 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $categories = $this->productService->getCategories();
-        $addons = $this->productService->getAddons();
-        $images = $this->mediaService->getAllWithoutPagination();
+        $data = $this->productService->getViewsData(0);
 
-        return view('inventory::products.create', [
-            "product" => $this->productService->getById(0),
-            'categories' => $categories,
-            'addons' => $addons,
-            'images' => $images->toJson(),
-            'title' => 'Create Product',
-            'description' => 'create a new product'
-        ]);
+        return view('inventory::products.create', $data);
     }
 
     /**
@@ -80,7 +69,7 @@ class ProductController extends Controller
             $created = $this->productService->createProduct($data);
             return redirect()->route('product.index')->withToastSuccess("Product created successfully.");
         } catch (Exception $e) {
-            return back()->withToastError($e->getMessage(). ' '. $e->getFile().' '.$e->getLine());
+            return back()->withToastError($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getLine());
         }
     }
 
@@ -110,20 +99,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product = $this->productService->getById($id);
-        $product->load('category', 'addons.modifier', 'addons.addonProducts.product', 'media');
-        $categories = $this->productService->getCategories();
-        $addons = $this->productService->getAddons();
-        $images = $this->mediaService->getAllWithoutPagination();
-
-        return view('inventory::products.edit', [
-            "product" => $product,
-            'categories' => $categories,
-            'addons' => $addons,
-            'images' => $images->toJson(),
-            "title" => "Edit product",
-            "description" => "edit a product"
-        ]);
+        $data = $this->productService->getViewsData($id);
+        return view('inventory::products.edit', $data);
     }
 
     /**
@@ -136,7 +113,7 @@ class ProductController extends Controller
             $updated = $this->productService->updateProduct($data, $id);
             return redirect()->route('product.index')->withToastSuccess("Product updated successfully.");
         } catch (Exception $e) {
-            return back()->withToastError($e->getMessage(). ' '. $e->getFile().' '.$e->getLine());
+            return back()->withToastError($e->getMessage() . ' ' . $e->getFile() . ' ' . $e->getLine());
         }
     }
 

@@ -25,7 +25,7 @@ class Product extends Model
         "sort_order",
         "status",
         "category_id",
-        "addon_group_id"
+        "addon_group_id",
     ];
 
     public function category()
@@ -46,5 +46,10 @@ class Product extends Model
     public function media()
     {
         return $this->belongsToMany(Media::class, 'product_media', 'product_id', 'media_id')->withPivot('primary');
+    }
+
+    public function branches()
+    {
+        return $this->hasMany(ProductBranch::class);
     }
 }

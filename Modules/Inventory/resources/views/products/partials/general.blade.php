@@ -48,11 +48,26 @@
             <select name="category_id" id="category_id" class="form-control">
                 <option value="">-- select category --</option>
                 @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" @if(isset($product->category_id) && $product->category_id == $category->id) selected @endif>{{ $category->name }}</option>
+                <option value="{{ $category->id }}" @if(isset($product->category_id) && $product->category_id == $category->id) selected @endif>{{ $category->name }}</option>
                 @endforeach
             </select>
             <span class="mt-1">
                 <p class="mt-1">Enter category for the product</p>
+            </span>
+        </div>
+        <div class="col-sm-4">
+            <p class="mb-0">
+                <label for="branches">Branches</label>
+            </p>
+            <select class="form-control select2_multiple" multiple="multiple" name="branch_id[]" id="branch_id" required>
+                <option disabled>Choose Branch</option>
+                @foreach($branches as $branch)
+                <option value="{{$branch->id}}" @if(in_array($branch->id, $selectedBranches)) selected @endif
+                    >{{ ucfirst(trans($branch->name)) }}</option>
+                @endforeach
+            </select>
+            <span class="mt-1">
+                <p class="mt-1">Enter branches for the product</p>
             </span>
         </div>
         <div class="col-sm-4">
