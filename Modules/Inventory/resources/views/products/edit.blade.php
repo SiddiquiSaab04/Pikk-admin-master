@@ -42,7 +42,7 @@
     </ul>
     <div id="app">
 
-        <form action="{{ route('product.update', $product->id ) }}" class="form-horizontal form-label-left my-5 px-3" method="post" id="form-wizard">
+        <form action="{{ route('product.update', ['product' => $product->id] ) }}" class="form-horizontal form-label-left my-5 px-3" method="post" id="form-wizard">
             @csrf
             @method('PUT')
             @include('inventory::products.partials.general')

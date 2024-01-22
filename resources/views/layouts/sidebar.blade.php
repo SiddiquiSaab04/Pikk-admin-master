@@ -43,9 +43,10 @@
             @endcan
             <li><a><i class="fa fa-edit"></i> Inventory <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
-                    @can('read_categories')<li><a href="{{ route('category.index') }}">Categories</a></li>@endcan
-                    @can('read_products')<li><a href="{{ route('product.index') }}">Products</a></li>@endcan
-                    @can('read_addon_groups')<li><a href="{{ route('addonGroup.index') }}">Addon Groups</a></li>@endcan
+                    @can('read_categories')<li><a href="{{ route('category.index', Auth::user()->branch_id) }}">Categories</a></li>@endcan
+                    @can('read_products')<li><a href="{{ route('product.index', Auth::user()->branch_id) }}">Products</a></li>@endcan
+                    @can('read_addon_groups')<li><a href="{{ route('addonGroup.index', Auth::user()->branch_id) }}">Addon Groups</a></li>@endcan
+                    <li><a href="{{ route('stock.index', Auth::user()->branch_id) }}">Manage Stock</a></li>
                 </ul>
             </li>
             @can('read_orders')
@@ -66,6 +67,7 @@
                 <ul class="nav child_menu">
                     <li><a href="{{ route('media.index') }}">Listing</a></li>
                     <li><a href="{{ route('media.create') }}">Create Media</a></li>
+                    <li><a href="{{ route('system.create') }}">Manage System Media</a></li>
                 </ul>
             </li>
             @endcan

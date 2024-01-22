@@ -108,7 +108,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-        try {
+                try {
             $data = $request->all();
             $updated = $this->productService->updateProduct($data, $id);
             return redirect()->route('product.index')->withToastSuccess("Product updated successfully.");

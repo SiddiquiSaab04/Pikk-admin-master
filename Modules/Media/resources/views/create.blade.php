@@ -25,6 +25,7 @@
                         <label class="control-label col-md-3 col-sm-3 ">Name</label>
                         <div class="col-md-9 col-sm-9 ">
                             <input type="text" name="name" class="form-control" placeholder="Name" required>
+                            <small>When the name contains 'bg_website,' 'bg_tablet,' or 'bg_mobile,' limit the image selection to one, as these images will be used for the system background. If you wish to change the background images, you are required to upload three distinct images with the specified names.</small>
                         </div>
                     </div>
                     <div class="form-group row">
@@ -75,9 +76,23 @@
 @push('scripts')
 <script>
     $(document).ready(function() {
-        $('.images').imageUploader({
-            extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.PNG']
+        function initializeUploader(maxFiles) {
+            $('.images').empty();
+            return $('.images').imageUploader({
+                extensions: ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.PNG'],
+                maxFiles: maxFiles
+            });
+        }
+
+        var uploader = initializeUploader(1);
+
+        $('input[name="name"]').on('input', function() {
+            var nameValue = $(this).val().toLowerCase();
+            var newMaxFiles = nameValue.includes('bg_website') || nameValue.includes('bg_tablet') || nameValue.includes('bg_mobile') ? 1 : 50;
+            uploader = initializeUploader(newMaxFiles);
         });
     });
 </script>
 @endpush
+
+

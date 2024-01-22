@@ -57,4 +57,9 @@ trait Crud
     {
         return $this->crudRepository->getWhere($this->model, $clause);
     }
+
+    public function updateOrCreate($clause, $data)
+    {
+        return $this->crudRepository->updateOrCreate($this->model, $clause, $data);
+    }
 }

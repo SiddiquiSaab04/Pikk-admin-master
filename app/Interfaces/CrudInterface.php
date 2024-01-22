@@ -15,4 +15,5 @@ interface CrudInterface
     public function refresh($model);
     public function whereIn(string $model, array $clauses);
     public function getWhere($model, array $clause);
+    public function updateOrCreate(string $model, array $clauses, array $data);
 }

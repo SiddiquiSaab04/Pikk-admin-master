@@ -52,4 +52,12 @@ class Product extends Model
     {
         return $this->hasMany(ProductBranch::class);
     }
+
+    public function stock()
+    {
+        $table = request()->branch ? 'product_stocks_' . request()->branch : 'product_stocks';
+        $builder = ProductStock::query()->from($table);
+
+        return $this->newHasOne($builder, $this, 'product_id', 'id');
+    }
 }

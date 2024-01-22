@@ -80,4 +80,9 @@ class CrudRepository implements CrudInterface
     {
         return $model::where($clause)->paginate(20);
     }
+
+    public function updateOrCreate($model, array $clause, array $data)
+    {
+        return $model::updateOrCreate($clause, $data);
+    }
 }

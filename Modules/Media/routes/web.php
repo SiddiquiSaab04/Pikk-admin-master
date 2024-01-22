@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Media\app\Http\Controllers\MediaController;
+use Modules\Media\app\Http\Controllers\SystemMediaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,5 @@ use Modules\Media\app\Http\Controllers\MediaController;
 
 Route::group([], function () {
     Route::resource('media', MediaController::class)->names('media');
+    Route::resource('system', SystemMediaController::class)->names('system');
 });
