@@ -32,7 +32,7 @@ class StockService
 
   public function getViewsData()
   {
-    $products = $this->productService->getAll();
+    $products = $this->productService->getAllWithoutPagination();
     $products->load('stock');
 
     return [
@@ -42,25 +42,12 @@ class StockService
     ];
   }
 
-  public function changeStock($request)
+  public function manageStock($request)
   {
     $clause = ['product_id' => $request['product_id']];
-    $data['available_stock'] = $request['available_stock'];
 
-    return $this->stockRepository->updateOrCreate($clause, $data);
-  }
-
-  public function setDefault($request)
-  {
-    $clause = ['product_id' => $request['product_id']];
     $data['default_quantity'] = $request['default_quantity'];
-
-    return $this->stockRepository->updateOrCreate($clause, $data);
-  }
-
-  public function statusStock($request)
-  {
-    $clause = ['product_id' => $request['product_id']];
+    $data['available_stock'] = $request['available_stock'];
     $data['is_enabled'] = $request['is_enabled'];
 
     return $this->stockRepository->updateOrCreate($clause, $data);

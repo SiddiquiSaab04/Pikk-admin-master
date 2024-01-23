@@ -1,9 +1,11 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Modules\Inventory\app\Http\Controllers\CategoryController;
 use Modules\Inventory\app\Http\Controllers\ProductController;
+use Modules\Inventory\app\Http\Controllers\ProductStockController;
 
 /*
     |--------------------------------------------------------------------------

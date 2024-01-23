@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Media\app\Http\Controllers\MediaController;
-use Modules\Media\app\Http\Controllers\SystemMediaController;
+use Modules\Settings\app\Http\Controllers\SettingsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,5 +15,5 @@ use Modules\Media\app\Http\Controllers\SystemMediaController;
 */
 
 Route::group([], function () {
-    Route::resource('media', MediaController::class)->names('media');
+    Route::resource('settings', SettingsController::class)->names('settings');
 });

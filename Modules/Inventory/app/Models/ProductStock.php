@@ -12,7 +12,7 @@ class ProductStock extends Model
     protected $table = 'product_stocks';
     protected $branch = null;
 
-    public function setTableName(string $table)
+    public function setTableName($table)
     {
         if($table) {
             $this->table .= '_' . $table;

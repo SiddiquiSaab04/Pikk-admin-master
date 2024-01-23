@@ -8,7 +8,7 @@ class StockRepository implements StockRepositoryInterface
 {
   protected $query;
 
-  public function initTable($model, $table)
+  public function initTable($model, $table = null)
   {
     $this->query = new $model;
     $this->query->setTableName($table);
