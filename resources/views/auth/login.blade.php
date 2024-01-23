@@ -28,7 +28,7 @@
         <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                 <div class="position-relative">
-                    <form class="position-absolute intrepid translate-middle form" method="POST" action="{{ route('login') }}">
+                    <form class="position-absolute intrepid translate-middle login-form" method="POST" action="{{ route('login') }}">
                         @csrf
                         <h2 class="text-gray login-admin-text">Login (Admin)</h2>
                         <div class="mb-2">

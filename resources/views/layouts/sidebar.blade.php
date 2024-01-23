@@ -83,6 +83,14 @@
                 </ul>
             </li>
             @endcan
+            @can('manage_system_media')
+            <li><a><i class="fa fa-clone"></i> Settings <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{{ route('settings.index') }}">Listing</a></li>
+                    <li><a href="{{ route('settings.create') }}">Create Setting</a></li>
+                </ul>
+            </li>
+            @endcan
         </ul>
     </div>
 

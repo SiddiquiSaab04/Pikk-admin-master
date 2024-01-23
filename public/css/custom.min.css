@@ -5259,7 +5259,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     transform: translateX(-50%);
 }
 
-.form {
+.login-form {
     z-index: 2;
     top: 32vh;
     left: 8.9vw;
@@ -5314,7 +5314,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         transform: translateX(-50%);
     }
 
-    .form {
+    .login-form {
         z-index: 2;
         top: 15vh;
         left: 25vw;
@@ -5394,7 +5394,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         transform: translateX(-50%);
     }
 
-    .form {
+    .login-form {
         z-index: 2;
         top: 15vh;
         left: 25vw;
@@ -5474,7 +5474,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         transform: translateX(-50%);
     }
 
-    .form {
+    .login-form {
         z-index: 2;
         top: 15vh;
         left: 25vw;
@@ -5555,7 +5555,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
         transform: translateX(-50%);
     }
 
-    .form {
+    .login-form {
         z-index: 2;
         top: 34vh;
         left: 15vw;
