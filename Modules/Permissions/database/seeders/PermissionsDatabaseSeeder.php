@@ -171,8 +171,12 @@ class PermissionsDatabaseSeeder extends Seeder
             ],
             [
                 'name' => "manage_addon_groups"
-            ],                [
+            ],
+            [
                 'name' => "manage_stock"
+            ],
+            [
+                'name' => "manage_system_media"
             ]
         ];
 
@@ -185,13 +189,13 @@ class PermissionsDatabaseSeeder extends Seeder
             });
 
             $superAdminRole = Role::where('name', 'super_admin')->first();
-            $allPermissions = Permission::all()->except(['pos', 'kds']);
+            $allPermissions = Permission::whereNotIn('name', ['pos', 'kds', 'manage_stock'])->get();
             $superAdminRole->syncPermissions($allPermissions);
 
             $adminRole = Role::where('name', 'admin')->first();
             $manageRole = Role::where('name', 'manager')->first();
 
-            $readingPermissions = Permission::whereIn('name', ['create_users', 'read_users', 'update_users', 'delete_users', 'read_roles', 'read_permissions', 'read_products', 'read_medias', 'read_categories', 'read_addons', 'read_addon_groups', 'read_units', 'read_unit_groups', 'see_reports', 'pos', 'kds', 'login','manage_category','manage_product','manage_addon_groups','manage_stock'])->get();
+            $readingPermissions = Permission::whereIn('name', ['create_users', 'read_users', 'update_users', 'delete_users', 'read_roles', 'read_permissions', 'read_products', 'read_medias', 'read_categories', 'read_addons', 'read_addon_groups', 'read_units', 'read_unit_groups', 'see_reports', 'pos', 'kds', 'login', 'manage_category', 'manage_product', 'manage_addon_groups', 'manage_stock'])->get();
 
             $adminRole->syncPermissions($readingPermissions);
             $manageRole->syncPermissions($readingPermissions);
