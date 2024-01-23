@@ -23,7 +23,7 @@ class AddonGroupController extends Controller
      */
     public function index()
     {
-        $addonGroups = $this->addonGroupService->getAll();
+        $addonGroups = $this->addonGroupService->whereBranch();
         if(request()->wantsjson()) {
             return sendResponse('inventory::addonGroups.index', [
                 "addonGroups" => $addonGroups,
@@ -44,9 +44,11 @@ class AddonGroupController extends Controller
      */
     public function create()
     {
+        $branches = $this->addonGroupService->getBranches();
         return view('inventory::addonGroups.create', [
             "title" => "Create addon groups",
-            "description" => "create a new addon group"
+            "description" => "create a new addon group",
+            'branches' => $branches
         ]);
     }
 
@@ -57,7 +59,7 @@ class AddonGroupController extends Controller
     {
         try {
             $data = $request->all();
-            $created = $this->addonGroupService->create($data);
+            $created = $this->addonGroupService->createAddonGroup($data);
             return redirect()->route('addonGroup.index')->withToastSuccess("Addon group created successfully.");;
         } catch (Exception $e) {
             return back()->withToastError($e->getMessage());
@@ -91,10 +93,13 @@ class AddonGroupController extends Controller
     public function edit($id)
     {
         $addonGroup = $this->addonGroupService->getById($id);
+        $branches = $this->addonGroupService->getBranches();
         return view('inventory::addonGroups.edit', [
             "addonGroup" => $addonGroup,
             "title" => "Edit Addon Group",
-            "description" => "edit a new addon group"
+            "description" => "edit a new addon group",
+            "branches" => $branches,
+            "selectedBranches" => $addonGroup ? $addonGroup->branches->map(fn ($branch) => $branch->branch_id)->values()->toArray() : [],
         ]);
     }
 
@@ -105,7 +110,7 @@ class AddonGroupController extends Controller
     {
         try {
             $data = $request->all();
-            $updated = $this->addonGroupService->update($data, $id);
+            $updated = $this->addonGroupService->updateAddonGroup($data, $id);
             return redirect()->route('addonGroup.index')->withToastSuccess("Addon group updated successfully.");
         } catch (Exception $e) {
             return back()->withToastError($e->getMessage());
