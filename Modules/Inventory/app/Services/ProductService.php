@@ -3,11 +3,11 @@
 namespace Modules\Inventory\app\Services;
 
 use App\Repositories\CrudRepository;
-use Modules\Inventory\app\Classes\ProductClass;
+use Modules\Inventory\app\Classes\InventoryClass;
 use Modules\Branch\app\Services\BranchService;
 use Modules\Media\app\Services\MediaService;
 
-class ProductService extends ProductClass
+class ProductService extends InventoryClass
 {
 
     public $crudRepository;

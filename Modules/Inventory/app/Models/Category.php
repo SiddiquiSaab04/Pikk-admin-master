@@ -16,7 +16,7 @@ class Category extends Model
         "name",
         "description",
         "preview_url",
-        "display"
+        "display",
     ];
 
     public function products ()
@@ -29,5 +29,10 @@ class Category extends Model
                 });
             }
         });
+    }
+
+    public function branches()
+    {
+        return $this->hasMany(CategoryBranch::class);
     }
 }

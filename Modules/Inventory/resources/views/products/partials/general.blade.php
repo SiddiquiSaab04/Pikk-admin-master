@@ -64,7 +64,7 @@
                     <label for="branches">Branches</label>
                 </p>
                 <select class="form-control select2_multiple" multiple="multiple" name="branch_id[]" id="branch_id"
-                    required>
+                    >
                     <option disabled>Choose Branch</option>
                     @foreach ($branches as $branch)
                         <option value="{{ $branch->id }}" @if (in_array($branch->id, $selectedBranches)) selected @endif>
