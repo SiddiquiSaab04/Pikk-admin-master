@@ -23,7 +23,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = $this->categoryService->getAll();
+        $categories = $this->categoryService->whereBranch();
         $categories->load('products', 'products.addons.modifier', 'products.addons.addonProducts.product.media', 'products.media');
         $categories = $this->categoryService->modifyResponse($categories);
         if(request()->wantsjson()) {
@@ -47,9 +47,12 @@ class CategoryController extends Controller
      */
     public function create()
     {
+        $branches = $this->categoryService->getBranches();
+
         return view('inventory::category.create', [
             "title" => "Create Category",
-            "description" => "create a new category"
+            "description" => "create a new category",
+            'branches' => $branches
         ]);
     }
 
@@ -60,7 +63,7 @@ class CategoryController extends Controller
     {
         $data = $request->all();
         try {
-            $created = $this->categoryService->create($data);
+            $created = $this->categoryService->createCategory($data);
             return redirect()->route('category.index')->withToastSuccess("Category created successfully.");
         } catch(Exception $e) {
             return back()->withToastError($e->getMessage());
@@ -94,10 +97,14 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = $this->categoryService->getById($id);
+        $branches = $this->categoryService->getBranches();
+
         return view('inventory::category.edit', [
             "category" => $category,
             "title" => "Edit Category",
-            "description" => "edit a new category"
+            "description" => "edit a new category",
+            "branches" => $branches,
+            "selectedBranches" => $category ? $category->branches->map(fn ($branch) => $branch->branch_id)->values()->toArray() : [],
         ]);
     }
 
@@ -108,7 +115,7 @@ class CategoryController extends Controller
     {
         try {
             $data = $request->all();
-            $updated = $this->categoryService->update($data, $id);
+            $updated = $this->categoryService->updateCategory($data, $id);
             return redirect()->route('category.index')->withToastSuccess("Category updated successfully.");
         } catch (Exception $e) {
             return back()->withToastError($e->getMessage());

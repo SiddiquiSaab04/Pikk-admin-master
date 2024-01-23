@@ -5,7 +5,7 @@ namespace Modules\Inventory\app\Classes;
 use App\Repositories\CrudRepository;
 use App\Traits\Crud;
 
-class ProductClass
+class InventoryClass
 {
     use Crud;
 
