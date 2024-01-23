@@ -35,7 +35,14 @@ class Product extends Model
 
     public function addons()
     {
-        return $this->hasMany(ProductModifier::class);
+        return $this->hasMany(ProductModifier::class)->where(function($query) {
+            if(request()->branch != null) {
+                $query->doesntHave('branches');
+                $query->orWhereHas('branches', function($q) {
+                    $q->where('branch_id', $this->branch);
+                });
+            }
+        });;
     }
 
     public function addonProducts()
