@@ -8,11 +8,11 @@ use Modules\Inventory\app\Services\StockService;
 
 class ProductStockController extends Controller
 {
-    private $stocktService;
+    private $stockService;
 
     public function __construct(StockService $stocktService)
     {
-        $this->stocktService = $stocktService;
+        $this->stockService = $stocktService;
     }
 
     /**
@@ -20,25 +20,13 @@ class ProductStockController extends Controller
      */
     public function index()
     {
-        $data = $this->stocktService->getViewsData();
+        $data = $this->stockService->getViewsData();
         return view('inventory::stock.index', $data);
     }
 
-    public function changeStock(Request $request)
+    public function manageStock(Request $request)
     {
-        $this->stocktService->changeStock($request->all());
-        return redirect()->back()->withToastSuccess("Stock has been updated successfully.");
-    }
-
-    public function setDefault(Request $request)
-    {
-        $this->stocktService->setDefault($request->all());
-        return redirect()->back()->withToastSuccess("Default value for stock has been set successfully.");
-    }
-
-    public function statusStock(Request $request)
-    {
-        $this->stocktService->statusStock($request->all());
-        return redirect()->back()->withToastSuccess("The status of the stock has been changed successfully.");
+        $record = $this->stockService->manageStock($request->all());
+        return sendResponse(true, null, $record, 'Stock has been updated successfully.', 200);
     }
 }

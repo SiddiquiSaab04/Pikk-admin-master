@@ -7,5 +7,6 @@
     "Order": true,
     "Media": true,
     "Customers": true,
-    "Reports": true
+    "Reports": true,
+    "Settings": true
 }
