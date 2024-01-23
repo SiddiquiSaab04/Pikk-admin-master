@@ -3,17 +3,15 @@
 namespace Modules\Inventory\app\Services;
 
 use App\Repositories\CrudRepository;
+use Modules\Inventory\app\Classes\ProductClass;
 use Modules\Branch\app\Services\BranchService;
 use Modules\Media\app\Services\MediaService;
-use App\Traits\Crud;
-use Exception;
 
-class ProductService
+class ProductService extends ProductClass
 {
-    use Crud;
 
-    private $crudRepository;
-    private $model;
+    public $crudRepository;
+    public $model;
     private $categories;
     private $modifierService;
     private $addons;
@@ -21,6 +19,8 @@ class ProductService
     private $productMediaService;
     private $mediaService;
     private $branchService;
+    public $branch;
+    public $productBranchModel;
 
     public function __construct(
         CategoryService $categoryService,
@@ -41,6 +41,7 @@ class ProductService
         $this->mediaService = $mediaService;
         $this->branchService = $branchService;
         $this->model = "\\Modules\\Inventory\\app\\Models\\Product";
+        $this->branch = request()->branch;
     }
 
     /**
@@ -87,17 +88,9 @@ class ProductService
         $data['product_addon'] = collect(json_decode($data['addons']), true);
         $data['images'] = collect(json_decode($data['images']), true);
 
-
         $product = $this->create($data);
 
-        if (count($data['branch_id']) > 0) {
-            foreach ($data['branch_id'] as $branch) {
-                $product->branches()->createOrUpdate(
-                    ['product_id' => $product->id, "branch_id" => $branch],
-                    ['branch_id' => $branch]
-                );
-            }
-        }
+        $this->createOrUpdateBranches($product, $data['branch_id']);
 
         $addons = collect($data['product_addon']);
         $medias = collect($data['images']);
@@ -230,7 +223,27 @@ class ProductService
         }
 
         $this->createOrUpdateMedia($product, $medias, 'update');
+        $this->createOrUpdateBranches($product, $data['branch_id'], 'update');
         return $product;
+    }
+
+    protected function createOrUpdateBranches($product, $branches, $flag='create')
+    {
+        if ($flag == 'update') {
+            $product->branches()->delete();
+        }
+
+        if (count($branches) > 0) {
+            foreach ($branches as $branch) {
+
+                $clause = ['product_id' => $product->id];
+
+                $productBranch['product_id'] = $product->id;
+                $productBranch['branch_id'] = $branch;
+
+                $product->branches()->updateOrCreate($clause, $productBranch);
+            }
+        }
     }
 
     public function createOrUpdateMedia($product, $medias, $type)

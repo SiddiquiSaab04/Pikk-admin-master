@@ -78,11 +78,11 @@
                                     <span class="caret"></span>
                                 </a>
                                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; transform: translate3d(0px, 44px, 0px); top: 0px; left: 0px; will-change: transform;">
-                                    <a class="dropdown-item" href="{{ route('product.edit', ['product' => $product->id]) }}">Edit</a>
+                                    <a class="dropdown-item" href="{{ route('product.edit', ['branch' => Auth::user()->branch_id, 'product' => $product->id]) }}">Edit</a>
 
                                     @can('delete_products')
                                     <a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('delete').submit()">Delete</a>
-                                    <form id="delete" action="{{ route('product.destroy',  ['product' => $product->id]) }}" method="post">
+                                    <form id="delete" action="{{ route('product.destroy',  ['branch' => Auth::user()->branch_id, 'product' => $product->id]) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                     </form>

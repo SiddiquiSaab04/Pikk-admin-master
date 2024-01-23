@@ -21,6 +21,13 @@ class Category extends Model
 
     public function products ()
     {
-        return $this->hasMany(Product::class);
+        return $this->hasMany(Product::class)->where(function($query) {
+            if(request()->branch != null) {
+                $query->doesntHave('branches');
+                $query->orWhereHas('branches', function($q) {
+                    $q->where('branch_id', $this->branch);
+                });
+            }
+        });
     }
 }

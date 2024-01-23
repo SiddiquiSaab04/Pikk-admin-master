@@ -18,6 +18,7 @@ use Modules\Inventory\app\Http\Controllers\ProductStockController;
 |
 */
 
+// superadmin routes
 Route::group(
     ['middleware' => function ($request, $next) {
         if (is_null(Auth::user()->branch_id)) {
@@ -30,14 +31,13 @@ Route::group(
         Route::resource('category', CategoryController::class)->names('category');
         Route::resource('product', ProductController::class)->names('product');
         Route::resource('addon-groups', AddonGroupController::class)->names('addonGroup');
-        Route::get('stock/index', [ProductStockController::class, 'index'])->name('stock.index');
-        Route::post('manage-stock', [ProductStockController::class, 'manageStock'])->name('stock.manage');
     }
 );
 
+// admin routers
 Route::group([
     'middleware' => function ($request, $next) {
-        if ($request->branch && Auth::user()->branch_id == $request->branch) {
+        if (($request->branch != null) && Auth::user()->branch_id == $request->branch) {
             return $next($request);
         } else {
             abort(401);
