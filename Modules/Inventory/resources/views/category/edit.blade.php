@@ -70,7 +70,7 @@
                                         @endforeach
                                     </select>
                                     <span class="mt-1">
-                                        <p class="mt-1">Enter branches for the product</p>
+                                        <p class="mt-1">Enter branches for the category</p>
                                     </span>
                                 </div>
                             @endif

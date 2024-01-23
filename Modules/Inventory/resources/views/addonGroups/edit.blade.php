@@ -13,7 +13,7 @@
                     <div class="clearfix"></div>
                 </div>
                 <div class="x_content my-4 px-2">
-                    <form action="{{ route('addonGroup.update', $addonGroup->id) }}" class="form" method="post">
+                    <form action="{{ route('addonGroup.update', ['branch' => Auth::user()->branch_id, 'addon_group' => $addonGroup->id]) }}" class="" method="post">
                         @csrf
                         @method("PUT")
                         <input type="hidden" name="multiselect" id="multiselect" value="{{ $addonGroup->multiselect }}">
@@ -60,6 +60,24 @@
                                     <p class="mt-1">Enable or disable specific addon group</p>
                                 </span>
                             </div>
+                            @if (Auth::user()->branch_id == null)
+                                <div class="col-sm-4">
+                                    <p class="mb-0">
+                                        <label for="branches">Branches</label>
+                                    </p>
+                                    <select class="form-control select2_multiple" multiple="multiple" name="branch_id[]" id="branch_id"
+                                        >
+                                        <option disabled>Choose Branch</option>
+                                        @foreach ($branches as $branch)
+                                            <option value="{{ $branch->id }}" @if (in_array($branch->id, $selectedBranches)) selected @endif>
+                                                {{ ucfirst(trans($branch->name)) }}</option>
+                                        @endforeach
+                                    </select>
+                                    <span class="mt-1">
+                                        <p class="mt-1">Enter branches for the addon group</p>
+                                    </span>
+                                </div>
+                            @endif
                         </div>
                     </form>
                 </div>

@@ -24,4 +24,9 @@ class AddonGroup extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function branches()
+    {
+        return $this->hasMany(AddonGroupBranch::class);
+    }
 }
