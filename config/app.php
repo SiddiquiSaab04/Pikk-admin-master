@@ -170,7 +170,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Spatie\Permission\PermissionServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-        App\Providers\CustomConfigServiceProvider::class,
     ])->toArray(),
 
     /*

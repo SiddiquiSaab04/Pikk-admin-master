@@ -17,5 +17,4 @@ use Modules\Media\app\Http\Controllers\SystemMediaController;
 
 Route::group([], function () {
     Route::resource('media', MediaController::class)->names('media');
-    Route::resource('system', SystemMediaController::class)->names('system');
 });
