@@ -18,28 +18,30 @@ use Modules\Inventory\app\Http\Controllers\ProductStockController;
 |
 */
 
-// Route::group(
-//     ['middleware' => function ($request, $next) {
-//         if (is_null(Auth::user()->request)) {
-//             return $next($request);
-//         } else {
-//             abort(401);
-//         }
-//     }],
-//     function () {
-//         Route::resource('category', CategoryController::class)->names('category');
-//         Route::resource('product', ProductController::class)->names('product');
-//         Route::resource('addon-groups', AddonGroupController::class)->names('addonGroup');
-//         Route::get('stock/index', [ProductStockController::class, 'index'])->name('stock.index');
-//         Route::post('change-stock', [ProductStockController::class, 'changeStock']);
-//         Route::post('set-default', [ProductStockController::class, 'setDefault']);
-//         Route::post('status-stock', [ProductStockController::class, 'statusStock']);
-//     }
-// );
+// superadmin routes
+Route::group(
+    ['middleware' => function ($request, $next) {
+        if (is_null(Auth::user()->branch_id)) {
+            return $next($request);
+        } else {
+            abort(401);
+        }
+    }],
+    function () {
+        Route::resource('category', CategoryController::class)->names('category');
+        Route::resource('product', ProductController::class)->names('product');
+        Route::resource('addon-groups', AddonGroupController::class)->names('addonGroup');
+        Route::get('stock/index', [ProductStockController::class, 'index'])->name('stock.index');
+        Route::post('change-stock', [ProductStockController::class, 'changeStock']);
+        Route::post('set-default', [ProductStockController::class, 'setDefault']);
+        Route::post('status-stock', [ProductStockController::class, 'statusStock']);
+    }
+);
 
+// admin routers
 Route::group([
     'middleware' => function ($request, $next) {
-        if ($request->branch && Auth::user()->branch_id == $request->branch) {
+        if (($request->branch != null) && Auth::user()->branch_id == $request->branch) {
             return $next($request);
         } else {
             abort(401);

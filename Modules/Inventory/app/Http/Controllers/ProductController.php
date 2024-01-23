@@ -16,7 +16,6 @@ class ProductController extends Controller
 {
     private $productService;
 
-
     public function __construct(ProductService $productService)
     {
         $this->productService = $productService;
@@ -26,7 +25,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $products = $this->productService->getAll();
+        $products = $this->productService->whereBranch();
         $products->load('category', 'addons.modifier', 'addons.addonProducts.product');
 
         $colors = $this->productService->colorAssociation();
@@ -99,6 +98,7 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
+        $id = request()->product;
         $data = $this->productService->getViewsData($id);
         return view('inventory::products.edit', $data);
     }
@@ -108,7 +108,8 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id): RedirectResponse
     {
-                try {
+        $id = request()->product;
+        try {
             $data = $request->all();
             $updated = $this->productService->updateProduct($data, $id);
             return redirect()->route('product.index')->withToastSuccess("Product updated successfully.");
@@ -122,6 +123,7 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
+        $id = request()->product;
         try {
             $deleted = $this->productService->delete($id);
             return redirect()->route('product.index')->withToastSuccess("Product deleted successfully.");
