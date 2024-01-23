@@ -29,4 +29,9 @@ class ProductModifier extends Model
     {
         return $this->hasOne(AddonGroup::class, 'id', 'modifier_id');
     }
+
+    public function branches()
+    {
+        return $this->hasMany(AddonGroupBranch::class, 'addon_group_id', 'modifier_id');
+    }
 }
