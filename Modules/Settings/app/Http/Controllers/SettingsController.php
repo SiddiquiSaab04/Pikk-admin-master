@@ -45,7 +45,7 @@ class SettingsController extends Controller
     public function create()
     {
         return sendResponse(false, 'settings::create', [
-            "title" => "Create Setting",
+            "title" => "Create Settings",
             "description" => "create a new settings"
         ]);
     }
