@@ -83,6 +83,9 @@
                 </ul>
             </li>
             @endcan
+        </ul>
+        <h3>Settings</h3>
+        <ul class="nav side-menu">
             @can('manage_system_media')
             <li><a><i class="fa fa-clone"></i> Settings <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
