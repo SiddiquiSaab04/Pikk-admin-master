@@ -13,20 +13,20 @@
             </a>
         </li>
         <li>
-            <a href="#payment">
+            <a href="#customers">
                 <span class="step_no">2</span>
                 <span class="step_descr">
-                    Payment<br />
-                    <small>Payment Settings</small>
+                Customers<br />
+                    <small>Customers Settings</small>
                 </span>
             </a>
         </li>
         <li>
-            <a href="#customers">
+            <a href="#payment">
                 <span class="step_no">3</span>
                 <span class="step_descr">
-                Customers<br />
-                    <small>Customers Settings</small>
+                    Payment<br />
+                    <small>Payment Settings</small>
                 </span>
             </a>
         </li>
@@ -53,8 +53,8 @@
         <form action="{{ route('settings.store') }}" class="form-horizontal form-label-left my-5 px-3" method="post" id="form-wizard">
             @csrf
             @include('settings::partials.general')
-            @include('settings::partials.payment')
             @include('settings::partials.customers')
+            @include('settings::partials.payment')
             @include('settings::partials.services')
             @include('settings::partials.notifications')
         </form>
