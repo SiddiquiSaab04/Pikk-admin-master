@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Payments\app\Http\Controllers\PaymentsController;
-
+use Modules\Payments\app\Services\PaymentService;
+use Modules\Payments\app\Services\BraintreePaymentService;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,5 +16,9 @@ use Modules\Payments\app\Http\Controllers\PaymentsController;
 */
 
 Route::group([], function () {
-    Route::resource('payments', PaymentsController::class)->names('payments');
+    Route::get('test', function() {
+        // $payment = new PaymentService(new BraintreePaymentService());
+        // $a = $payment->processPayment(['amount' => 10, 'cardToken' => 'g2pgab9s']);
+        // dd($a);
+    });
 });
