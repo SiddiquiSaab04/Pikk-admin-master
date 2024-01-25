@@ -7,12 +7,9 @@
           <input
             type="checkbox"
             class="js-switch"
-            data-switchery="true"
-            style="display: none"
             @click="allowPayment = !allowPayment"
-          /><span class="" ref="switchery"
-            ><small class="" ref="switch"></small
-          ></span>
+            v-radio-checked="allowPayment"
+          />
         </label>
       </div>
     </div>
@@ -30,12 +27,8 @@
           <input
             type="checkbox"
             class="js-switch"
-            data-switchery="true"
-            style="display: none"
             @click="platforms[platform].status = !platforms[platform].status"
-          /><span class="" ref="switchery"
-            ><small class="" ref="switch"></small
-          ></span>
+          />
         </label>
       </div>
       <div
@@ -48,12 +41,8 @@
             <input
               type="checkbox"
               class="js-switch"
-              data-switchery="true"
-              style="display: none"
               @click="platforms[platform][index] = !platforms[platform][index]"
-            /><span class="" ref="switchery"
-              ><small class="" ref="switch"></small
-            ></span>
+            />
             {{ index }}
           </label>
         </div>
@@ -68,13 +57,13 @@
 
   <div class="row">
     <div class="col-sm-4" v-if="payments.includes('braintree')">
-        <BraintreeComponent/>
+      <BraintreeComponent />
     </div>
     <div class="col-sm-4" v-if="payments.includes('paypal')">
-        <PaypalComponent/>
+      <PaypalComponent />
     </div>
     <div class="col-sm-4" v-if="payments.includes('stripe')">
-        <StripeComponent/>
+      <StripeComponent />
     </div>
   </div>
 </template>
@@ -84,10 +73,14 @@ import PaypalComponent from "./PaypalComponent.vue";
 import StripeComponent from "./StripeComponent.vue";
 
 export default {
+  props: ["setting", "gateway"],
   components: {
     BraintreeComponent,
     PaypalComponent,
     StripeComponent,
+  },
+  mounted() {
+    this.populateData();
   },
   data() {
     return {
@@ -137,6 +130,14 @@ export default {
     };
   },
   methods: {
+    populateData() {
+      let settings = JSON.parse(this.setting);
+      let gateway = JSON.parse(this.setting);
+
+      if (settings.length > 0) {
+        this.allowPayment = true;
+      }
+    },
     filterTrueValues(obj) {
       return Object.keys(obj).reduce((acc, key) => {
         if (key !== "status" && key !== "applepay" && key !== "googlepay") {

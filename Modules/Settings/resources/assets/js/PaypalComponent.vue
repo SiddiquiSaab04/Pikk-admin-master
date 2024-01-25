@@ -10,7 +10,7 @@
       <input
         type="text"
         class="form-control"
-        v-model="paypal.paypal_environment"
+        v-model="paypal.PAYPAL_ENVIRONMENT"
       />
       <span class="mt-1">
         <p class="mt-1">Add Paypal Environment</p>
@@ -24,7 +24,7 @@
       <input
         type="text"
         class="form-control"
-        v-model="paypal.paypal_client_secret"
+        v-model="paypal.PAYPAL_CLIENT_SECRET"
       />
       <span class="mt-1">
         <p class="mt-1">Add Paypal Client Secret</p>
@@ -38,13 +38,13 @@
       <input
         type="text"
         class="form-control"
-        v-model="paypal.paypal_client_id"
+        v-model="paypal.PAYPAL_CLIENT_ID"
       />
       <span class="mt-1">
         <p class="mt-1">Add Paypal Client ID</p>
       </span>
     </div>
-    <input type="hidden" name="paypal" :value="JSON.stringify(paypal)" />
+    <input type="hidden" name="gateway[]" :value="JSON.stringify(paypal)" />
   </div>
 </template>
 <script>
@@ -52,9 +52,9 @@ export default {
   data() {
     return {
       paypal: {
-        paypal_environment: "",
-        paypal_client_secret: "",
-        paypal_client_id: "",
+        PAYPAL_ENVIRONMENT: "",
+        PAYPAL_CLIENT_SECRET: "",
+        PAYPAL_CLIENT_ID: "",
       },
     };
   },

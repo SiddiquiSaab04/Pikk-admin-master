@@ -11,7 +11,7 @@
       <input
         type="text"
         class="form-control"
-        v-model="braintree.braintree_environment"
+        v-model="braintree.BRAINTREE_ENVIRONMENT"
       />
       <span class="mt-1">
         <p class="mt-1">Add Braintree Environment</p>
@@ -25,7 +25,7 @@
       <input
         type="text"
         class="form-control"
-        v-model="braintree.braintree_merchant"
+        v-model="braintree.BRAINTREE_MERCHANT"
       />
       <span class="mt-1">
         <p class="mt-1">Add Braintree Merchant</p>
@@ -39,7 +39,7 @@
       <input
         type="text"
         class="form-control"
-        v-model="braintree.braintree_public_key"
+        v-model="braintree.BRAINTREE_PUBLIC_KEY"
       />
       <span class="mt-1">
         <p class="mt-1">Add Braintree Public Key</p>
@@ -53,7 +53,7 @@
       <input
         type="text"
         class="form-control"
-        v-model="braintree.braintree_private_key"
+        v-model="braintree.BRAINTREE_PRIVATE_KEY"
       />
       <span class="mt-1">
         <p class="mt-1">Add Braintree Private Key</p>
@@ -69,14 +69,14 @@
       <input
         type="text"
         class="form-control"
-        v-model="braintree.braintree_merchant_account"
+        v-model="braintree.BRAINTREE_MERCHANT_ACCOUNT"
       />
       <span class="mt-1">
         <p class="mt-1">Add Braintree Merchant Account</p>
       </span>
     </div>
 
-    <input type="hidden" name="braintreee" :value="JSON.stringify(braintree)" />
+    <input type="hidden" name="gateway[]" :value="JSON.stringify(braintree)" />
   </div>
 </template>
 <script>
@@ -84,11 +84,11 @@ export default {
   data() {
     return {
       braintree: {
-        braintree_environment: "",
-        braintree_merchant: "",
-        braintree_public_key: "",
-        braintree_private_key: "",
-        braintree_merchant_account: "",
+        BRAINTREE_ENVIRONMENT: "",
+        BRAINTREE_MERCHANT: "",
+        BRAINTREE_PUBLIC_KEY: "",
+        BRAINTREE_PRIVATE_KEY: "",
+        BRAINTREE_MERCHANT_ACCOUNT: "",
       },
     };
   },

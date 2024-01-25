@@ -5,6 +5,10 @@
         </div>
     </div>
     <div class="px-3">
-        <payment-component></payment-component>
+        <payment-component
+            :setting={{ isset($settings['payments']) ? json_encode($settings['payments']) : json_encode([]) }}
+            :gateway="{{ isset($settings['gateway']) ? json_encode($settings['gateway']) : json_encode([]) }}"
+        >
+        </payment-component>
     </div>
 </div>

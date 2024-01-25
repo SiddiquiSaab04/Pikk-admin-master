@@ -10,7 +10,7 @@
       <input
         type="text"
         class="form-control"
-        v-model="stripe.stripe_environment"
+        v-model="stripe.STRIPE_ENVIRONMENT"
       />
       <span class="mt-1">
         <p class="mt-1">Add Stripe Environment</p>
@@ -21,7 +21,7 @@
       <p class="mb-0">
         <label for="stripe_key">Stripe Key</label>
       </p>
-      <input type="text" class="form-control" v-model="stripe.stripe_key" />
+      <input type="text" class="form-control" v-model="stripe.STRIPE_KEY" />
       <span class="mt-1">
         <p class="mt-1">Add Stripe Key</p>
       </span>
@@ -31,12 +31,12 @@
       <p class="mb-0">
         <label for="stripe_secret">Stripe Secret</label>
       </p>
-      <input type="text" class="form-control" v-model="stripe.stripe_secret" />
+      <input type="text" class="form-control" v-model="stripe.STRIPE_SECRET" />
       <span class="mt-1">
         <p class="mt-1">Add Stripe Secret</p>
       </span>
     </div>
-    <input type="hidden" name="stripe" :value="JSON.stringify(stripe)" />
+    <input type="hidden" name="gateway[]" :value="JSON.stringify(stripe)" />
   </div>
 </template>
 <script>
@@ -44,9 +44,9 @@ export default {
   data() {
     return {
       stripe: {
-        stripe_environment: "",
-        stripe_key: "",
-        stripe_secret: "",
+        STRIPE_ENVIRONMENT: "",
+        STRIPE_KEY: "",
+        STRIPE_SECRET: "",
       },
     };
   },

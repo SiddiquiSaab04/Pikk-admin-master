@@ -16,7 +16,13 @@ import enabledModules from "../../modules_statuses.json";
  */
 
 const app = createApp({});
-
+app.directive('radio-checked', {
+    updated: (el, binding) => {
+        if(binding.value) {
+            el.checked = 'checked'
+        }
+    }
+})
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
