@@ -4,5 +4,7 @@
             <h4 class="p-4 text-center border-1">Payment</h4>
         </div>
     </div>
-    <payment-component></payment-component>
+    <div class="px-3">
+        <payment-component></payment-component>
+    </div>
 </div>
