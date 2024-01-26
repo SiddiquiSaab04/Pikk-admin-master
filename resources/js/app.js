@@ -18,10 +18,10 @@ import enabledModules from "../../modules_statuses.json";
 const app = createApp({});
 app.directive('radio-checked', {
     updated: (el, binding) => {
-        if(binding.value) {
+        if(binding.value == 1) {
             el.checked = 'checked'
         }
-    }
+    },
 })
 /**
  * The following block of code may be used to automatically register your

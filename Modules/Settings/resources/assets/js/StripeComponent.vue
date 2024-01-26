@@ -36,19 +36,19 @@
         <p class="mt-1">Add Stripe Secret</p>
       </span>
     </div>
-    <input type="hidden" name="gateway[]" :value="JSON.stringify(stripe)" />
+    <input type="hidden" name="gateway[]" :value="JSON.stringify(stripeData)" />
   </div>
 </template>
 <script>
 export default {
+  props: ["stripe"],
   data() {
     return {
-      stripe: {
-        STRIPE_ENVIRONMENT: "",
-        STRIPE_KEY: "",
-        STRIPE_SECRET: "",
-      },
+      stripeData: {},
     };
+  },
+  mounted() {
+    this.stripeData = this.stripe;
   },
 };
 </script>

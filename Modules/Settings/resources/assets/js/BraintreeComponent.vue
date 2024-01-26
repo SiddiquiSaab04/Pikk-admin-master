@@ -76,21 +76,19 @@
       </span>
     </div>
 
-    <input type="hidden" name="gateway[]" :value="JSON.stringify(braintree)" />
+    <input type="hidden" name="gateway[]" :value="JSON.stringify(braintreeData)" />
   </div>
 </template>
 <script>
 export default {
+  props: ['braintree'],
   data() {
     return {
-      braintree: {
-        BRAINTREE_ENVIRONMENT: "",
-        BRAINTREE_MERCHANT: "",
-        BRAINTREE_PUBLIC_KEY: "",
-        BRAINTREE_PRIVATE_KEY: "",
-        BRAINTREE_MERCHANT_ACCOUNT: "",
-      },
+      braintreeData: {},
     };
   },
+  mounted() {
+    this.braintreeData = this.braintree
+  }
 };
 </script>
