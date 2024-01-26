@@ -9,7 +9,7 @@
             <p class="mb-0">
                 <label for="name">App Name</label>
             </p>
-            <input type="text" class="form-control" name="name" id="name" value="{{ $settings->name ?? '' }}">
+            <input type="text" class="form-control" name="APP_NAME" id="name" value="{{ $settings['APP_NAME'] ?? '' }}">
             <span class="mt-1">
                 <p class="mt-1">Enter Application name</p>
             </span>
@@ -18,7 +18,7 @@
             <p class="mb-0">
                 <label for="env">App Environment</label>
             </p>
-            <input type="text" class="form-control" name="env" id="env" value="{{ $settings->env ?? '' }}">
+            <input type="text" class="form-control" name="APP_ENV" id="env" value="{{ $settings['APP_ENV'] ?? '' }}">
             <span class="mt-1">
                 <p class="mt-1">Set Application Environment</p>
             </span>
@@ -27,10 +27,10 @@
             <p class="mb-0">
                 <label for="timezone">Time Zone</label>
             </p>
-            <select class="form-control select2_multiple" multiple="multiple" name="timezone[]" id="timezone">
-                <option disabled>Choose Timeone</option>
+            <select class="form-control" name="TIMEZONE" id="timezone">
+                <option value={{ null }}>Choose Timeone</option>
                 @foreach(config('timezones') as $key => $value )
-                <option value="{{ $value }}">{{ $key }}</option>
+                    <option value="{{ $value }}" @if($value == $settings['TIMEZONE']) selected @endif>{{ $key }}</option>
                 @endforeach
             </select>
             <span class="mt-1">
@@ -48,10 +48,10 @@
             </p>
             <select class="form-control select2_multiple" multiple="multiple" name="platform[]" id="platform">
                 <option disabled>Choose Platforms</option>
-                <option value="app">App</option>
-                <option value="kiosk">Kiosk</option>
-                <option value="pos">POS</option>
-                <option value="web">Web</option>
+                <option value="app" @if(in_array('app', $settings['platform'])) selected @endif>App</option>
+                <option value="kiosk" @if(in_array('kiosk', $settings['platform'])) selected @endif>Kiosk</option>
+                <option value="pos" @if(in_array('pos', $settings['platform'])) selected @endif>POS</option>
+                <option value="web" @if(in_array('web', $settings['platform'])) selected @endif>Web</option>
             </select>
             <span class="mt-1">
                 <p class="mt-1">Set Allowed Platforms for Orders</p>

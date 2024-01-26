@@ -44,18 +44,26 @@ class SettingsController extends Controller
      */
     public function create()
     {
+        $settings = $this->settingsService->getTransformedArray();
+
         return sendResponse(false, 'settings::create', [
             "title" => "Create Settings",
-            "description" => "create a new settings"
+            "description" => "create a new settings",
+            'settings' => $settings
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        //
+        $settings = $this->settingsService->createSettings($request->all());
+        if($settings['status']) {
+            return redirect()->back()->withToastSuccess($settings['message']);
+        } else {
+            return redirect()->back()->withToastError($settings['message']);
+        }
     }
 
     /**
@@ -99,7 +107,7 @@ class SettingsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
+    public function update(Request $request, $id)
     {
         //
     }
