@@ -30,7 +30,7 @@
             <select class="form-control" name="TIMEZONE" id="timezone">
                 <option value={{ null }}>Choose Timeone</option>
                 @foreach(config('timezones') as $key => $value )
-                    <option value="{{ $value }}" @if($value == $settings['TIMEZONE']) selected @endif>{{ $key }}</option>
+                    <option value="{{ $value }}" @if(isset($settings['TIMEZONE']) && $value == $settings['TIMEZONE']) selected @endif>{{ $key }}</option>
                 @endforeach
             </select>
             <span class="mt-1">
@@ -48,10 +48,10 @@
             </p>
             <select class="form-control select2_multiple" multiple="multiple" name="platform[]" id="platform">
                 <option disabled>Choose Platforms</option>
-                <option value="app" @if(in_array('app', $settings['platform'])) selected @endif>App</option>
-                <option value="kiosk" @if(in_array('kiosk', $settings['platform'])) selected @endif>Kiosk</option>
-                <option value="pos" @if(in_array('pos', $settings['platform'])) selected @endif>POS</option>
-                <option value="web" @if(in_array('web', $settings['platform'])) selected @endif>Web</option>
+                <option value="app" @if(isset($settings['platform']) && in_array('app', $settings['platform'])) selected @endif>App</option>
+                <option value="kiosk" @if(isset($settings['platform']) && in_array('kiosk', $settings['platform'])) selected @endif>Kiosk</option>
+                <option value="pos" @if(isset($settings['platform']) && in_array('pos', $settings['platform'])) selected @endif>POS</option>
+                <option value="web" @if(isset($settings['platform']) && in_array('web', $settings['platform'])) selected @endif>Web</option>
             </select>
             <span class="mt-1">
                 <p class="mt-1">Set Allowed Platforms for Orders</p>
