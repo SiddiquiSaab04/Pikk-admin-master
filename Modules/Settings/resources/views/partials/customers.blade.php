@@ -7,6 +7,22 @@
     <div class="row">
         <div class="col-sm-4">
             <p class="mb-0">
+                <label for="guest">Allow Guest Order</label>
+            </p>
+            <div id="guest" class="btn-group" data-toggle="buttons">
+                <label class="btn btn-success {{ isset($settings['guest']) && $settings['guest'] == 1 ? 'active' : '' }}" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                  <input type="radio" name="guest" value="1" class="join-btn" data-parsley-multiple="guest" data-parsley-id="12" @if(isset($settings['guest']) && $settings['guest'] == 1) checked @endif> &nbsp; True &nbsp;
+                </label>
+                <label class="btn btn-danger {{ isset($settings['guest']) && $settings['guest'] == 0 ? 'active' : '' }}" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
+                  <input type="radio" name="guest" value="0" class="join-btn" data-parsley-multiple="guest" @if(isset($settings['guest']) && $settings['guest'] == 0) checked @endif> False
+                </label>
+              </div>
+            <span class="mt-1">
+                <p class="mt-1">Allow Customers to Place Order Without Login</p>
+            </span>
+        </div>
+        <div class="col-sm-4">
+            <p class="mb-0">
                 <label for="login">Allow Login</label>
             </p>
             <div id="login" class="btn-group" data-toggle="buttons">
