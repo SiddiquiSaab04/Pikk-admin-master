@@ -4,6 +4,7 @@ namespace Modules\Media\app\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Log;
 use Modules\Media\app\Http\Requests\MediaRequest;
 use Modules\Media\app\Services\MediaService;
 
@@ -21,14 +22,10 @@ class MediaController extends Controller
      */
     public function index()
     {
-        $medias = $this->mediaService->getAll();
+        $medias = $this->mediaService->getAllWithoutPagination();
 
         if (request()->wantsjson()) {
-            return sendResponse('media::index', [
-                "medias" => $medias,
-                "title" => "Media List",
-                "description" => "show all medias"
-            ]);
+            return sendResponse(true, null, $medias, 'Media retrieve successfully.', 200);
         } else {
             return sendResponse(false, 'media::index', [
                 "medias" => $medias,
