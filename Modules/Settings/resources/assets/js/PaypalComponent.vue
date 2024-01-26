@@ -44,19 +44,19 @@
         <p class="mt-1">Add Paypal Client ID</p>
       </span>
     </div>
-    <input type="hidden" name="gateway[]" :value="JSON.stringify(paypal)" />
+    <input type="hidden" name="gateway[]" :value="JSON.stringify(paypalData)" />
   </div>
 </template>
 <script>
 export default {
+props: ['paypal'],
   data() {
     return {
-      paypal: {
-        PAYPAL_ENVIRONMENT: "",
-        PAYPAL_CLIENT_SECRET: "",
-        PAYPAL_CLIENT_ID: "",
-      },
+      paypalData: {}
     };
   },
+  mounted() {
+    this.paypalData = this.paypal
+  }
 };
 </script>

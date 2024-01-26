@@ -22,6 +22,7 @@ class SettingsService
 
     public function createSettings($entries)
     {
+        // dd($entries);
         unset($entries['_token']);
 
         $entries['platform'] = json_encode($entries['platform']);
