@@ -30,7 +30,7 @@
             <select class="form-control" name="TIMEZONE" id="timezone">
                 <option value={{ null }}>Choose Timeone</option>
                 @foreach(config('timezones') as $key => $value )
-                    <option value="{{ $value }}" @if(isset($settings['TIMEZONE']) && $value == $settings['TIMEZONE']) selected @endif>{{ $key }}</option>
+                <option value="{{ $value }}" @if(isset($settings['TIMEZONE']) && $value==$settings['TIMEZONE']) selected @endif>{{ $key }}</option>
                 @endforeach
             </select>
             <span class="mt-1">
@@ -40,7 +40,7 @@
     </div>
     <div class="row">
         <div class="col-sm-8">
-            <system-gallery-component></system-gallery-component>
+            <system-gallery-component logo="{{ isset($settings['logo']) ? $settings['logo'] : null }}" favicon="{{ isset($settings['favicon']) ? $settings['favicon'] : null }}" />
         </div>
         <div class="col-sm-4">
             <p class="mb-0">

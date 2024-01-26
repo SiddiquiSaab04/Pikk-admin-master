@@ -131,11 +131,13 @@ export default {
   },
   methods: {
     populateData() {
-      let settings = JSON.parse(this.setting);
-      let gateway = JSON.parse(this.setting);
+      if(this.setting.length > 0) {
+        let settings = JSON.parse(this.setting);
+        // let gateway = JSON.parse(this.setting);
 
-      if (settings.length > 0) {
-        this.allowPayment = true;
+        if (settings.length > 0) {
+          this.allowPayment = true;
+        }
       }
     },
     filterTrueValues(obj) {

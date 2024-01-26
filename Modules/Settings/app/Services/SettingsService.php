@@ -29,33 +29,31 @@ class SettingsService
         $entries['gateway'] = json_encode($entries['gateway']);
 
         try {
-            foreach($entries as $key => $data) {
-                $this->updateOrCreate(['key' => $key],[
+            foreach ($entries as $key => $data) {
+                $this->updateOrCreate(['key' => $key], [
                     'key' => $key,
                     'value' => $data
                 ]);
 
-                if(ctype_upper(str_replace('_', '', $key))) {
+                if (ctype_upper(str_replace('_', '', $key))) {
                     DotenvEditor::setKey($key, $data)->save();
+                    DotenvEditor::addEmpty()->save();
                 }
 
-                if($key == 'gateway') {
-                    foreach(json_decode($data, true) as $paymentCredential) {
+                if ($key == 'gateway') {
+                    foreach (json_decode($data, true) as $paymentCredential) {
                         $paymentGatewayCredentials = json_decode($paymentCredential, true);
-                        foreach($paymentGatewayCredentials as $var => $credential) {
+                        foreach ($paymentGatewayCredentials as $var => $credential) {
                             DotenvEditor::setKey($var, $credential)->save();
                         }
                     }
                 }
-
-                DotenvEditor::addEmpty()->save();
             }
 
             return [
                 'status' => 1,
                 'message' => 'Settings Modified Successfully'
             ];
-
         } catch (Exception $e) {
             return [
                 'status' => 0,

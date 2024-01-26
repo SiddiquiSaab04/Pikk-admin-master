@@ -7,7 +7,7 @@
             <input
                 type="text"
                 name="logo"
-                :value="logo?.url"
+                :value="selectedLogo == null ? updatedLogo?.url : selectedLogo"
                 class="form-control"
                 id="inputSuccess5"
             />
@@ -29,7 +29,9 @@
             <input
                 type="text"
                 name="favicon"
-                :value="favicon?.url"
+                :value="
+                    selectedFavicon == null ? updatedFavicon?.url : selectedFavicon
+                "
                 class="form-control"
                 id="inputSuccess5"
             />
@@ -44,13 +46,22 @@
         </span>
     </div>
 
-    <input type="hidden" name="logo" :value="logo?.url" />
-    <input type="hidden" name="favicon" :value="favicon?.url" />
+    <input
+        type="hidden"
+        name="logo"
+        :value="selectedLogo == null ? updatedLogo?.url : selectedLogo"
+    />
+    <input
+        type="hidden"
+        name="favicon"
+        :value="selectedLogo == null ? updatedFavicon?.url : selectedFavicon"
+    />
 
     <ModalComponent
         v-model="showModal"
         :selected-images="selectedImages"
         :type="type"
+        :index="index"
         @selected-images="handleSelectedImages"
     />
 </template>
@@ -62,27 +73,34 @@ export default {
     components: {
         ModalComponent,
     },
-    props: [],
+    props: ["logo", "favicon"],
     data() {
         return {
+            index:0,
             showModal: false,
             type: null,
-            logo: null,
-            favicon: null,
+            selectedLogo: this.logo,
+            selectedFavicon: this.favicon,
+            updatedLogo: null,
+            updatedFavicon: null,
             selectedImages: [],
         };
     },
     methods: {
         handleSelectedImages(newSelection) {
             const selected = newSelection.selectedImages[0];
+            selected.primary = true;
+
             if (newSelection.type == "logo") {
-                this.logo = selected;
+                this.updatedLogo = selected;
+                this.selectedLogo = null;
             } else {
-                this.favicon = selected;
+                this.updatedFavicon = selected;
+                this.selectedFavicon = null;
             }
 
             this.showModal = false;
-            this.type = null
+            this.type = null;
             this.selectedImages = [];
         },
 
@@ -90,11 +108,21 @@ export default {
             this.type = type;
 
             if (type == "logo") {
-                this.selectedImages = this.logo ? [this.logo] : [];
+                this.selectedImages =
+                    this.selectedLogo !== null
+                        ? this.selectedLogo
+                        : this.updatedLogo
+                        ? [this.updatedLogo]
+                        : [];
             } else if (type == "favicon") {
-                this.selectedImages = this.favicon ? [this.favicon] : [];
+                this.selectedImages =
+                    this.selectedFavicon !== null
+                        ? this.selectedFavicon
+                        : this.updatedFavicon
+                        ? [this.updatedFavicon]
+                        : [];
             }
-
+            this.index++;
             this.showModal = true;
         },
     },
