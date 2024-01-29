@@ -260,7 +260,7 @@ class ProductService extends InventoryClass
             $productMedia = [
                 "media_id" => $media->id,
                 'product_id' => $product->id,
-                'primary' => $media->primary
+                'primary' => $media->primary ?? 0,
             ];
 
             $this->productMediaService->create($productMedia);

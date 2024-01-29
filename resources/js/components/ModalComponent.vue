@@ -87,7 +87,6 @@ export default {
                 });
         },
         initializeSelectedImages() {
-            console.log(typeof this.selectedImages);
             if (typeof this.selectedImages == "string") {
                 let selectedimage = { url: this.selectedImages };
                 selectedimage.primary = true;
