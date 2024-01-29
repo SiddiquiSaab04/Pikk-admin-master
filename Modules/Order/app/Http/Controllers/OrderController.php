@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Modules\Order\app\Services\OrderService;
 
 class OrderController extends Controller
@@ -15,6 +17,9 @@ class OrderController extends Controller
     public function __construct(OrderService $orderService)
     {
         $this->orderService = $orderService;
+        if (array_key_exists('HTTP_AUTHORIZATION', $_SERVER)) {
+            $this->middleware('auth:sanctum');
+        }
     }
     /**
      * Display a listing of the resource.
@@ -52,7 +57,8 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
-        $order = $this->orderService->create($request->all());
+        $auth = $request->user();
+        $order = $this->orderService->create($request->all(), $auth);
         return sendResponse(
             true,
             null,

@@ -51,9 +51,6 @@ class Order extends Model
 
     public function orderProducts()
     {
-        // $orderProducts = new OrderProduct();
-        // $orderProducts->setTableName($this->branch);
-        // dd(OrderProduct::class);
         return $this->hasMany(OrderProduct::class);
     }
 

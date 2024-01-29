@@ -4,7 +4,9 @@ namespace Modules\Customers\app\Services;
 
 use App\Repositories\CrudRepository;
 use App\Traits\Crud;
+use Exception;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Modules\Customers\app\Models\Customer;
 use Modules\Customers\app\Repositories\CustomersRepository;
 
@@ -30,6 +32,8 @@ class CustomersService
     if ($customer) {
       $token = $this->customersRepository->generateToken($customer);
     } else {
+      $request['name'] = $request['name'] ?? '';
+      $request['phone_verified'] = $request['phone_verified'] ?? 0;
       $customer = $this->create($request);
       $token = $this->customersRepository->generateToken($customer);
     }
@@ -46,5 +50,17 @@ class CustomersService
   {
     Auth::user()->tokens()->delete();
     return sendResponse(true, null, null, 'Successfully logout.', 200);
+  }
+
+  public function applyCashback($id, $amount)
+  {
+    $customer = $this->getById($id);
+    $cashback = $customer->cashback_points + $amount;
+    $data['cashback_points'] = $cashback;
+    try {
+        $this->update($data, $id);
+    } catch (Exception $e) {
+        Log::info($e->getMessage());
+    }
   }
 }

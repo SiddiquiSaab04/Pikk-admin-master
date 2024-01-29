@@ -52,7 +52,7 @@ class OrderService
      * @param array $data
      * @return Modules\Order\app\Models\Order collection
      */
-    public function create($data)
+    public function create($data, $auth)
     {
         $data['code'] = $this->getCode();
         $data['title'] = "null"; //wip
@@ -62,6 +62,9 @@ class OrderService
         $data['sub_total'] = 0;
         $data['cancelled_reason'] = 0;
 
+        if($auth) {
+            $data['customer_id'] = $auth->id;
+        }
         /**
          * we are setting payload for all relevant models including:
          *
@@ -95,7 +98,7 @@ class OrderService
          * Return $x to customer if the order amount exceeds $10
          */
 
-        if ($order->total >= 10 && false) {
+        if ($order->total >= 10 && $auth) {
             $cashback = [
                 "amount" => (int)($order->total / 10),
                 'customer_id' => $order->customer_id,
@@ -103,7 +106,7 @@ class OrderService
                 'status' => 0
             ];
 
-            $this->customerCashbackService->create($cashback);
+            $this->customerCashbackService->createCashBack($cashback);
         }
 
         $order = $this->orderProductService->getProductsByOrder($order);

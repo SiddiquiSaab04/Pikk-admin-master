@@ -17,6 +17,7 @@ class Customer extends Model
     protected $fillable = [
         "name",
         "phone",
-        "phone_verified"
+        "phone_verified",
+        'cashback_points'
     ];
 }
