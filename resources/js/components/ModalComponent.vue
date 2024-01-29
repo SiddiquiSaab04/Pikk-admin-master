@@ -44,7 +44,7 @@
 
 <script>
 export default {
-    props: ["showModal", "selectedImages", "type"],
+    props: ["showModal", "selectedImages", "type", "index"],
     data() {
         return {
             isModalVisible: this.showModal,
@@ -65,6 +65,10 @@ export default {
     created() {
         this.fetchImages();
     },
+    updated() {
+        this.localSelectedImages = []
+        this.initializeSelectedImages();
+    },
     methods: {
         fetchImages() {
             fetch("/api/media/index", {
@@ -83,13 +87,19 @@ export default {
                 });
         },
         initializeSelectedImages() {
-            if (this.selectedImages && this.selectedImages.length > 0) {
-                this.localSelectedImages = this.selectedImages.map(
-                    (selected) => ({
-                        ...selected,
-                        primary: selected.pivot.primary,
-                    })
-                );
+            if (typeof this.selectedImages == "string") {
+                let selectedimage = { url: this.selectedImages };
+                selectedimage.primary = true;
+                this.localSelectedImages.push(selectedimage);
+            } else {
+                if (this.selectedImages && this.selectedImages.length > 0) {
+                    this.localSelectedImages = this.selectedImages.map(
+                        (selected) => ({
+                            ...selected,
+                            primary: selected?.pivot?.primary,
+                        })
+                    );
+                }
             }
         },
         toggleSelection(image) {
@@ -98,19 +108,18 @@ export default {
         },
         isSelect(image) {
             return this.localSelectedImages.some(
-                (selected) => selected.id === image.id
+                (selected) => selected.id === image.id || selected.url == image.url
             );
         },
 
         select(image) {
-            if (this.type !== null && this.type !== undefined) {
+            if (this.type != null && this.type != undefined) {
                 this.$emit("selected-images", {
                     selectedImages: [image],
                     type: this.type,
                 });
                 this.localSelectedImages = [];
             } else {
-                image.primary = false;
                 this.localSelectedImages.push(image);
             }
         },

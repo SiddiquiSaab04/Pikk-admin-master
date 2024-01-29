@@ -84,10 +84,11 @@ export default {
                 if (Array.isArray(newVal)) {
                     const hasPrimaryTrue = newVal.some(
                         (obj) =>
-                            obj.primary === true && obj.pivot?.primary === true
+                            obj.primary == true ||
+                            (obj.pivot && obj.pivot.primary == true)
                     );
 
-                    if (!hasPrimaryTrue && newVal.length == 1) {
+                    if (!hasPrimaryTrue && newVal.length > 0) {
                         newVal[0].primary = true;
                     }
                 }
