@@ -30,6 +30,7 @@ class BranchRepository implements BranchInterface
                 $table->float('total');
                 $table->float('sub_total');
                 $table->string('cancelled_reason')->default(null);
+                $table->unsignedBigInteger('cashback_used')->default(0);
                 $table->softDeletes();
                 $table->timestamps();
             });

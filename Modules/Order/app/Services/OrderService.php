@@ -2,7 +2,9 @@
 
 namespace Modules\Order\app\Services;
 
+use Illuminate\Support\Facades\Log;
 use Modules\Customers\app\Services\CustomersCashbackService;
+use Modules\Customers\app\Services\CustomersService;
 use Modules\Inventory\app\Services\ProductService;
 use Modules\Order\app\Events\OrderCancelledEvent;
 use Modules\Order\app\Events\OrderPlacedEvent;
@@ -21,13 +23,15 @@ class OrderService
     protected $productService;
     protected $branch;
     protected $customerCashbackService;
+    protected $customerService;
 
     public function __construct(
         ProductService $productService,
         OrderRepository $orderRepository,
         OrderProductService $orderProductService,
         OrderProductAddonService $orderProductAddonService,
-        CustomersCashbackService $customerCashbackService
+        CustomersCashbackService $customerCashbackService,
+        CustomersService $customerService
     ) {
         $this->model = "\\Modules\\Order\\app\\Models\\Order";
         $this->productService = $productService;
@@ -36,6 +40,7 @@ class OrderService
         $this->orderRepository = $orderRepository->initTable($this->model, request()->branch);
         $this->branch = request()->branch;
         $this->customerCashbackService = $customerCashbackService;
+        $this->customerService = $customerService;
     }
 
     /**
@@ -79,9 +84,13 @@ class OrderService
         $payload = $this->getOrderProductAddons($orderProducts);
         // $payload = $this->checkStocks($orderProductAddons);
 
-        $order = $this->orderRepository->create($payload);
-        if (!empty($order->id)) {
+        if(isset($data['cashback']) && $data['cashback']) {
+            $payload = $this->applyCashback($payload, $auth);
+        }
 
+        $order = $this->orderRepository->create($payload);
+
+        if (!empty($order->id)) {
             foreach ($payload['orderProducts'] as $product) {
                 $product['order_id'] = $order->id;
                 $orderProduct = $this->orderProductService->create($product);
@@ -109,10 +118,42 @@ class OrderService
             $this->customerCashbackService->createCashBack($cashback);
         }
 
+        if (isset($payload['cashback_points']) && $auth) {
+            $this->customerService->applyCashback($auth->id, $payload['cashback_points'], false);
+        }
+
         $order = $this->orderProductService->getProductsByOrder($order);
         broadcast(new OrderPlacedEvent($order->toJson(), $this->branch))->toOthers();
         return $order;
     }
+
+    protected function applyCashback($payload, $auth)
+    {
+        if ($auth) {
+            $cashback = $auth->cashback_points;
+            $total =  $payload['total'] - $cashback;
+
+            if($total < 0) {
+                $amount = abs($total);
+            } else {
+                $amount = 0;
+            }
+
+            if($total < 0) {
+                $payload['cashback_used'] = $payload['total'];
+                $payload['total'] = 0;
+            } else {
+                $payload['cashback_used'] = $cashback;
+                $payload['total'] = $total;
+            }
+
+            $payload['cashback_points'] = $amount;
+
+        }
+
+        return $payload;
+    }
+
 
     /**
      * Generates dynamic order code

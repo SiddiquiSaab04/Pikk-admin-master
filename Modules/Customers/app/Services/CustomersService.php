@@ -52,11 +52,18 @@ class CustomersService
     return sendResponse(true, null, null, 'Successfully logout.', 200);
   }
 
-  public function applyCashback($id, $amount)
+  public function applyCashback($id, $amount, $add = true)
   {
     $customer = $this->getById($id);
-    $cashback = $customer->cashback_points + $amount;
+
+    if($add) {
+        $cashback = $customer->cashback_points + $amount;
+    } else {
+        $cashback = (int) $amount;
+    }
+
     $data['cashback_points'] = $cashback;
+
     try {
         $this->update($data, $id);
     } catch (Exception $e) {
