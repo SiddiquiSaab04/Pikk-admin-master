@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone')->unique();
+            $table->unsignedBigInteger('cashback_points')->nullable()->default(0);
             $table->integer('phone_verified')->nullable()->default(0);
             $table->timestamps();
         });
