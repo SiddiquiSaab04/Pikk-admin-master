@@ -18,6 +18,7 @@ class Customer extends Model
         "name",
         "phone",
         "phone_verified",
+        "pin",
         'cashback_points'
     ];
 }
