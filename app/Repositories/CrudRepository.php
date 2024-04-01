@@ -85,4 +85,9 @@ class CrudRepository implements CrudInterface
     {
         return $model::updateOrCreate($clause, $data);
     }
+
+    public function getWhereFirst($model, $clause)
+    {
+        return $model::where($clause)->first();
+    }
 }

@@ -49,6 +49,7 @@ class StockService
     $data['default_quantity'] = $request['default_quantity'];
     $data['available_stock'] = $request['available_stock'];
     $data['is_enabled'] = $request['is_enabled'];
+    $data['is_new'] = $request['is_new'];
 
     return $this->stockRepository->updateOrCreate($clause, $data);
   }

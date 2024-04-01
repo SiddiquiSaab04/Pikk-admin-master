@@ -62,4 +62,9 @@ trait Crud
     {
         return $this->crudRepository->updateOrCreate($this->model, $clause, $data);
     }
+
+    public function getWhereFirst($clause)
+    {
+        return $this->crudRepository->getWhereFirst($this->model, $clause);
+    }
 }

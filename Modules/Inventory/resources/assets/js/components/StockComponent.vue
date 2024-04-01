@@ -8,6 +8,7 @@
                 <th>Available Stock</th>
                 <th>Default Quantity</th>
                 <th>Is Enabled</th>
+                <th>New</th>
                 <th>Action</th>
             </tr>
         </thead>

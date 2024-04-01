@@ -25,5 +25,5 @@ use Modules\Inventory\app\Http\Controllers\ProductStockController;
 Route::prefix('inventory')->group(function () {
     Route::get('product/index', [ProductController::class, 'index']);
     Route::get('{branch}/category/index', [CategoryController::class, 'index']);
-    Route::get('category/index', [CategoryController::class, 'index']);
+    Route::get('{branch?}/category/index', [CategoryController::class, 'index']);
 });

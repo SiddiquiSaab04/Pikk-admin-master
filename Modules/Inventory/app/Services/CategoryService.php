@@ -6,6 +6,7 @@ use App\Repositories\CrudRepository;
 use App\Traits\Crud;
 use Modules\Branch\app\Services\BranchService;
 use Modules\Inventory\app\Classes\InventoryClass;
+use Modules\Media\app\Services\MediaService;
 
 class CategoryService extends InventoryClass
 {
@@ -13,15 +14,18 @@ class CategoryService extends InventoryClass
     protected $branchService;
     protected $model;
     protected $branch;
+    protected $media;
 
     public function __construct(
         CrudRepository $crudRepository,
-        BranchService $branchService
+        BranchService $branchService,
+        MediaService $media
     )
     {
         $this->model = "\\Modules\\Inventory\\app\\Models\\Category";
         $this->crudRepository = $crudRepository;
         $this->branchService = $branchService;
+        $this->media = $media;
         $this->branch = request()->branch;
     }
 

@@ -94,6 +94,8 @@ class BranchRepository implements BranchInterface
                 $table->integer('is_enabled')->nullable()->default(1);
                 $table->integer('available_stock')->nullable()->default(1);
                 $table->integer('default_quantity')->nullable()->default(1);
+                $table->integer('is_new')->nullable()->default(1);
+                $table->json('tags')->nullable();
                 $table->softDeletes();
                 $table->timestamps();
             });

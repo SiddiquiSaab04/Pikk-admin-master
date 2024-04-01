@@ -2,11 +2,14 @@
 
 use App\Http\Controllers\SetupController;
 use App\Http\Middleware\InstalledStateMiddleware;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
 use Illuminate\Support\Facades\Hash;
+use Modules\Inventory\app\Models\Product;
+use Modules\Inventory\app\Models\ProductStock;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +21,19 @@ use Illuminate\Support\Facades\Hash;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('hello', function() {
+    $products = Product::get();
+    foreach($products as $product) {
+        $stock = DB::table('product_stocks_6')->insert([
+            "product_id" => $product->id,
+            "is_enabled" => 1,
+            "available_stock" => 50,
+            "default_quantity" => 50,
+            "is_new" => 1,
+        ]);
+    }
+    return 'success';
+});
 
 Route::get('do-setup', [SetupController::class, 'welcome'])->name('do-setup');
 
@@ -30,7 +46,12 @@ Route::middleware(['auth'])->group(function() {
 Auth::routes();
 
 Route::get('/test', function () {
-    return 'Stop';
+    return 'succes';
+    $products = Product::get();
+    $stock = DB::table('product_stocks_6')->get();
+    dd($stock);
+    foreach($products as $product) {
+    }
     // Reset cached roles and permissions
     // app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
@@ -61,7 +82,7 @@ Route::get('/test', function () {
     // Reports
     // Permission::create(['name' => 'read reports']);
 
-    // Roles 
+    // Roles
     // $superAdminRole = Role::create(['name' => 'super-admin']);
     // $adminRole = Role::create(['name' => 'admin']);
     // $chefRole = Role::create(['name' => 'chef']);
