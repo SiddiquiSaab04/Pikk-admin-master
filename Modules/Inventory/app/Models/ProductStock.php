@@ -91,7 +91,9 @@ class ProductStock extends Model
         $tag = $this->getTag('new');
         if($value == 1) {
             if($tag) {
-                array_push($tags, $tag->url);
+                if(!in_array($tag->url, $tags)) {
+                    array_push($tags, $tag->url);
+                }
             }
 
             $this->attributes['tags'] = json_encode($tags);

@@ -2,10 +2,12 @@
 
 namespace Modules\Order\app\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Log;
 use Modules\Customers\app\Services\CustomersCashbackService;
 use Modules\Customers\app\Services\CustomersService;
 use Modules\Inventory\app\Services\ProductService;
+use Modules\Inventory\app\Services\StockService;
 use Modules\Order\app\Events\OrderCancelledEvent;
 use Modules\Order\app\Events\OrderPlacedEvent;
 use Modules\Order\app\Events\OrderReadyEvent;
@@ -24,6 +26,7 @@ class OrderService
     protected $branch;
     protected $customerCashbackService;
     protected $customerService;
+    protected $stock;
 
     public function __construct(
         ProductService $productService,
@@ -31,7 +34,8 @@ class OrderService
         OrderProductService $orderProductService,
         OrderProductAddonService $orderProductAddonService,
         CustomersCashbackService $customerCashbackService,
-        CustomersService $customerService
+        CustomersService $customerService,
+        StockService $stock
     ) {
         $this->model = "\\Modules\\Order\\app\\Models\\Order";
         $this->productService = $productService;
@@ -41,6 +45,7 @@ class OrderService
         $this->branch = request()->branch;
         $this->customerCashbackService = $customerCashbackService;
         $this->customerService = $customerService;
+        $this->stock = $stock;
     }
 
     /**
@@ -82,7 +87,11 @@ class OrderService
          */
         $orderProducts = $this->getOrderProducts($data);
         $payload = $this->getOrderProductAddons($orderProducts);
-        // $payload = $this->checkStocks($orderProductAddons);
+        $payload = $this->checkStocks($payload);
+
+        if(isset($payload['status']) && $payload['status'] == 0) {
+            return $payload;
+        }
 
         if(isset($data['cashback']) && $data['cashback']) {
             $payload = $this->applyCashback($payload, $auth);
@@ -101,6 +110,13 @@ class OrderService
                     $this->orderProductAddonService->create($addon);
                 }
             }
+
+            $this->applyStocks($payload);
+        } else {
+            return [
+                "status" => 0,
+                "message" => "Some error occurred while placing order"
+            ];
         }
 
         /**
@@ -274,8 +290,51 @@ class OrderService
      * @param array $data
      * @return array
      */
-    protected function checkStocks()
+    protected function checkStocks($payload)
     {
+        foreach($payload['orderProducts'] as $orderProduct) {
+            $stock = $this->stock->getStockData(['product_id' => $orderProduct['product_id']]);
+            if(!$stock->is_enabled || $stock->available_stock < $orderProduct['quantity']) {
+                return [
+                    "status" => 0,
+                    "message" => 'We are sorry '. $orderProduct['product_name'] . ' is not available at this time. Please order something else'
+                ];
+            }
+
+            foreach($orderProduct['addons'] as $addon) {
+                $stock = $this->stock->getStockData(['product_id' => $addon['product_id']]);
+                if(!$stock->is_enabled || $stock->available_stock < $addon['quantity']) {
+                    return [
+                        "status" => 0,
+                        "message" => 'We are sorry '. $addon['product_name'] . ' is not available at this time. Please order something else'
+                    ];
+                }
+            }
+        }
+
+        return $payload;
+    }
+
+    protected function applyStocks($data)
+    {
+        try {
+            foreach($data['orderProducts'] as $orderProduct) {
+                $stock = $this->stock->getStockData(['product_id' => $orderProduct['product_id']]);
+                $stock->available_stock = $stock->available_stock - $orderProduct['quantity'];
+                $this->stock->manageStock($stock);
+
+                foreach($orderProduct['addons'] as $addon) {
+                    $stock = $this->stock->getStockData(['product_id' => $addon['product_id']]);
+                    $stock->available_stock = $stock->available_stock - $addon['quantity'];
+                    $this->stock->manageStock($stock);
+                }
+            }
+
+            return true;
+        } catch (Exception $e) {
+            Log::info("stock update error ". $e->getMessage());
+            return false;
+        }
     }
 
     /**

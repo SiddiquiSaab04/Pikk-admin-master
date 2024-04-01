@@ -5,9 +5,6 @@ namespace Modules\Inventory\app\Services;
 use App\Repositories\CrudRepository;
 use App\Traits\Crud;
 use Modules\Inventory\app\Repositories\StockRepository;
-
-use function PHPSTORM_META\type;
-
 class StockService
 {
   use Crud;
@@ -52,5 +49,10 @@ class StockService
     $data['is_new'] = $request['is_new'];
 
     return $this->stockRepository->updateOrCreate($clause, $data);
+  }
+
+  public function getStockData($clause)
+  {
+    return $this->stockRepository->getWhereFirst($clause);
   }
 }

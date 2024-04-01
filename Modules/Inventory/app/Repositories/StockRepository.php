@@ -19,4 +19,9 @@ class StockRepository implements StockRepositoryInterface
   {
     return $this->query->updateOrCreate($clause, $data);
   }
+
+  public function getWhereFirst($clause)
+  {
+    return $this->query->where($clause)->first();
+  }
 }
