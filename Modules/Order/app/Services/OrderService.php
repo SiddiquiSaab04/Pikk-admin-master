@@ -262,6 +262,7 @@ class OrderService
         $arr['product_name'] = $data->name;
         $arr['quantity'] = $payload['quantity'];
         $arr['unit_price'] = $data->sale_price;
+        $arr['stock_checking'] = $data->stock_checking;
         $arr['total_price'] = $data->sale_price * $payload['quantity'];
 
         return $arr;
@@ -294,7 +295,7 @@ class OrderService
     {
         foreach($payload['orderProducts'] as $orderProduct) {
             $stock = $this->stock->getStockData(['product_id' => $orderProduct['product_id']]);
-            if(!$stock->is_enabled || $stock->available_stock < $orderProduct['quantity']) {
+            if(($orderProduct['stock_checking']) && (!$stock->is_enabled || $stock->available_stock < $orderProduct['quantity'])) {
                 return [
                     "status" => 0,
                     "message" => 'We are sorry '. $orderProduct['product_name'] . ' is not available at this time. Please order something else'
@@ -303,7 +304,7 @@ class OrderService
 
             foreach($orderProduct['addons'] as $addon) {
                 $stock = $this->stock->getStockData(['product_id' => $addon['product_id']]);
-                if(!$stock->is_enabled || $stock->available_stock < $addon['quantity']) {
+                if(($addon['stock_checking']) && (!$stock->is_enabled || $stock->available_stock < $addon['quantity'])) {
                     return [
                         "status" => 0,
                         "message" => 'We are sorry '. $addon['product_name'] . ' is not available at this time. Please order something else'
@@ -320,13 +321,19 @@ class OrderService
         try {
             foreach($data['orderProducts'] as $orderProduct) {
                 $stock = $this->stock->getStockData(['product_id' => $orderProduct['product_id']]);
-                $stock->available_stock = $stock->available_stock - $orderProduct['quantity'];
-                $this->stock->manageStock($stock);
+
+                if ($orderProduct['stock_checking']) {
+                    $stock->available_stock = $stock->available_stock - $orderProduct['quantity'];
+                    $this->stock->manageStock($stock);
+                }
 
                 foreach($orderProduct['addons'] as $addon) {
                     $stock = $this->stock->getStockData(['product_id' => $addon['product_id']]);
-                    $stock->available_stock = $stock->available_stock - $addon['quantity'];
-                    $this->stock->manageStock($stock);
+
+                    if ($addon['stock_checking']) {
+                        $stock->available_stock = $stock->available_stock - $addon['quantity'];
+                        $this->stock->manageStock($stock);
+                    }
                 }
             }
 
