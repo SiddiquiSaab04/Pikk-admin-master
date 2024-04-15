@@ -13,7 +13,7 @@ class CustomerRequest extends FormRequest
     {
         return [
             "phone" => "required",
-            "pin" => "integer|required|digits:4"
+            // "pin" => "integer|required|digits:4"
         ];
     }
 
