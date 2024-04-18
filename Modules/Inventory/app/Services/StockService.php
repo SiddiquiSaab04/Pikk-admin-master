@@ -5,6 +5,7 @@ namespace Modules\Inventory\app\Services;
 use App\Repositories\CrudRepository;
 use App\Traits\Crud;
 use Modules\Inventory\app\Repositories\StockRepository;
+
 class StockService
 {
   use Crud;

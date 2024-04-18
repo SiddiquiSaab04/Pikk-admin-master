@@ -3,6 +3,7 @@
 namespace Modules\Order\app\Services;
 
 use Exception;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Modules\Customers\app\Services\CustomersCashbackService;
 use Modules\Customers\app\Services\CustomersService;
@@ -12,6 +13,7 @@ use Modules\Order\app\Events\OrderCancelledEvent;
 use Modules\Order\app\Events\OrderPlacedEvent;
 use Modules\Order\app\Events\OrderReadyEvent;
 use Modules\Order\app\Events\OrderServedEvent;
+use Modules\Order\app\Events\SendReadyOrderReminderEvent;
 use Modules\Order\app\Repositories\OrderRepository;
 use Modules\Order\app\Services\OrderProductService;
 use Modules\Order\app\Services\OrderProductAddonService;
@@ -71,8 +73,10 @@ class OrderService
         $data['total'] = 0;
         $data['sub_total'] = 0;
         $data['cancelled_reason'] = 0;
+        $data['discount'] = $data['discount'];
+        $data['discount_type'] = $data['discount_type'];
 
-        if($auth) {
+        if ($auth) {
             $data['customer_id'] = $auth->id;
         }
         /**
@@ -89,11 +93,11 @@ class OrderService
         $payload = $this->getOrderProductAddons($orderProducts);
         $payload = $this->checkStocks($payload);
 
-        if(isset($payload['status']) && $payload['status'] == 0) {
+        if (isset($payload['status']) && $payload['status'] == 0) {
             return $payload;
         }
 
-        if(isset($data['cashback']) && $data['cashback']) {
+        if (isset($data['cashback']) && $data['cashback']) {
             $payload = $this->applyCashback($payload, $auth);
         }
 
@@ -149,13 +153,13 @@ class OrderService
             $cashback = $auth->cashback_points;
             $total =  $payload['total'] - $cashback;
 
-            if($total < 0) {
+            if ($total < 0) {
                 $amount = abs($total);
             } else {
                 $amount = 0;
             }
 
-            if($total < 0) {
+            if ($total < 0) {
                 $payload['cashback_used'] = $payload['total'];
                 $payload['total'] = 0;
             } else {
@@ -164,7 +168,6 @@ class OrderService
             }
 
             $payload['cashback_points'] = $amount;
-
         }
 
         return $payload;
@@ -242,6 +245,9 @@ class OrderService
         }
 
         $data['sub_total'] = $data['total'];
+        if (isset($data['discount'])) {
+            $data['total'] = $data['total'] - $data['discount'];
+        }
 
         return $data;
     }
@@ -293,21 +299,21 @@ class OrderService
      */
     protected function checkStocks($payload)
     {
-        foreach($payload['orderProducts'] as $orderProduct) {
+        foreach ($payload['orderProducts'] as $orderProduct) {
             $stock = $this->stock->getStockData(['product_id' => $orderProduct['product_id']]);
-            if(($orderProduct['stock_checking']) && (!$stock->is_enabled || $stock->available_stock < $orderProduct['quantity'])) {
+            if (($orderProduct['stock_checking']) && (!$stock->is_enabled || $stock->available_stock < $orderProduct['quantity'])) {
                 return [
                     "status" => 0,
-                    "message" => 'We are sorry '. $orderProduct['product_name'] . ' is not available at this time. Please order something else'
+                    "message" => 'We are sorry ' . $orderProduct['product_name'] . ' is not available at this time. Please order something else'
                 ];
             }
 
-            foreach($orderProduct['addons'] as $addon) {
+            foreach ($orderProduct['addons'] as $addon) {
                 $stock = $this->stock->getStockData(['product_id' => $addon['product_id']]);
-                if(($addon['stock_checking']) && (!$stock->is_enabled || $stock->available_stock < $addon['quantity'])) {
+                if (($addon['stock_checking']) && (!$stock->is_enabled || $stock->available_stock < $addon['quantity'])) {
                     return [
                         "status" => 0,
-                        "message" => 'We are sorry '. $addon['product_name'] . ' is not available at this time. Please order something else'
+                        "message" => 'We are sorry ' . $addon['product_name'] . ' is not available at this time. Please order something else'
                     ];
                 }
             }
@@ -319,7 +325,7 @@ class OrderService
     protected function applyStocks($data)
     {
         try {
-            foreach($data['orderProducts'] as $orderProduct) {
+            foreach ($data['orderProducts'] as $orderProduct) {
                 $stock = $this->stock->getStockData(['product_id' => $orderProduct['product_id']]);
 
                 if ($orderProduct['stock_checking']) {
@@ -327,7 +333,7 @@ class OrderService
                     $this->stock->manageStock($stock);
                 }
 
-                foreach($orderProduct['addons'] as $addon) {
+                foreach ($orderProduct['addons'] as $addon) {
                     $stock = $this->stock->getStockData(['product_id' => $addon['product_id']]);
 
                     if ($addon['stock_checking']) {
@@ -339,7 +345,7 @@ class OrderService
 
             return true;
         } catch (Exception $e) {
-            Log::info("stock update error ". $e->getMessage());
+            Log::info("stock update error " . $e->getMessage());
             return false;
         }
     }
@@ -376,6 +382,24 @@ class OrderService
         return $orders;
     }
 
+    public function getServeOrders()
+    {
+        $orders = $this->orderRepository->getWhere(['created_at', '>=', date('Y-m-d')], ['status', '=', 'served'])->get();
+        if (count($orders) > 0) {
+            $orders = $this->orderProductService->getProductsByOrder($orders);
+        }
+        return $orders;
+    }
+
+    public function getPendingAndReadyOrders()
+    {
+        $pendingOrders = $this->getPendingOrders()->toArray();
+        $readyOrders = $this->getReadyOrders()->toArray();
+        $orders = array_merge($pendingOrders, $readyOrders);
+        return $orders;
+    }
+
+
     public function getOrdersByDate($start, $end)
     {
         return $this->orderRepository->getWhere(['payment', '=', 'paid'], ['status', '=', 'served'], ['created_at', 'between', [$start, $end]])->get();
@@ -385,6 +409,7 @@ class OrderService
     {
         $order = $this->orderRepository->getById($id);
         $order->status = 'ready';
+        $order->ready_at = Carbon::now()->setTimezone('Asia/Singapore');
         $response = $this->orderRepository->save($order);
 
         if ($response) {
@@ -416,11 +441,25 @@ class OrderService
     {
         $order = $this->orderRepository->getById($data['id']);
         $order->status = 'served';
+        $order->serve_at = Carbon::now()->setTimezone('Asia/Singapore');
         $response = $this->orderRepository->save($order);
 
         if ($response) {
             $order = $this->orderProductService->getProductsByOrder($order);
             broadcast(new OrderServedEvent($order->toJson(), $this->branch))->toOthers();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public function sendReminder($data)
+    {
+        $order = $this->orderRepository->getById($data['id']);
+
+        if ($order) {
+            $order = $this->orderProductService->getProductsByOrder($order);
+            broadcast(new SendReadyOrderReminderEvent($order->toJson(), $this->branch))->toOthers();
             return true;
         } else {
             return false;

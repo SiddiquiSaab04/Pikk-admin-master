@@ -160,6 +160,26 @@ class OrderController extends Controller
         }
     }
 
+    public function getServeOrders()
+    {
+        $orders = $this->orderService->getServeOrders();
+        if (request()->wantsJson()) {
+            return sendResponse(true, null, $orders, null, 200);
+        } else {
+            //
+        }
+    }
+
+    public function getPendingAndReadyOrders()
+    {
+        $orders = $this->orderService->getPendingAndReadyOrders();
+        if (request()->wantsJson()) {
+            return sendResponse(true, null, $orders, null, 200);
+        } else {
+            //
+        }
+    }
+
     public function readyOrder(Request $request)
     {
         $order = $this->orderService->readyOrder($request->id);
@@ -213,6 +233,28 @@ class OrderController extends Controller
                 null,
                 null,
                 "Order Served",
+                200
+            );
+        } else {
+            return sendError(
+                true,
+                null,
+                null,
+                "Some error occurred",
+                500
+            );
+        }
+    }
+
+    public function sendReminder(Request $request)
+    {
+        $order = $this->orderService->sendReminder($request->all());
+        if($order) {
+            return sendResponse(
+                true,
+                null,
+                null,
+                "Reminder sent",
                 200
             );
         } else {

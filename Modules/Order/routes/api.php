@@ -24,9 +24,12 @@ Route::prefix("/{branch?}/order")->group(function() {
     // Route::post('/place-order', [OrderController::class, 'store'])->middleware(['auth:sanctum']);
     Route::get('/get-pending-orders', [OrderController::class, 'getPendingOrders']);
     Route::get('/get-ready-orders', [OrderController::class, 'getReadyOrders']);
+    Route::get('/get-served-orders', [OrderController::class, 'getServeOrders']);
+    Route::get('/pending-and-ready-orders', [OrderController::class, 'getPendingAndReadyOrders']);
     Route::post('/ready-order', [OrderController::class, 'readyOrder']);
     Route::post('/cancel-order', [OrderController::class, 'cancelOrder']);
     Route::post('/serve-order', [OrderController::class, 'serveOrder']);
+    Route::post('/send-ready-order-reminder', [OrderController::class, 'sendReminder']);
 });
 
 // Route::prefix("{branch?}/order")->middleware(['auth:sanctum'])->group(function() {

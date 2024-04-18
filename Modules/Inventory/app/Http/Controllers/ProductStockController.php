@@ -21,6 +21,15 @@ class ProductStockController extends Controller
     public function index()
     {
         $data = $this->stockService->getViewsData();
+        if (request()->wantsjson()) {
+            return sendResponse(
+                true,
+                null,
+                $data,
+                null,
+                200
+            );
+        }
         return view('inventory::stock.index', $data);
     }
 

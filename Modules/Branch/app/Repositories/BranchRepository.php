@@ -33,6 +33,8 @@ class BranchRepository implements BranchInterface
                 $table->unsignedBigInteger('cashback_used')->default(0);
                 $table->softDeletes();
                 $table->timestamps();
+                $table->datetime('ready_at')->nullable();
+                $table->datetime('serve_at')->nullable();
             });
         } catch (Exception $e) {
             Log::info("Some Error Occurred while creating orders table".$e->getMessage().' '.$e->getLine());

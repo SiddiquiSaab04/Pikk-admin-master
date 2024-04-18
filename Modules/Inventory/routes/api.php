@@ -27,3 +27,8 @@ Route::prefix('inventory')->group(function () {
     Route::get('{branch}/category/index', [CategoryController::class, 'index']);
     Route::get('{branch?}/category/index', [CategoryController::class, 'index']);
 });
+
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::get('{branch?}/get-stock', [ProductStockController::class, 'index']);
+    Route::post('{branch?}/manage-stock', [ProductStockController::class, 'manageStock']);
+});
