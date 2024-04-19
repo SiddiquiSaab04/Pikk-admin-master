@@ -59,7 +59,7 @@ class SettingsController extends Controller
     public function store(Request $request)
     {
         $settings = $this->settingsService->createSettings($request->all());
-        if($settings['status']) {
+        if ($settings['status']) {
             return redirect()->back()->withToastSuccess($settings['message']);
         } else {
             return redirect()->back()->withToastError($settings['message']);
@@ -118,5 +118,25 @@ class SettingsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getPosConfiguration()
+    {
+        $setting = $this->settingsService->getPosConfiguration();
+        if (request()->wantsJson()) {
+            return sendResponse(true, null, json_decode($setting->value), null, 200);
+        } else {
+            //
+        }
+    }
+
+    public function storePosConfiguration(Request $request)
+    {
+        $settings = $this->settingsService->storePosConfiguration($request->all());
+        if (request()->wantsJson()) {
+            return sendResponse(true, null, $settings, null, 200);
+        } else {
+            //
+        }
     }
 }
