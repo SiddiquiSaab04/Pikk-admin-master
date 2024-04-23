@@ -127,9 +127,9 @@ class OrderService
          * Return $x to customer if the order amount exceeds $10
          */
 
-        if ($order->total >= 10 && $auth) {
+        if ($order->total > 0 && $auth) {
             $cashback = [
-                "amount" => (int)($order->total / 10),
+                "amount" => ($order->total / 10),
                 'customer_id' => $order->customer_id,
                 'branch_id' => $this->branch,
                 'status' => 0

@@ -34,15 +34,21 @@ class CustomersCashbackService
     }
   }
 
-  public function cashback()
+  public function cashback($startDate, $endDate)
   {
-    $cashback =  $this->getWhere(['customer_id' => Auth::user()->id]);
+    $cashback = $this->getCashback($startDate, $endDate);
     return sendResponse(true, null, $cashback, '', 200);
   }
 
   public function computeCashback($startDate, $endDate)
   {
-    $cashback =  $this->getWhere([['customer_id', Auth::user()->id], ['created_at', '>=', $startDate], ['created_at', '<=', $endDate]]);
+    $cashback = $this->getCashback($startDate, $endDate);
     return sendResponse(true, null, $cashback, '', 200);
   }
+
+  private function getCashback($startDate, $endDate)
+  {
+    return $this->getWhere([['customer_id', Auth::user()->id], ['created_at', '>=', $startDate], ['created_at', '<=', $endDate]]);
+  }
+
 }

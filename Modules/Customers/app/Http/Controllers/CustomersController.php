@@ -90,7 +90,16 @@ class CustomersController extends Controller
 
     public function cashback()
     {
-        return $this->customersCashbackService->cashback();
+        $now = Carbon::now();
+        $now->setTimezone('Asia/Singapore');
+
+        $startOfMonth = $now->copy()->startOfMonth();
+        $endOfMonth =  $now->copy()->endOfMonth();
+
+        $formattedStartDate = $startOfMonth->toDateString();
+        $formattedEndDate = $endOfMonth->toDateString();
+
+        return $this->customersCashbackService->cashback($formattedStartDate, $formattedEndDate);
     }
 
     public function computeCashback(Request $request)
