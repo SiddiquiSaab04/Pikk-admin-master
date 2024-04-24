@@ -88,6 +88,9 @@
             <li><a><i class="fa fa-clone"></i> Settings <span class="fa fa-chevron-down"></span></a>
                 <ul class="nav child_menu">
                     <li><a href="{{ route('settings.create') }}">Create Setting</a></li>
+                    @can('manage_discount')
+                    <li><a href="{{ route('discounts.index', Auth::user()->branch_id) }}">Cashback Discount</a></li>
+                    @endcan
                 </ul>
             </li>
         </ul>

@@ -177,6 +177,18 @@ class PermissionsDatabaseSeeder extends Seeder
             ],
             [
                 'name' => "manage_system_media"
+            ],
+            [
+                'name' => "create_discount"
+            ],
+            [
+                'name' => "update_discount"
+            ],
+            [
+                'name' => "delete_discount"
+            ],
+            [
+                'name' => "manage_discount"
             ]
         ];
 
@@ -189,13 +201,13 @@ class PermissionsDatabaseSeeder extends Seeder
             });
 
             $superAdminRole = Role::where('name', 'super_admin')->first();
-            $allPermissions = Permission::whereNotIn('name', ['pos', 'kds', 'manage_stock'])->get();
+            $allPermissions = Permission::whereNotIn('name', ['pos', 'kds', 'manage_stock','create_discount','update_discount','delete_discount'])->get();
             $superAdminRole->syncPermissions($allPermissions);
 
             $adminRole = Role::where('name', 'admin')->first();
             $manageRole = Role::where('name', 'manager')->first();
 
-            $readingPermissions = Permission::whereIn('name', ['create_users', 'read_users', 'update_users', 'delete_users', 'read_roles', 'read_permissions', 'read_products', 'read_medias', 'read_categories', 'read_addons', 'read_addon_groups', 'read_units', 'read_unit_groups', 'see_reports', 'pos', 'kds', 'login', 'manage_category', 'manage_product', 'manage_addon_groups', 'manage_stock'])->get();
+            $readingPermissions = Permission::whereIn('name', ['create_users', 'read_users', 'update_users', 'delete_users', 'read_roles', 'read_permissions', 'read_products', 'read_medias', 'read_categories', 'read_addons', 'read_addon_groups', 'read_units', 'read_unit_groups', 'see_reports', 'pos', 'kds', 'login', 'manage_category', 'manage_product', 'manage_addon_groups', 'manage_stock','create_discount','update_discount','delete_discount','manage_discount'])->get();
 
             $adminRole->syncPermissions($readingPermissions);
             $manageRole->syncPermissions($readingPermissions);

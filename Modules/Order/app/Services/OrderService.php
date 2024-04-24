@@ -17,6 +17,7 @@ use Modules\Order\app\Events\SendReadyOrderReminderEvent;
 use Modules\Order\app\Repositories\OrderRepository;
 use Modules\Order\app\Services\OrderProductService;
 use Modules\Order\app\Services\OrderProductAddonService;
+use Modules\Settings\app\Services\SettingsService;
 
 class OrderService
 {
@@ -29,6 +30,7 @@ class OrderService
     protected $customerCashbackService;
     protected $customerService;
     protected $stock;
+    protected $settingsService;
 
     public function __construct(
         ProductService $productService,
@@ -37,7 +39,8 @@ class OrderService
         OrderProductAddonService $orderProductAddonService,
         CustomersCashbackService $customerCashbackService,
         CustomersService $customerService,
-        StockService $stock
+        StockService $stock,
+        SettingsService $settingsService
     ) {
         $this->model = "\\Modules\\Order\\app\\Models\\Order";
         $this->productService = $productService;
@@ -48,6 +51,7 @@ class OrderService
         $this->customerCashbackService = $customerCashbackService;
         $this->customerService = $customerService;
         $this->stock = $stock;
+        $this->settingsService = $settingsService;
     }
 
     /**
@@ -128,8 +132,11 @@ class OrderService
          */
 
         if ($order->total > 0 && $auth) {
+            $cashback = $this->settingsService->getDiscounts();
+            $cashbackPercentage = json_decode($cashback[0]->value, true);
+
             $cashback = [
-                "amount" => ($order->total / 10),
+                "amount" => ($order->total / ((int) $cashbackPercentage['cashback'] ?? 10)),
                 'customer_id' => $order->customer_id,
                 'branch_id' => $this->branch,
                 'status' => 0

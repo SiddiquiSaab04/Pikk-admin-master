@@ -88,4 +88,44 @@ class SettingsService
         $key = "branch_" . request()->branch . "_user_" . Auth::user()->id . "_pos_configuration";
         $this->updateOrCreate(['key' => $key], ['value' => json_encode($request['pos_configuration'])]);
     }
+
+    public function getDiscounts()
+    {
+        $key = "branch_" . request()->branch . "_discounts";
+        return $this->getWhere([['key', '=', $key]]);
+    }
+
+    public function allDiscounts()
+    {
+        $include = "branch_";
+        $notInclude = "pos_configuration";
+
+        return $this->getWhere([
+            ['key', 'LIKE', $include . '%'],
+            ['key', 'NOT LIKE', '%' . $notInclude . '%']
+        ]);
+    }
+
+    public function updateOrCreateDiscount($request)
+    {
+        try {
+            $discount = (object) [
+                "cashback" => $request['cashback'],
+                "status" => $request['status']
+            ];
+
+            $key = "branch_" . request()->branch . "_discounts";
+            $this->updateOrCreate(['key' => $key], ['value' => json_encode($discount)]);
+
+            return [
+                'status' => 1,
+                'message' => 'Discount created Successfully'
+            ];
+        } catch (Exception $e) {
+            return [
+                'status' => 0,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }
