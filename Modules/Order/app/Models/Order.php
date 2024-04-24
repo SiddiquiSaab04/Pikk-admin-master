@@ -42,7 +42,8 @@ class Order extends Model
         "total",
         "sub_total",
         "cancelled_reason",
-        "cashback_used"
+        "cashback_used",
+        "discount_reason"
     ];
 
     public function getOrderDateAttribute()
