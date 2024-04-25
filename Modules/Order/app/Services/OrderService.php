@@ -79,7 +79,7 @@ class OrderService
         $data['cancelled_reason'] = 0;
         $data['discount'] = $data['discount'];
         $data['discount_type'] = $data['discount_type'];
-        $data['discount_reason'] = $data['deal'];
+        $data['discount_reason'] = $data['deal'] ?? '';
 
         if ($auth) {
             $data['customer_id'] = $auth->id;
