@@ -14,7 +14,6 @@ class CategoryRequest extends FormRequest
         return [
             "name" => "required",
             "preview_url" => "required",
-            "description" => "required",
             "display" => ""
         ];
     }

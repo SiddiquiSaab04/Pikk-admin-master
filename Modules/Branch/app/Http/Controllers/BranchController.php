@@ -21,23 +21,43 @@ class BranchController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index()
+    // {
+    //     $branches = $this->branchService->getWhere(['id' => Auth::user()->branch_id]);
+    //     if(request()->wantsjson()) {
+    //         return sendResponse(true, null,
+    //             $branches,
+    //             null,
+    //             200
+    //         );
+    //     } else {
+    //         return sendResponse(false, 'branch::index', [
+    //             "branches" => $branches,
+    //             "title" => "Branches List",
+    //             "description" => "show all branches listing"
+    //         ]);
+    //     }
+    // }
+
+
     public function index()
-    {
-        $branches = $this->branchService->getWhere(['id' => Auth::user()->branch_id]);
-        if(request()->wantsjson()) {
-            return sendResponse(true, null,
-                $branches,
-                null,
-                200
-            );
-        } else {
-            return sendResponse(false, 'branch::index', [
-                "branches" => $branches,
-                "title" => "Branches List",
-                "description" => "show all branches listing"
-            ]);
-        }
+{
+    $branches = $this->branchService->getAll(); // Assuming getAll() fetches all branches
+    if(request()->wantsjson()) {
+        return sendResponse(true, null,
+            $branches,
+            null,
+            200
+        );
+    } else {
+        return view('branch::index', [
+            "branches" => $branches,
+            "title" => "Branches List",
+            "description" => "Show all branches listing"
+        ]);
     }
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -67,23 +87,35 @@ class BranchController extends Controller
     /**
      * Show the specified resource.
      */
+    // public function show($id)
+    // {
+    //     $branches = $this->branchService->search($id);
+    //     if(request()->wantsjson()) {
+    //         return sendResponse('branch::index', [
+    //             "branches" => $branches,
+    //             "title" => "Branches List",
+    //             "description" => "show all branches listing"
+    //         ]);
+    //     } else {
+    //         return sendResponse(false, 'branch::index', [
+    //             "branches" => $branches,
+    //             "title" => "Branches List",
+    //             "description" => "show all branches listing"
+    //         ]);
+    //     }
+    // }
+
+
     public function show($id)
-    {
-        $branches = $this->branchService->search($id);
-        if(request()->wantsjson()) {
-            return sendResponse('branch::index', [
-                "branches" => $branches,
-                "title" => "Branches List",
-                "description" => "show all branches listing"
-            ]);
-        } else {
-            return sendResponse(false, 'branch::index', [
-                "branches" => $branches,
-                "title" => "Branches List",
-                "description" => "show all branches listing"
-            ]);
-        }
-    }
+{
+    $branches = $this->branchService->search($id);
+    return view('branch::index', [
+        "branches" => $branches,
+        "title" => "Branches List",
+        "description" => "Show all branches listing"
+    ]);
+}
+
 
     /**
      * Show the form for editing the specified resource.
