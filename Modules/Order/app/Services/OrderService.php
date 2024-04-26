@@ -256,6 +256,9 @@ class OrderService
         if (isset($data['discount'])) {
             if ($data['discount_type'] == 'flat') {
                 $data['total'] = $data['total'] - $data['discount'];
+                if ($data['total'] < 0) {
+                    $data['total'] = 0;
+                }
             } else {
                 $data['total'] = $data['total'] - ($data['total'] / 100 * $data['discount']);
             }
