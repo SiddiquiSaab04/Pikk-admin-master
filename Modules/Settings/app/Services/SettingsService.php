@@ -6,6 +6,7 @@ use App\Repositories\CrudRepository;
 use App\Traits\Crud;
 use Exception;
 use Jackiedo\DotenvEditor\Facades\DotenvEditor;
+use Illuminate\Support\Facades\Auth;
 
 class SettingsService
 {
@@ -74,5 +75,57 @@ class SettingsService
         }
 
         return $transformedArray;
+    }
+
+    public function getPosConfiguration()
+    {
+        $key = "branch_" . request()->branch . "_user_" . Auth::user()->id . "_pos_configuration";
+        return $this->getWhereFirst([['key', '=', $key]]);
+    }
+
+    public function storePosConfiguration($request)
+    {
+        $key = "branch_" . request()->branch . "_user_" . Auth::user()->id . "_pos_configuration";
+        $this->updateOrCreate(['key' => $key], ['value' => json_encode($request['pos_configuration'])]);
+    }
+
+    public function getDiscounts()
+    {
+        $key = "branch_" . request()->branch . "_discounts";
+        return $this->getWhere([['key', '=', $key]]);
+    }
+
+    public function allDiscounts()
+    {
+        $include = "branch_";
+        $notInclude = "pos_configuration";
+
+        return $this->getWhere([
+            ['key', 'LIKE', $include . '%'],
+            ['key', 'NOT LIKE', '%' . $notInclude . '%']
+        ]);
+    }
+
+    public function updateOrCreateDiscount($request)
+    {
+        try {
+            $discount = (object) [
+                "cashback" => $request['cashback'],
+                "status" => $request['status']
+            ];
+
+            $key = "branch_" . request()->branch . "_discounts";
+            $this->updateOrCreate(['key' => $key], ['value' => json_encode($discount)]);
+
+            return [
+                'status' => 1,
+                'message' => 'Discount created Successfully'
+            ];
+        } catch (Exception $e) {
+            return [
+                'status' => 0,
+                'message' => $e->getMessage()
+            ];
+        }
     }
 }

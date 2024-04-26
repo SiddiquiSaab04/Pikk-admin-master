@@ -59,7 +59,7 @@ class SettingsController extends Controller
     public function store(Request $request)
     {
         $settings = $this->settingsService->createSettings($request->all());
-        if($settings['status']) {
+        if ($settings['status']) {
             return redirect()->back()->withToastSuccess($settings['message']);
         } else {
             return redirect()->back()->withToastError($settings['message']);
@@ -83,7 +83,7 @@ class SettingsController extends Controller
             return sendResponse(false, 'settings::index', [
                 "setting" => $setting,
                 "title" => "Setting List",
-                "description" => "show asetting"
+                "description" => "show a setting"
             ]);
         }
 
@@ -99,8 +99,8 @@ class SettingsController extends Controller
 
         return view('settings::edit', [
             "setting" => $setting,
-            "title" => "Edit Media",
-            "description" => "edit a media"
+            "title" => "Edit Setting",
+            "description" => "edit a setting"
         ]);
     }
 
@@ -118,5 +118,66 @@ class SettingsController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function getPosConfiguration()
+    {
+        $setting = $this->settingsService->getPosConfiguration();
+        if (request()->wantsJson()) {
+            return sendResponse(true, null, json_decode($setting->value), null, 200);
+        } else {
+            //
+        }
+    }
+
+    public function storePosConfiguration(Request $request)
+    {
+        $settings = $this->settingsService->storePosConfiguration($request->all());
+        if (request()->wantsJson()) {
+            return sendResponse(true, null, $settings, null, 200);
+        } else {
+            //
+        }
+    }
+
+    public function listingDiscount()
+    {
+        if (request()->branch) {
+            $settings = $this->settingsService->getDiscounts();
+        } else {
+            $settings = $this->settingsService->allDiscounts();
+        }
+
+        if (request()->wantsjson()) {
+            return sendResponse('settings::discounts.index', [
+                "settings" => $settings,
+                "title" => "Discounts List",
+                "description" => "show all discounts"
+            ]);
+        } else {
+            return sendResponse(false, 'settings::discounts.index', [
+                "settings" => $settings,
+                "title" => "Discounts List",
+                "description" => "show all discounts"
+            ]);
+        }
+    }
+
+    public function createDiscount()
+    {
+        return sendResponse(false, 'settings::discounts.create', [
+            "title" => "Edit Discount",
+            "description" => "Edit a discount",
+        ]);
+    }
+
+    public function updateOrCreateDiscount(Request $request)
+    {
+        $discount = $this->settingsService->updateOrCreateDiscount($request->all());
+        if ($discount['status']) {
+            return redirect()->back()->withToastSuccess($discount['message']);
+        } else {
+            return redirect()->back()->withToastError($discount['message']);
+        }
     }
 }

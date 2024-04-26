@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Modules\Settings\app\Http\Controllers\SettingsController;
 
 /*
     |--------------------------------------------------------------------------
@@ -16,4 +17,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
     Route::get('settings', fn (Request $request) => $request->user())->name('settings');
+});
+
+Route::middleware(['auth:sanctum'])->prefix('/{branch?}/settings/')->group(function () {
+    Route::get('get-pos-configuration', [SettingsController::class, 'getPosConfiguration']);
+    Route::post('store-pos-configuration', [SettingsController::class, 'storePosConfiguration']);
 });

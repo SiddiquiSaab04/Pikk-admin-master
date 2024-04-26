@@ -24,5 +24,7 @@ Route::prefix('customers')->group(function () {
 
     Route::middleware(['auth:sanctum'])->group(function () {
         Route::post('logout', [CustomersController::class, 'logout']);
+        Route::get('get-cashback', [CustomersController::class, 'cashback']);
+        Route::post('compute-cashback', [CustomersController::class, 'computeCashback']);
     });
 });

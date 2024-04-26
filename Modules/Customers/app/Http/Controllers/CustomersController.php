@@ -2,20 +2,24 @@
 
 namespace Modules\Customers\app\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Modules\Customers\app\Services\CustomersService;
 use Modules\Customers\app\Http\Requests\CustomerRequest;
+use Modules\Customers\app\Services\CustomersCashbackService;
 
 class CustomersController extends Controller
 {
     private $customersService;
+    private $customersCashbackService;
 
-    public function __construct(CustomersService $customersService)
+    public function __construct(CustomersService $customersService, CustomersCashbackService $customersCashbackService)
     {
         $this->customersService = $customersService;
+        $this->customersCashbackService = $customersCashbackService;
     }
 
     /**
@@ -82,5 +86,33 @@ class CustomersController extends Controller
     public function logout()
     {
         return $this->customersService->logout();
+    }
+
+    public function cashback()
+    {
+        $now = Carbon::now();
+        $now->setTimezone('Asia/Singapore');
+
+        $startOfMonth = $now->copy()->startOfMonth();
+        $endOfMonth =  $now->copy()->endOfMonth();
+
+        $formattedStartDate = $startOfMonth->toDateString();
+        $formattedEndDate = $endOfMonth->toDateString();
+
+        return $this->customersCashbackService->cashback($formattedStartDate, $formattedEndDate);
+    }
+
+    public function computeCashback(Request $request)
+    {
+        $month = request()->month;
+        $year = request()->year;
+
+        $startDate = Carbon::create($year, $month, 1)->startOfMonth();
+        $endDate = Carbon::create($year, $month, 1)->endOfMonth();
+
+        $formattedStartDate = $startDate->toDateString();
+        $formattedEndDate = $endDate->toDateString();
+
+        return $this->customersCashbackService->computeCashback($formattedStartDate, $formattedEndDate);
     }
 }

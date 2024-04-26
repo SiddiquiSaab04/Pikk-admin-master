@@ -27,6 +27,7 @@ class BranchRepository implements BranchInterface
                 $table->string('wallet')->nullable()->default(0);
                 $table->float('discount')->nullable()->default(0);
                 $table->string('discount_type')->nullable();
+                $table->string('discount_reason')->nullable();
                 $table->float('total');
                 $table->float('sub_total');
                 $table->string('cancelled_reason')->default(null);

@@ -63,7 +63,7 @@ class CustomersService
         if ($add) {
             $cashback = $customer->cashback_points + $amount;
         } else {
-            $cashback = (int) $amount;
+            $cashback = $amount;
         }
 
         $data['cashback_points'] = $cashback;

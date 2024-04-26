@@ -17,6 +17,7 @@ use Modules\Order\app\Events\SendReadyOrderReminderEvent;
 use Modules\Order\app\Repositories\OrderRepository;
 use Modules\Order\app\Services\OrderProductService;
 use Modules\Order\app\Services\OrderProductAddonService;
+use Modules\Settings\app\Services\SettingsService;
 
 class OrderService
 {
@@ -29,6 +30,7 @@ class OrderService
     protected $customerCashbackService;
     protected $customerService;
     protected $stock;
+    protected $settingsService;
 
     public function __construct(
         ProductService $productService,
@@ -37,7 +39,8 @@ class OrderService
         OrderProductAddonService $orderProductAddonService,
         CustomersCashbackService $customerCashbackService,
         CustomersService $customerService,
-        StockService $stock
+        StockService $stock,
+        SettingsService $settingsService
     ) {
         $this->model = "\\Modules\\Order\\app\\Models\\Order";
         $this->productService = $productService;
@@ -48,6 +51,7 @@ class OrderService
         $this->customerCashbackService = $customerCashbackService;
         $this->customerService = $customerService;
         $this->stock = $stock;
+        $this->settingsService = $settingsService;
     }
 
     /**
@@ -75,6 +79,7 @@ class OrderService
         $data['cancelled_reason'] = 0;
         $data['discount'] = $data['discount'];
         $data['discount_type'] = $data['discount_type'];
+        $data['discount_reason'] = $data['deal'] ?? '';
 
         if ($auth) {
             $data['customer_id'] = $auth->id;
@@ -127,9 +132,12 @@ class OrderService
          * Return $x to customer if the order amount exceeds $10
          */
 
-        if ($order->total >= 10 && $auth) {
+        if ($order->total > 0 && $auth) {
+            $cashback = $this->settingsService->getDiscounts();
+            $cashbackPercentage = json_decode($cashback[0]->value, true);
+
             $cashback = [
-                "amount" => (int)($order->total / 10),
+                "amount" => (($order->total / 100) * (int) $cashbackPercentage['cashback'] ?? 10),
                 'customer_id' => $order->customer_id,
                 'branch_id' => $this->branch,
                 'status' => 0
@@ -246,7 +254,14 @@ class OrderService
 
         $data['sub_total'] = $data['total'];
         if (isset($data['discount'])) {
-            $data['total'] = $data['total'] - $data['discount'];
+            if ($data['discount_type'] == 'flat') {
+                $data['total'] = $data['total'] - $data['discount'];
+                if ($data['total'] < 0) {
+                    $data['total'] = 0;
+                }
+            } else {
+                $data['total'] = $data['total'] - ($data['total'] / 100 * $data['discount']);
+            }
         }
 
         return $data;

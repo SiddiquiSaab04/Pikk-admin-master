@@ -23,16 +23,23 @@ class CategoryController extends Controller
      */
     public function index()
     {
+
         $categories = $this->categoryService->whereBranch();
-        $categories->load('products', 'products.addons.modifier', 'products.addons.addonProducts.product.media', 'products.media');
-        if(request()->wantsjson()) {
-            $categories->load('products.stock');
-            $categories->load('products.addons.addonProducts.product.stock');
+
+        if (request()->branch) {
+            $categories->load('products', 'products.addons.modifier', 'products.addons.addonProducts.product.media', 'products.media', 'products.stock', 'products.addons.addonProducts.product.stock');
+        } else {
+            $categories->load('products', 'products.addons.modifier', 'products.addons.addonProducts.product.media', 'products.media');
+        }
+
+        if (request()->wantsjson()) {
             $categories = $this->categoryService->modifyResponse($categories);
             return sendResponse(true, null, [
                 $categories,
-                ["title" => "Categories List",
-                "description" => "show all categories list"],
+                [
+                    "title" => "Categories List",
+                    "description" => "show all categories list"
+                ],
                 200
             ]);
         } else {
@@ -67,7 +74,7 @@ class CategoryController extends Controller
         try {
             $created = $this->categoryService->createCategory($data);
             return redirect()->route('category.index')->withToastSuccess("Category created successfully.");
-        } catch(Exception $e) {
+        } catch (Exception $e) {
             return back()->withToastError($e->getMessage());
         }
     }
@@ -78,7 +85,7 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = $this->categoryService->search($id);
-        if(request()->wantsjson()) {
+        if (request()->wantsjson()) {
             return sendResponse('inventory::category.index', [
                 "categories" => $category,
                 "title" => "Categories List",
