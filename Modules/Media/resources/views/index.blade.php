@@ -45,9 +45,9 @@
             </div>
             <div class="row">
                 @foreach($medias as $media)
-                <div class="col-lg-2 col-md-2 mb-4">
+                <div class="col-lg-3 col-md-3 mb-4">
                     <div class="card">
-                        <img src="{{ $media->url }}" class="p-1" alt="Image" height="250px">
+                        <img src="{{ $media->url }}" class="rounded-12 p-1"  alt="Image" height="200px"  style="object-fit:contain; object-position:center;" >
                         <div class="card-body">
                             <div class="tools tools-bottom text-center">
                                 <a href="{{ $media->url }}"><i class="fa fa-link"></i></a>

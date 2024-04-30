@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('sku');
             $table->string('barcode')->nullable();
-            $table->string("preview_url");
+            $table->string("preview_url")->nullabale()->change();
             $table->string("description");
             $table->float("wholesale_price");
             $table->float("sale_price");

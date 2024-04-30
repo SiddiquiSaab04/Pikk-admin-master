@@ -48,11 +48,11 @@
                             <th>Name</th>
                             <th>Category</th>
                             <th>SKU</th>
-                            <th>Wholesale Price</th>
-                            <th>Sale Price</th>
-                            <th>Status</th>
-                            <th>Description</th>
-                            <th>Created At</th>
+                            <!-- <th>Wholesale Price</th> -->
+                            <!-- <th>Sale Price</th> -->
+                            <!-- <th>Status</th> -->
+                            <!-- <th>Description</th> -->
+                            <!-- <th>Created At</th> -->
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -67,11 +67,11 @@
                                     <span>
                             </td>
                             <td>{{ $product->sku }}</td>
-                            <td>{{ $product->wholesale_price }}</td>
+                            <!-- <td>{{ $product->wholesale_price }}</td> -->
                             <td>{{ $product->sale_price }}</td>
-                            <td>{{ $product->status ? 'True' : 'False' }}</td>
-                            <td>{{ $product->description }}</td>
-                            <td>{{ $product->created_at }}</td>
+                            <!-- <td>{{ $product->status ? 'True' : 'False' }}</td> -->
+                            <!-- <td>{{ $product->description }}</td> -->
+                            <!-- <td>{{ $product->created_at }}</td> -->
                             <td role="presentation" class="dropdown">
                                 <a id="drop5" href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" role="button" aria-expanded="false">
                                     Options
